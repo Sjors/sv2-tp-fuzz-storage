@@ -12,74 +12,74 @@ _Z16le16toh_internalt:
    31|    102|        else return little_endian_16bits;
    32|    102|}
 _Z16le32toh_internalj:
-   49|    377|{
+   49|    361|{
    50|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_32(little_endian_32bits);
-   51|    377|        else return little_endian_32bits;
-   52|    377|}
+   51|    361|        else return little_endian_32bits;
+   52|    361|}
 
 _ZN15ChaCha20Aligned6SetKeyENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-   26|     43|{
-   27|     43|    assert(key.size() == KEYLEN);
+   26|     41|{
+   27|     41|    assert(key.size() == KEYLEN);
   ------------------
-  |  Branch (27:5): [True: 43, False: 0]
+  |  Branch (27:5): [True: 41, False: 0]
   ------------------
-   28|     43|    input[0] = ReadLE32(key.data() + 0);
-   29|     43|    input[1] = ReadLE32(key.data() + 4);
-   30|     43|    input[2] = ReadLE32(key.data() + 8);
-   31|     43|    input[3] = ReadLE32(key.data() + 12);
-   32|     43|    input[4] = ReadLE32(key.data() + 16);
-   33|     43|    input[5] = ReadLE32(key.data() + 20);
-   34|     43|    input[6] = ReadLE32(key.data() + 24);
-   35|     43|    input[7] = ReadLE32(key.data() + 28);
-   36|     43|    input[8] = 0;
-   37|     43|    input[9] = 0;
-   38|     43|    input[10] = 0;
-   39|     43|    input[11] = 0;
-   40|     43|}
+   28|     41|    input[0] = ReadLE32(key.data() + 0);
+   29|     41|    input[1] = ReadLE32(key.data() + 4);
+   30|     41|    input[2] = ReadLE32(key.data() + 8);
+   31|     41|    input[3] = ReadLE32(key.data() + 12);
+   32|     41|    input[4] = ReadLE32(key.data() + 16);
+   33|     41|    input[5] = ReadLE32(key.data() + 20);
+   34|     41|    input[6] = ReadLE32(key.data() + 24);
+   35|     41|    input[7] = ReadLE32(key.data() + 28);
+   36|     41|    input[8] = 0;
+   37|     41|    input[9] = 0;
+   38|     41|    input[10] = 0;
+   39|     41|    input[11] = 0;
+   40|     41|}
 _ZN15ChaCha20AlignedD2Ev:
-   43|     47|{
-   44|     47|    memory_cleanse(input, sizeof(input));
-   45|     47|}
+   43|     45|{
+   44|     45|    memory_cleanse(input, sizeof(input));
+   45|     45|}
 _ZN15ChaCha20AlignedC2ENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-   48|     43|{
-   49|     43|    SetKey(key);
-   50|     43|}
+   48|     41|{
+   49|     41|    SetKey(key);
+   50|     41|}
 _ZN8ChaCha20D2Ev:
-  333|     47|{
-  334|     47|    memory_cleanse(m_buffer.data(), m_buffer.size());
-  335|     47|}
+  333|     45|{
+  334|     45|    memory_cleanse(m_buffer.data(), m_buffer.size());
+  335|     45|}
 
 _ZN8ChaCha20C2ENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-   92|     43|    ChaCha20(std::span<const std::byte> key) noexcept : m_aligned(key) {}
+   92|     41|    ChaCha20(std::span<const std::byte> key) noexcept : m_aligned(key) {}
 
 _Z8ReadLE32ITk8ByteTypeSt4byteEjPKT_:
-   28|    344|{
-   29|    344|    uint32_t x;
-   30|    344|    memcpy(&x, ptr, 4);
-   31|    344|    return le32toh_internal(x);
-   32|    344|}
+   28|    328|{
+   29|    328|    uint32_t x;
+   30|    328|    memcpy(&x, ptr, 4);
+   31|    328|    return le32toh_internal(x);
+   32|    328|}
 
 _Z6HexStrNSt3__14spanIKhLm18446744073709551615EEE:
-   30|     43|{
-   31|     43|    std::string rv(s.size() * 2, '\0');
-   32|     43|    static constexpr auto byte_to_hex = CreateByteToHexMap();
-   33|     43|    static_assert(sizeof(byte_to_hex) == 512);
+   30|     41|{
+   31|     41|    std::string rv(s.size() * 2, '\0');
+   32|     41|    static constexpr auto byte_to_hex = CreateByteToHexMap();
+   33|     41|    static_assert(sizeof(byte_to_hex) == 512);
    34|       |
-   35|     43|    char* it = rv.data();
-   36|  1.37k|    for (uint8_t v : s) {
+   35|     41|    char* it = rv.data();
+   36|  1.31k|    for (uint8_t v : s) {
   ------------------
-  |  Branch (36:20): [True: 1.37k, False: 43]
+  |  Branch (36:20): [True: 1.31k, False: 41]
   ------------------
-   37|  1.37k|        std::memcpy(it, byte_to_hex[v].data(), 2);
-   38|  1.37k|        it += 2;
-   39|  1.37k|    }
+   37|  1.31k|        std::memcpy(it, byte_to_hex[v].data(), 2);
+   38|  1.31k|        it += 2;
+   39|  1.31k|    }
    40|       |
-   41|     43|    assert(it == rv.data() + rv.size());
+   41|     41|    assert(it == rv.data() + rv.size());
   ------------------
-  |  Branch (41:5): [True: 43, False: 0]
+  |  Branch (41:5): [True: 41, False: 0]
   ------------------
-   42|     43|    return rv;
-   43|     43|}
+   42|     41|    return rv;
+   43|     41|}
 
 _ZN11ECC_ContextD2Ev:
   482|      2|{
@@ -99,7 +99,7 @@ key.cpp:_ZL8ECC_Stopv:
   474|      2|}
 
 _Z11LogInstancev:
-   27|     86|{
+   27|     82|{
    28|       |/**
    29|       | * NOTE: the logger instances is leaked on exit. This is ugly, but will be
    30|       | * cleaned up by the OS/libc. Defining a logger as a global object doesn't work
@@ -115,63 +115,63 @@ _Z11LogInstancev:
    40|       | * This method of initialization was originally introduced in
    41|       | * ee3374234c60aba2cc4c5cd5cac1c0aefc2d817c.
    42|       | */
-   43|     86|    static BCLog::Logger* g_logger{new BCLog::Logger()};
-   44|     86|    return *g_logger;
-   45|     86|}
+   43|     82|    static BCLog::Logger* g_logger{new BCLog::Logger()};
+   44|     82|    return *g_logger;
+   45|     82|}
 _ZN5BCLog16LogEscapeMessageENSt3__117basic_string_viewIcNS0_11char_traitsIcEEEE:
-  304|     43|    std::string LogEscapeMessage(std::string_view str) {
-  305|     43|        std::string ret;
-  306|  5.24k|        for (char ch_in : str) {
+  304|     41|    std::string LogEscapeMessage(std::string_view str) {
+  305|     41|        std::string ret;
+  306|  5.00k|        for (char ch_in : str) {
   ------------------
-  |  Branch (306:25): [True: 5.24k, False: 43]
+  |  Branch (306:25): [True: 5.00k, False: 41]
   ------------------
-  307|  5.24k|            uint8_t ch = (uint8_t)ch_in;
-  308|  5.24k|            if ((ch >= 32 || ch == '\n') && ch != '\x7f') {
+  307|  5.00k|            uint8_t ch = (uint8_t)ch_in;
+  308|  5.00k|            if ((ch >= 32 || ch == '\n') && ch != '\x7f') {
   ------------------
-  |  Branch (308:18): [True: 5.20k, False: 43]
-  |  Branch (308:30): [True: 43, False: 0]
-  |  Branch (308:45): [True: 5.24k, False: 0]
+  |  Branch (308:18): [True: 4.96k, False: 41]
+  |  Branch (308:30): [True: 41, False: 0]
+  |  Branch (308:45): [True: 5.00k, False: 0]
   ------------------
-  309|  5.24k|                ret += ch_in;
-  310|  5.24k|            } else {
+  309|  5.00k|                ret += ch_in;
+  310|  5.00k|            } else {
   311|      0|                ret += strprintf("\\x%02x", ch);
   ------------------
   |  | 1172|      0|#define strprintf tfm::format
   ------------------
   312|      0|            }
-  313|  5.24k|        }
-  314|     43|        return ret;
-  315|     43|    }
+  313|  5.00k|        }
+  314|     41|        return ret;
+  315|     41|    }
 _ZN5BCLog6Logger11LogPrintStrENSt3__117basic_string_viewIcNS1_11char_traitsIcEEEEONS1_15source_locationENS_8LogFlagsENS_5LevelE:
-  369|     43|{
-  370|     43|    StdLockGuard scoped_lock(m_cs);
-  371|     43|    return LogPrintStr_(str, std::move(source_loc), category, level);
-  372|     43|}
+  369|     41|{
+  370|     41|    StdLockGuard scoped_lock(m_cs);
+  371|     41|    return LogPrintStr_(str, std::move(source_loc), category, level);
+  372|     41|}
 _ZN5BCLog6Logger12LogPrintStr_ENSt3__117basic_string_viewIcNS1_11char_traitsIcEEEEONS1_15source_locationENS_8LogFlagsENS_5LevelE:
-  376|     43|{
-  377|     43|    std::string str_prefixed = LogEscapeMessage(str);
+  376|     41|{
+  377|     41|    std::string str_prefixed = LogEscapeMessage(str);
   378|       |
-  379|     43|    if (m_buffering) {
+  379|     41|    if (m_buffering) {
   ------------------
-  |  Branch (379:9): [True: 43, False: 0]
+  |  Branch (379:9): [True: 41, False: 0]
   ------------------
-  380|     43|        {
-  381|     43|            BufferedLog buf{
-  382|     43|                .now = SystemClock::now(),
-  383|     43|                .mocktime = GetMockTime(),
-  384|     43|                .str = str_prefixed,
-  385|     43|                .threadname = util::ThreadGetInternalName(),
-  386|     43|                .source_loc = std::move(source_loc),
-  387|     43|                .category = category,
-  388|     43|                .level = level,
-  389|     43|            };
-  390|     43|            m_cur_buffer_memusage += MemUsage(buf);
-  391|     43|            m_msgs_before_open.push_back(std::move(buf));
-  392|     43|        }
+  380|     41|        {
+  381|     41|            BufferedLog buf{
+  382|     41|                .now = SystemClock::now(),
+  383|     41|                .mocktime = GetMockTime(),
+  384|     41|                .str = str_prefixed,
+  385|     41|                .threadname = util::ThreadGetInternalName(),
+  386|     41|                .source_loc = std::move(source_loc),
+  387|     41|                .category = category,
+  388|     41|                .level = level,
+  389|     41|            };
+  390|     41|            m_cur_buffer_memusage += MemUsage(buf);
+  391|     41|            m_msgs_before_open.push_back(std::move(buf));
+  392|     41|        }
   393|       |
-  394|     43|        while (m_cur_buffer_memusage > m_max_buffer_memusage) {
+  394|     41|        while (m_cur_buffer_memusage > m_max_buffer_memusage) {
   ------------------
-  |  Branch (394:16): [True: 0, False: 43]
+  |  Branch (394:16): [True: 0, False: 41]
   ------------------
   395|      0|            if (m_msgs_before_open.empty()) {
   ------------------
@@ -185,8 +185,8 @@ _ZN5BCLog6Logger12LogPrintStr_ENSt3__117basic_string_viewIcNS1_11char_traitsIcEE
   401|      0|            ++m_buffer_lines_discarded;
   402|      0|        }
   403|       |
-  404|     43|        return;
-  405|     43|    }
+  404|     41|        return;
+  405|     41|    }
   406|       |
   407|      0|    FormatLogStrInPlace(str_prefixed, category, level, source_loc, util::ThreadGetInternalName(), SystemClock::now(), GetMockTime());
   408|      0|    if (m_print_to_console) {
@@ -232,69 +232,69 @@ _ZN5BCLog6Logger12LogPrintStr_ENSt3__117basic_string_viewIcNS1_11char_traitsIcEE
   430|      0|    }
   431|      0|}
 logging.cpp:_ZL8MemUsageRKN5BCLog6Logger11BufferedLogE:
-  345|     43|{
-  346|     43|    return memusage::DynamicUsage(buflog.str) +
-  347|     43|           memusage::DynamicUsage(buflog.threadname) +
-  348|     43|           memusage::MallocUsage(sizeof(memusage::list_node<BCLog::Logger::BufferedLog>));
-  349|     43|}
+  345|     41|{
+  346|     41|    return memusage::DynamicUsage(buflog.str) +
+  347|     41|           memusage::DynamicUsage(buflog.threadname) +
+  348|     41|           memusage::MallocUsage(sizeof(memusage::list_node<BCLog::Logger::BufferedLog>));
+  349|     41|}
 
 _ZNK5BCLog6Logger7EnabledEv:
-  130|     43|        {
-  131|     43|            StdLockGuard scoped_lock(m_cs);
-  132|     43|            return m_buffering || m_print_to_console || m_print_to_file || !m_print_callbacks.empty();
+  130|     41|        {
+  131|     41|            StdLockGuard scoped_lock(m_cs);
+  132|     41|            return m_buffering || m_print_to_console || m_print_to_file || !m_print_callbacks.empty();
   ------------------
-  |  Branch (132:20): [True: 43, False: 0]
+  |  Branch (132:20): [True: 41, False: 0]
   |  Branch (132:35): [True: 0, False: 0]
   |  Branch (132:57): [True: 0, False: 0]
   |  Branch (132:76): [True: 0, False: 0]
   ------------------
-  133|     43|        }
+  133|     41|        }
 _Z22LogPrintFormatInternalIJPKcNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEEvONS2_15source_locationEN5BCLog8LogFlagsENSB_5LevelEN4util21ConstevalFormatStringIXsZT_EEEDpRKT_:
-  223|     43|{
-  224|     43|    if (LogInstance().Enabled()) {
+  223|     41|{
+  224|     41|    if (LogInstance().Enabled()) {
   ------------------
-  |  Branch (224:9): [True: 43, False: 0]
+  |  Branch (224:9): [True: 41, False: 0]
   ------------------
-  225|     43|        std::string log_msg;
-  226|     43|        try {
-  227|     43|            log_msg = tfm::format(fmt, args...);
-  228|     43|        } catch (tinyformat::format_error& fmterr) {
+  225|     41|        std::string log_msg;
+  226|     41|        try {
+  227|     41|            log_msg = tfm::format(fmt, args...);
+  228|     41|        } catch (tinyformat::format_error& fmterr) {
   229|      0|            log_msg = "Error \"" + std::string{fmterr.what()} + "\" while formatting log message: " + fmt.fmt;
   230|      0|        }
-  231|     43|        LogInstance().LogPrintStr(log_msg, std::move(source_loc), flag, level);
-  232|     43|    }
-  233|     43|}
+  231|     41|        LogInstance().LogPrintStr(log_msg, std::move(source_loc), flag, level);
+  232|     41|    }
+  233|     41|}
 
 logging.cpp:_ZN8memusageL12DynamicUsageERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE:
-   95|     86|{
-   96|     86|    const char* s_ptr = reinterpret_cast<const char*>(&s);
+   95|     82|{
+   96|     82|    const char* s_ptr = reinterpret_cast<const char*>(&s);
    97|       |    // Don't count the dynamic memory used for string, if it resides in the
    98|       |    // "small string" optimization area (which stores data inside the object itself, up to some
    99|       |    // size; 15 bytes in modern libstdc++).
-  100|     86|    if (!std::less{}(s.data(), s_ptr) && !std::greater{}(s.data() + s.size(), s_ptr + sizeof(s))) {
+  100|     82|    if (!std::less{}(s.data(), s_ptr) && !std::greater{}(s.data() + s.size(), s_ptr + sizeof(s))) {
   ------------------
-  |  Branch (100:9): [True: 43, False: 43]
-  |  Branch (100:9): [True: 43, False: 43]
-  |  Branch (100:42): [True: 43, False: 0]
+  |  Branch (100:9): [True: 41, False: 41]
+  |  Branch (100:9): [True: 41, False: 41]
+  |  Branch (100:42): [True: 41, False: 0]
   ------------------
-  101|     43|        return 0;
-  102|     43|    }
-  103|     43|    return MallocUsage(s.capacity());
-  104|     86|}
+  101|     41|        return 0;
+  102|     41|    }
+  103|     41|    return MallocUsage(s.capacity());
+  104|     82|}
 logging.cpp:_ZN8memusageL11MallocUsageEm:
-   53|     86|{
+   53|     82|{
    54|       |    // Measured on libc6 2.19 on Linux.
-   55|     86|    if (alloc == 0) {
+   55|     82|    if (alloc == 0) {
   ------------------
-  |  Branch (55:9): [True: 0, False: 86]
+  |  Branch (55:9): [True: 0, False: 82]
   ------------------
    56|      0|        return 0;
-   57|     86|    } else if (sizeof(void*) == 8) {
+   57|     82|    } else if (sizeof(void*) == 8) {
   ------------------
-  |  Branch (57:16): [True: 86, Folded]
+  |  Branch (57:16): [True: 82, Folded]
   ------------------
-   58|     86|        return ((alloc + 31) >> 4) << 4;
-   59|     86|    } else if (sizeof(void*) == 4) {
+   58|     82|        return ((alloc + 31) >> 4) << 4;
+   59|     82|    } else if (sizeof(void*) == 4) {
   ------------------
   |  Branch (59:16): [Folded, False: 0]
   ------------------
@@ -305,38 +305,38 @@ logging.cpp:_ZN8memusageL11MallocUsageEm:
   |  Branch (62:9): [Folded, False: 0]
   ------------------
    63|      0|    }
-   64|     86|}
+   64|     82|}
 
 _Z30MakeRandDeterministicDANGEROUSRK7uint256:
-  596|     43|{
-  597|     43|    GetRNGState().MakeDeterministic(seed);
-  598|     43|}
+  596|     41|{
+  597|     41|    GetRNGState().MakeDeterministic(seed);
+  598|     41|}
 random.cpp:_ZN12_GLOBAL__N_111GetRNGStateEv:
-  451|     43|{
+  451|     41|{
   452|       |    // This idiom relies on the guarantee that static variable are initialized
   453|       |    // on first call, even when multiple parallel calls are permitted.
-  454|     43|    static std::vector<RNGState, secure_allocator<RNGState>> g_rng(1);
-  455|     43|    return g_rng[0];
-  456|     43|}
+  454|     41|    static std::vector<RNGState, secure_allocator<RNGState>> g_rng(1);
+  455|     41|    return g_rng[0];
+  456|     41|}
 random.cpp:_ZN12_GLOBAL__N_18RNGStateD2Ev:
   367|      2|    ~RNGState() = default;
 random.cpp:_ZN12_GLOBAL__N_18RNGState17MakeDeterministicERK7uint256:
-  400|     43|    {
-  401|     43|        LOCK(m_mutex);
+  400|     41|    {
+  401|     41|        LOCK(m_mutex);
   ------------------
-  |  |  259|     43|#define LOCK(cs) UniqueLock UNIQUE_NAME(criticalblock)(MaybeCheckNotHeld(cs), #cs, __FILE__, __LINE__)
+  |  |  259|     41|#define LOCK(cs) UniqueLock UNIQUE_NAME(criticalblock)(MaybeCheckNotHeld(cs), #cs, __FILE__, __LINE__)
   |  |  ------------------
-  |  |  |  |   11|     43|#define UNIQUE_NAME(name) PASTE2(name, __COUNTER__)
+  |  |  |  |   11|     41|#define UNIQUE_NAME(name) PASTE2(name, __COUNTER__)
   |  |  |  |  ------------------
-  |  |  |  |  |  |    9|     43|#define PASTE2(x, y) PASTE(x, y)
+  |  |  |  |  |  |    9|     41|#define PASTE2(x, y) PASTE(x, y)
   |  |  |  |  |  |  ------------------
-  |  |  |  |  |  |  |  |    8|     43|#define PASTE(x, y) x ## y
+  |  |  |  |  |  |  |  |    8|     41|#define PASTE(x, y) x ## y
   |  |  |  |  |  |  ------------------
   |  |  |  |  ------------------
   |  |  ------------------
   ------------------
-  402|     43|        m_deterministic_prng.emplace(MakeByteSpan(seed));
-  403|     43|    }
+  402|     41|        m_deterministic_prng.emplace(MakeByteSpan(seed));
+  403|     41|    }
 
 secp256k1.c:secp256k1_ecmult_gen_context_clear:
    26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ctx) {
@@ -471,17 +471,17 @@ secp256k1.c:secp256k1_memzero_explicit:
   246|      6|}
 
 _Z11UnserializeI10DataStreamEvRT_Rh:
-  263|     43|template <typename Stream> void Unserialize(Stream& s, uint8_t& a)   { a = ser_readdata8(s); }
+  263|     41|template <typename Stream> void Unserialize(Stream& s, uint8_t& a)   { a = ser_readdata8(s); }
 _Z13ser_readdata8I10DataStreamEhRT_:
-   79|    127|{
-   80|    127|    uint8_t obj;
-   81|    127|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
-   82|    127|    return obj;
-   83|    127|}
+   79|    125|{
+   80|    125|    uint8_t obj;
+   81|    125|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
+   82|    125|    return obj;
+   83|    125|}
 _Z11UnserializeI10DataStreamRN4node21Sv2SetupConnectionMsgEQ14UnserializableIT0_T_EEvRS5_OS4_:
-  753|     43|{
-  754|     43|    a.Unserialize(is);
-  755|     43|}
+  753|     41|{
+  754|     41|    a.Unserialize(is);
+  755|     41|}
 _Z11UnserializeI10DataStreamcEvRT_RNSt3__112basic_stringIT0_NS3_11char_traitsIS5_EENS3_9allocatorIS5_EEEE:
   788|     84|{
   789|     84|    unsigned int nSize = ReadCompactSize(is);
@@ -552,13 +552,13 @@ _Z14ser_readdata64I10DataStreamEmRT_:
   106|      2|    return le64toh_internal(obj);
   107|      2|}
 _Z11UnserializeI10DataStreamEvRT_Rt:
-  265|     99|template <typename Stream> void Unserialize(Stream& s, uint16_t& a)  { a = ser_readdata16(s); }
+  265|     97|template <typename Stream> void Unserialize(Stream& s, uint16_t& a)  { a = ser_readdata16(s); }
 _Z14ser_readdata16I10DataStreamEtRT_:
-   85|    113|{
-   86|    113|    uint16_t obj;
-   87|    113|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
-   88|    113|    return le16toh_internal(obj);
-   89|    113|}
+   85|    111|{
+   86|    111|    uint16_t obj;
+   87|    111|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
+   88|    111|    return le16toh_internal(obj);
+   89|    111|}
 _Z11UnserializeI10DataStreamEvRT_Rj:
   267|     33|template <typename Stream> void Unserialize(Stream& s, uint32_t& a)  { a = ser_readdata32(s); }
 _Z14ser_readdata32I10DataStreamEjRT_:
@@ -573,59 +573,59 @@ _Z20MakeWritableByteSpanIRNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9alloc
    91|     51|    return std::as_writable_bytes(std::span{std::forward<V>(v)});
    92|     51|}
 _Z12MakeByteSpanI7uint256EDaRKT_:
-   85|     43|{
-   86|     43|    return std::as_bytes(std::span{v});
-   87|     43|}
+   85|     41|{
+   86|     41|    return std::as_bytes(std::span{v});
+   87|     41|}
 
 _ZN10DataStreamC2ENSt3__14spanIKhLm18446744073709551615EEE:
-  148|     43|    explicit DataStream(std::span<const uint8_t> sp) : DataStream{std::as_bytes(sp)} {}
+  148|     41|    explicit DataStream(std::span<const uint8_t> sp) : DataStream{std::as_bytes(sp)} {}
 _ZN10DataStreamrsIRhEERS_OT_:
-  249|     43|    {
-  250|     43|        ::Unserialize(*this, obj);
-  251|     43|        return (*this);
-  252|     43|    }
+  249|     41|    {
+  250|     41|        ::Unserialize(*this, obj);
+  251|     41|        return (*this);
+  252|     41|    }
 _ZN10DataStreamrsIRN4node21Sv2SetupConnectionMsgEEERS_OT_:
-  249|     43|    {
-  250|     43|        ::Unserialize(*this, obj);
-  251|     43|        return (*this);
-  252|     43|    }
+  249|     41|    {
+  250|     41|        ::Unserialize(*this, obj);
+  251|     41|        return (*this);
+  252|     41|    }
 _ZN10DataStreamrsIRNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEERS_OT_:
   249|     84|    {
   250|     84|        ::Unserialize(*this, obj);
   251|     84|        return (*this);
   252|     84|    }
 _ZN10DataStreamC2ENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-  149|     43|    explicit DataStream(std::span<const value_type> sp) : vch(sp.data(), sp.data() + sp.size()) {}
+  149|     41|    explicit DataStream(std::span<const value_type> sp) : vch(sp.data(), sp.data() + sp.size()) {}
 _ZN10DataStreamrsIRtEERS_OT_:
-  249|     99|    {
-  250|     99|        ::Unserialize(*this, obj);
-  251|     99|        return (*this);
-  252|     99|    }
+  249|     97|    {
+  250|     97|        ::Unserialize(*this, obj);
+  251|     97|        return (*this);
+  252|     97|    }
 _ZN10DataStream4readENSt3__14spanISt4byteLm18446744073709551615EEE:
-  202|    328|    {
-  203|    328|        if (dst.size() == 0) return;
+  202|    324|    {
+  203|    324|        if (dst.size() == 0) return;
   ------------------
-  |  Branch (203:13): [True: 0, False: 328]
+  |  Branch (203:13): [True: 0, False: 324]
   ------------------
   204|       |
   205|       |        // Read from the beginning of the buffer
-  206|    328|        auto next_read_pos{CheckedAdd(m_read_pos, dst.size())};
-  207|    328|        if (!next_read_pos.has_value() || next_read_pos.value() > vch.size()) {
+  206|    324|        auto next_read_pos{CheckedAdd(m_read_pos, dst.size())};
+  207|    324|        if (!next_read_pos.has_value() || next_read_pos.value() > vch.size()) {
   ------------------
-  |  Branch (207:13): [True: 0, False: 328]
-  |  Branch (207:43): [True: 36, False: 292]
+  |  Branch (207:13): [True: 0, False: 324]
+  |  Branch (207:43): [True: 34, False: 290]
   ------------------
-  208|     36|            throw std::ios_base::failure("DataStream::read(): end of data");
-  209|     36|        }
-  210|    292|        memcpy(dst.data(), &vch[m_read_pos], dst.size());
-  211|    292|        if (next_read_pos.value() == vch.size()) {
+  208|     34|            throw std::ios_base::failure("DataStream::read(): end of data");
+  209|     34|        }
+  210|    290|        memcpy(dst.data(), &vch[m_read_pos], dst.size());
+  211|    290|        if (next_read_pos.value() == vch.size()) {
   ------------------
-  |  Branch (211:13): [True: 36, False: 256]
+  |  Branch (211:13): [True: 34, False: 256]
   ------------------
-  212|     36|            m_read_pos = 0;
-  213|     36|            vch.clear();
-  214|     36|            return;
-  215|     36|        }
+  212|     34|            m_read_pos = 0;
+  213|     34|            vch.clear();
+  214|     34|            return;
+  215|     34|        }
   216|    256|        m_read_pos = next_read_pos.value();
   217|    256|    }
 _ZN10DataStreamrsIRjEERS_OT_:
@@ -646,26 +646,26 @@ random.cpp:_ZN16secure_allocatorIN12_GLOBAL__N_18RNGStateEE10deallocateEPS1_m:
    42|      2|    }
 
 _ZN25zero_after_free_allocatorISt4byteE10deallocateEPS0_m:
-   30|     43|    {
-   31|     43|        if (p != nullptr)
+   30|     41|    {
+   31|     41|        if (p != nullptr)
   ------------------
-  |  Branch (31:13): [True: 43, False: 0]
+  |  Branch (31:13): [True: 41, False: 0]
   ------------------
-   32|     43|            memory_cleanse(p, sizeof(T) * n);
-   33|     43|        std::allocator<T>{}.deallocate(p, n);
-   34|     43|    }
+   32|     41|            memory_cleanse(p, sizeof(T) * n);
+   33|     41|        std::allocator<T>{}.deallocate(p, n);
+   34|     41|    }
 _ZN25zero_after_free_allocatorISt4byteE8allocateEm:
-   25|     43|    {
-   26|     43|        return std::allocator<T>{}.allocate(n);
-   27|     43|    }
+   25|     41|    {
+   26|     41|        return std::allocator<T>{}.allocate(n);
+   27|     41|    }
 
 _Z14memory_cleansePvm:
-   15|    141|{
+   15|    135|{
    16|       |#if defined(WIN32)
    17|       |    /* SecureZeroMemory is guaranteed not to be optimized out. */
    18|       |    SecureZeroMemory(ptr, len);
    19|       |#else
-   20|    141|    std::memset(ptr, 0, len);
+   20|    135|    std::memset(ptr, 0, len);
    21|       |
    22|       |    /* Memory barrier that scares the compiler away from optimizing out the memset.
    23|       |     *
@@ -678,9 +678,9 @@ _Z14memory_cleansePvm:
    30|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
    31|       |     * Yang et al. (USENIX Security 2017) for more background.
    32|       |     */
-   33|    141|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-   34|    141|#endif
-   35|    141|}
+   33|    135|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+   34|    135|#endif
+   35|    135|}
 
 _ZN5ArenaD2Ev:
    48|      2|Arena::~Arena() = default;
@@ -786,27 +786,27 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node21Sv2SetupConnectionMsg11UnserializeI10DataStreamEEvRT_:
-  122|     43|    {
-  123|     43|        s >> m_protocol
-  124|     43|          >> m_min_version
-  125|     43|          >> m_max_version
-  126|     43|          >> m_flags
-  127|     43|          >> m_endpoint_host
-  128|     43|          >> m_endpoint_port
-  129|     43|          >> m_vendor
-  130|     43|          >> m_hardware_version
-  131|     43|          >> m_firmware
-  132|     43|          >> m_device_id;
-  133|     43|    }
+  122|     41|    {
+  123|     41|        s >> m_protocol
+  124|     41|          >> m_min_version
+  125|     41|          >> m_max_version
+  126|     41|          >> m_flags
+  127|     41|          >> m_endpoint_host
+  128|     41|          >> m_endpoint_port
+  129|     41|          >> m_vendor
+  130|     41|          >> m_hardware_version
+  131|     41|          >> m_firmware
+  132|     41|          >> m_device_id;
+  133|     41|    }
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
    90|      2|        DeleteLock((void*)this);
    91|      2|    }
 _Z13LeaveCriticalv:
-   71|     43|inline void LeaveCritical() {}
+   71|     41|inline void LeaveCritical() {}
 _Z17MaybeCheckNotHeldR14AnnotatedMixinINSt3__15mutexEE:
-  249|     43|inline Mutex& MaybeCheckNotHeld(Mutex& cs) EXCLUSIVE_LOCKS_REQUIRED(!cs) LOCK_RETURNED(cs) { return cs; }
+  249|     41|inline Mutex& MaybeCheckNotHeld(Mutex& cs) EXCLUSIVE_LOCKS_REQUIRED(!cs) LOCK_RETURNED(cs) { return cs; }
 _Z10DeleteLockPv:
    77|      6|inline void DeleteLock(void* cs) {}
 _ZN14AnnotatedMixinINSt3__15mutexEED2Ev:
@@ -814,52 +814,52 @@ _ZN14AnnotatedMixinINSt3__15mutexEED2Ev:
    90|      4|        DeleteLock((void*)this);
    91|      4|    }
 _ZN10UniqueLockI14AnnotatedMixinINSt3__15mutexEEEC2ERS3_PKcS7_ib:
-  172|     43|    UniqueLock(MutexType& mutexIn, const char* pszName, const char* pszFile, int nLine, bool fTry = false) EXCLUSIVE_LOCK_FUNCTION(mutexIn) : Base(mutexIn, std::defer_lock)
-  173|     43|    {
-  174|     43|        if (fTry)
+  172|     41|    UniqueLock(MutexType& mutexIn, const char* pszName, const char* pszFile, int nLine, bool fTry = false) EXCLUSIVE_LOCK_FUNCTION(mutexIn) : Base(mutexIn, std::defer_lock)
+  173|     41|    {
+  174|     41|        if (fTry)
   ------------------
-  |  Branch (174:13): [True: 0, False: 43]
+  |  Branch (174:13): [True: 0, False: 41]
   ------------------
   175|      0|            TryEnter(pszName, pszFile, nLine);
-  176|     43|        else
-  177|     43|            Enter(pszName, pszFile, nLine);
-  178|     43|    }
+  176|     41|        else
+  177|     41|            Enter(pszName, pszFile, nLine);
+  178|     41|    }
 _Z13EnterCriticalINSt3__15mutexEEvPKcS3_iPT_b:
-   70|     43|inline void EnterCritical(const char* pszName, const char* pszFile, int nLine, MutexType* cs, bool fTry = false) {}
+   70|     41|inline void EnterCritical(const char* pszName, const char* pszFile, int nLine, MutexType* cs, bool fTry = false) {}
 _ZN10UniqueLockI14AnnotatedMixinINSt3__15mutexEEE5EnterEPKcS6_i:
-  152|     43|    {
-  153|     43|        EnterCritical(pszName, pszFile, nLine, Base::mutex());
+  152|     41|    {
+  153|     41|        EnterCritical(pszName, pszFile, nLine, Base::mutex());
   154|       |#ifdef DEBUG_LOCKCONTENTION
   155|       |        if (Base::try_lock()) return;
   156|       |        LOG_TIME_MICROS_WITH_CATEGORY(strprintf("lock contention %s, %s:%d", pszName, pszFile, nLine), BCLog::LOCK);
   157|       |#endif
-  158|     43|        Base::lock();
-  159|     43|    }
+  158|     41|        Base::lock();
+  159|     41|    }
 _ZN10UniqueLockI14AnnotatedMixinINSt3__15mutexEEED2Ev:
-  192|     43|    {
-  193|     43|        if (Base::owns_lock())
+  192|     41|    {
+  193|     41|        if (Base::owns_lock())
   ------------------
-  |  Branch (193:13): [True: 43, False: 0]
+  |  Branch (193:13): [True: 41, False: 0]
   ------------------
-  194|     43|            LeaveCritical();
-  195|     43|    }
+  194|     41|            LeaveCritical();
+  195|     41|    }
 
 _ZN12CheckGlobalsC2Ev:
-   56|     43|CheckGlobals::CheckGlobals() : m_impl(std::make_unique<CheckGlobalsImpl>()) {}
+   56|     41|CheckGlobals::CheckGlobals() : m_impl(std::make_unique<CheckGlobalsImpl>()) {}
 _ZN12CheckGlobalsD2Ev:
-   57|     43|CheckGlobals::~CheckGlobals() = default;
+   57|     41|CheckGlobals::~CheckGlobals() = default;
 _ZN16CheckGlobalsImplC2Ev:
-   17|     43|    {
-   18|     43|        g_used_g_prng = false;
-   19|     43|        g_seeded_g_prng_zero = false;
-   20|     43|        g_used_system_time = false;
-   21|     43|        SetMockTime(0s);
-   22|     43|    }
+   17|     41|    {
+   18|     41|        g_used_g_prng = false;
+   19|     41|        g_seeded_g_prng_zero = false;
+   20|     41|        g_used_system_time = false;
+   21|     41|        SetMockTime(0s);
+   22|     41|    }
 _ZN16CheckGlobalsImplD2Ev:
-   24|     43|    {
-   25|     43|        if (g_used_g_prng && !g_seeded_g_prng_zero) {
+   24|     41|    {
+   25|     41|        if (g_used_g_prng && !g_seeded_g_prng_zero) {
   ------------------
-  |  Branch (25:13): [True: 0, False: 43]
+  |  Branch (25:13): [True: 0, False: 41]
   |  Branch (25:30): [True: 0, False: 0]
   ------------------
    26|      0|            std::cerr << "\n\n"
@@ -877,9 +877,9 @@ _ZN16CheckGlobalsImplD2Ev:
    38|      0|            std::abort(); // Abort, because AFL may try to recover from a std::exit
    39|      0|        }
    40|       |
-   41|     43|        if (g_used_system_time) {
+   41|     41|        if (g_used_system_time) {
   ------------------
-  |  Branch (41:13): [True: 0, False: 43]
+  |  Branch (41:13): [True: 0, False: 41]
   ------------------
    42|      0|            std::cerr << "\n\n"
    43|      0|                         "The current fuzz target accessed system time.\n\n"
@@ -892,33 +892,33 @@ _ZN16CheckGlobalsImplD2Ev:
    50|      0|                      << std::endl;
    51|      0|            std::abort();
    52|      0|        }
-   53|     43|    }
+   53|     41|    }
 
 LLVMFuzzerTestOneInput:
-  229|     43|{
-  230|     43|    test_one_input({data, size});
-  231|     43|    return 0;
-  232|     43|}
+  229|     41|{
+  230|     41|    test_one_input({data, size});
+  231|     41|    return 0;
+  232|     41|}
 fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
-   95|     43|{
-   96|     43|    (*Assert(g_test_one_input))(buffer);
+   95|     41|{
+   96|     41|    (*Assert(g_test_one_input))(buffer);
   ------------------
-  |  |  106|     43|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
+  |  |  106|     41|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
   ------------------
-   97|     43|}
+   97|     41|}
 
 _Z36sv2_setup_connection_raw_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  469|     43|{
-  470|     43|    const CheckGlobals check_globals{};
-  471|     43|    SeedRandomStateForTest(SeedRand::ZEROS);
+  469|     41|{
+  470|     41|    const CheckGlobals check_globals{};
+  471|     41|    SeedRandomStateForTest(SeedRand::ZEROS);
   472|       |
-  473|     43|    DataStream ds{buffer};
-  474|     43|    try {
-  475|     43|        Sv2SetupConnectionMsg msg;
-  476|     43|        ds >> msg;
-  477|     43|    } catch (const std::ios_base::failure&) {
-  478|     41|    }
-  479|     43|}
+  473|     41|    DataStream ds{buffer};
+  474|     41|    try {
+  475|     41|        Sv2SetupConnectionMsg msg;
+  476|     41|        ds >> msg;
+  477|     41|    } catch (const std::ios_base::failure&) {
+  478|     39|    }
+  479|     41|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    42|      2|{
@@ -936,202 +936,202 @@ __gcov_reset:
    13|      2|extern "C" __attribute__((weak)) void __gcov_reset(void) {}
 
 _Z22SeedRandomStateForTest8SeedRand:
-   20|     43|{
-   21|     43|    constexpr auto RANDOM_CTX_SEED{"RANDOM_CTX_SEED"};
+   20|     41|{
+   21|     41|    constexpr auto RANDOM_CTX_SEED{"RANDOM_CTX_SEED"};
    22|       |
    23|       |    // Do this once, on the first call, regardless of seedtype, because once
    24|       |    // MakeRandDeterministicDANGEROUS is called, the output of GetRandHash is
    25|       |    // no longer truly random. It should be enough to get the seed once for the
    26|       |    // process.
-   27|     43|    static const auto g_ctx_seed = []() -> std::optional<uint256> {
-   28|     43|        if (EnableFuzzDeterminism()) return {};
+   27|     41|    static const auto g_ctx_seed = []() -> std::optional<uint256> {
+   28|     41|        if (EnableFuzzDeterminism()) return {};
    29|       |        // If RANDOM_CTX_SEED is set, use that as seed.
-   30|     43|        if (const char* num{std::getenv(RANDOM_CTX_SEED)}) {
-   31|     43|            if (auto num_parsed{uint256::FromUserHex(num)}) {
-   32|     43|                return *num_parsed;
-   33|     43|            } else {
-   34|     43|                std::cerr << RANDOM_CTX_SEED << " must consist of up to " << uint256::size() * 2 << " hex digits (\"0x\" prefix allowed), it was set to: '" << num << "'.\n";
-   35|     43|                std::abort();
-   36|     43|            }
-   37|     43|        }
+   30|     41|        if (const char* num{std::getenv(RANDOM_CTX_SEED)}) {
+   31|     41|            if (auto num_parsed{uint256::FromUserHex(num)}) {
+   32|     41|                return *num_parsed;
+   33|     41|            } else {
+   34|     41|                std::cerr << RANDOM_CTX_SEED << " must consist of up to " << uint256::size() * 2 << " hex digits (\"0x\" prefix allowed), it was set to: '" << num << "'.\n";
+   35|     41|                std::abort();
+   36|     41|            }
+   37|     41|        }
    38|       |        // Otherwise use a (truly) random value.
-   39|     43|        return GetRandHash();
-   40|     43|    }();
+   39|     41|        return GetRandHash();
+   40|     41|    }();
    41|       |
-   42|     43|    g_seeded_g_prng_zero = seedtype == SeedRand::ZEROS;
-   43|     43|    if (EnableFuzzDeterminism()) {
+   42|     41|    g_seeded_g_prng_zero = seedtype == SeedRand::ZEROS;
+   43|     41|    if (EnableFuzzDeterminism()) {
   ------------------
-  |  Branch (43:9): [True: 43, False: 0]
+  |  Branch (43:9): [True: 41, False: 0]
   ------------------
-   44|     43|        Assert(g_seeded_g_prng_zero); // Only SeedRandomStateForTest(SeedRand::ZEROS) is allowed in fuzz tests
+   44|     41|        Assert(g_seeded_g_prng_zero); // Only SeedRandomStateForTest(SeedRand::ZEROS) is allowed in fuzz tests
   ------------------
-  |  |  106|     43|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
+  |  |  106|     41|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
   ------------------
-   45|     43|        Assert(!g_used_g_prng);       // The global PRNG must not have been used before SeedRandomStateForTest(SeedRand::ZEROS)
+   45|     41|        Assert(!g_used_g_prng);       // The global PRNG must not have been used before SeedRandomStateForTest(SeedRand::ZEROS)
   ------------------
-  |  |  106|     43|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
+  |  |  106|     41|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
   ------------------
-   46|     43|    }
-   47|     43|    const uint256& seed{seedtype == SeedRand::FIXED_SEED ? g_ctx_seed.value() : uint256::ZERO};
+   46|     41|    }
+   47|     41|    const uint256& seed{seedtype == SeedRand::FIXED_SEED ? g_ctx_seed.value() : uint256::ZERO};
   ------------------
-  |  Branch (47:25): [True: 0, False: 43]
+  |  Branch (47:25): [True: 0, False: 41]
   ------------------
-   48|     43|    LogInfo("Setting random seed for current tests to %s=%s\n", RANDOM_CTX_SEED, seed.GetHex());
+   48|     41|    LogInfo("Setting random seed for current tests to %s=%s\n", RANDOM_CTX_SEED, seed.GetHex());
   ------------------
-  |  |  240|     43|#define LogInfo(...) LogPrintLevel_(BCLog::LogFlags::ALL, BCLog::Level::Info, __VA_ARGS__)
+  |  |  240|     41|#define LogInfo(...) LogPrintLevel_(BCLog::LogFlags::ALL, BCLog::Level::Info, __VA_ARGS__)
   |  |  ------------------
-  |  |  |  |  235|     43|#define LogPrintLevel_(category, level, ...) LogPrintFormatInternal(std::source_location::current(), category, level, __VA_ARGS__)
+  |  |  |  |  235|     41|#define LogPrintLevel_(category, level, ...) LogPrintFormatInternal(std::source_location::current(), category, level, __VA_ARGS__)
   |  |  ------------------
   ------------------
-   49|     43|    MakeRandDeterministicDANGEROUS(seed);
-   50|     43|}
+   49|     41|    MakeRandDeterministicDANGEROUS(seed);
+   50|     41|}
 
 _ZN12StdLockGuardC2ER8StdMutex:
-   75|     86|    explicit StdLockGuard(StdMutex& cs) EXCLUSIVE_LOCK_FUNCTION(cs) : std::lock_guard<StdMutex>(cs) {}
+   75|     82|    explicit StdLockGuard(StdMutex& cs) EXCLUSIVE_LOCK_FUNCTION(cs) : std::lock_guard<StdMutex>(cs) {}
 
 _ZN10tinyformat6detail9FormatArg10formatImplINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEvRNS3_13basic_ostreamIcS6_EEPKcSE_iPKv:
-  558|     43|        {
-  559|     43|            formatValue(out, fmtBegin, fmtEnd, ntrunc, *static_cast<const T*>(value));
-  560|     43|        }
+  558|     41|        {
+  559|     41|            formatValue(out, fmtBegin, fmtEnd, ntrunc, *static_cast<const T*>(value));
+  560|     41|        }
 _ZN10tinyformat11formatValueINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEEvRNS1_13basic_ostreamIcS4_EEPKcSC_iRKT_:
-  351|     43|{
-  352|     43|#ifndef TINYFORMAT_ALLOW_WCHAR_STRINGS
+  351|     41|{
+  352|     41|#ifndef TINYFORMAT_ALLOW_WCHAR_STRINGS
   353|       |    // Since we don't support printing of wchar_t using "%ls", make it fail at
   354|       |    // compile time in preference to printing as a void* at runtime.
-  355|     43|    typedef typename detail::is_wchar<T>::tinyformat_wchar_is_not_supported DummyType;
-  356|     43|    (void) DummyType(); // avoid unused type warning with gcc-4.8
-  357|     43|#endif
+  355|     41|    typedef typename detail::is_wchar<T>::tinyformat_wchar_is_not_supported DummyType;
+  356|     41|    (void) DummyType(); // avoid unused type warning with gcc-4.8
+  357|     41|#endif
   358|       |    // The mess here is to support the %c and %p conversions: if these
   359|       |    // conversions are active we try to convert the type to a char or const
   360|       |    // void* respectively and format that instead of the value itself.  For the
   361|       |    // %p conversion it's important to avoid dereferencing the pointer, which
   362|       |    // could otherwise lead to a crash when printing a dangling (const char*).
-  363|     43|    const bool canConvertToChar = detail::is_convertible<T,char>::value;
-  364|     43|    const bool canConvertToVoidPtr = detail::is_convertible<T, const void*>::value;
-  365|     43|    if (canConvertToChar && *(fmtEnd-1) == 'c')
+  363|     41|    const bool canConvertToChar = detail::is_convertible<T,char>::value;
+  364|     41|    const bool canConvertToVoidPtr = detail::is_convertible<T, const void*>::value;
+  365|     41|    if (canConvertToChar && *(fmtEnd-1) == 'c')
   ------------------
-  |  Branch (365:9): [Folded, False: 43]
+  |  Branch (365:9): [Folded, False: 41]
   |  Branch (365:29): [True: 0, False: 0]
   ------------------
   366|      0|        detail::formatValueAsType<T, char>::invoke(out, value);
-  367|     43|    else if (canConvertToVoidPtr && *(fmtEnd-1) == 'p')
+  367|     41|    else if (canConvertToVoidPtr && *(fmtEnd-1) == 'p')
   ------------------
-  |  Branch (367:14): [Folded, False: 43]
+  |  Branch (367:14): [Folded, False: 41]
   |  Branch (367:37): [True: 0, False: 0]
   ------------------
   368|      0|        detail::formatValueAsType<T, const void*>::invoke(out, value);
   369|       |#ifdef TINYFORMAT_OLD_LIBSTDCPLUSPLUS_WORKAROUND
   370|       |    else if (detail::formatZeroIntegerWorkaround<T>::invoke(out, value)) /**/;
   371|       |#endif
-  372|     43|    else if (ntrunc >= 0) {
+  372|     41|    else if (ntrunc >= 0) {
   ------------------
-  |  Branch (372:14): [True: 0, False: 43]
+  |  Branch (372:14): [True: 0, False: 41]
   ------------------
   373|       |        // Take care not to overread C strings in truncating conversions like
   374|       |        // "%.4s" where at most 4 characters may be read.
   375|      0|        detail::formatTruncated(out, value, ntrunc);
   376|      0|    }
-  377|     43|    else
-  378|     43|        out << value;
-  379|     43|}
+  377|     41|    else
+  378|     41|        out << value;
+  379|     41|}
 _ZN10tinyformat6formatIJPKcNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEES9_NS_17FormatStringCheckIXsZT_EEEDpRKT_:
- 1088|     43|{
- 1089|     43|    std::ostringstream oss;
- 1090|     43|    format(oss, fmt, args...);
- 1091|     43|    return oss.str();
- 1092|     43|}
+ 1088|     41|{
+ 1089|     41|    std::ostringstream oss;
+ 1090|     41|    format(oss, fmt, args...);
+ 1091|     41|    return oss.str();
+ 1092|     41|}
 _ZN10tinyformat6formatIJPKcNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEEvRNS3_13basic_ostreamIcS6_EENS_17FormatStringCheckIXsZT_EEEDpRKT_:
- 1080|     43|{
- 1081|     43|    vformat(out, fmt, makeFormatList(args...));
- 1082|     43|}
+ 1080|     41|{
+ 1081|     41|    vformat(out, fmt, makeFormatList(args...));
+ 1082|     41|}
 _ZN10tinyformat14makeFormatListIJPKcNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEENS_6detail11FormatListNIXsZT_EEEDpRKT_:
- 1044|     43|{
- 1045|     43|    return detail::FormatListN<sizeof...(args)>(args...);
- 1046|     43|}
+ 1044|     41|{
+ 1045|     41|    return detail::FormatListN<sizeof...(args)>(args...);
+ 1046|     41|}
 _ZN10tinyformat6detail11FormatListNILi2EEC2IJPKcNSt3__112basic_stringIcNS6_11char_traitsIcEENS6_9allocatorIcEEEEEEEDpRKT_:
-  990|     43|            : FormatList(&m_formatterStore[0], N),
-  991|     43|            m_formatterStore { FormatArg(args)... }
-  992|     43|        { static_assert(sizeof...(args) == N, "Number of args must be N"); }
+  990|     41|            : FormatList(&m_formatterStore[0], N),
+  991|     41|            m_formatterStore { FormatArg(args)... }
+  992|     41|        { static_assert(sizeof...(args) == N, "Number of args must be N"); }
 _ZN10tinyformat6detail9FormatArgC2IPKcEERKT_:
-  534|     43|            : m_value(static_cast<const void*>(&value)),
-  535|     43|            m_formatImpl(&formatImpl<T>),
-  536|     43|            m_toIntImpl(&toIntImpl<T>)
-  537|     43|        { }
+  534|     41|            : m_value(static_cast<const void*>(&value)),
+  535|     41|            m_formatImpl(&formatImpl<T>),
+  536|     41|            m_toIntImpl(&toIntImpl<T>)
+  537|     41|        { }
 _ZN10tinyformat6detail9FormatArg10formatImplIPKcEEvRNSt3__113basic_ostreamIcNS5_11char_traitsIcEEEES4_S4_iPKv:
-  558|     43|        {
-  559|     43|            formatValue(out, fmtBegin, fmtEnd, ntrunc, *static_cast<const T*>(value));
-  560|     43|        }
+  558|     41|        {
+  559|     41|            formatValue(out, fmtBegin, fmtEnd, ntrunc, *static_cast<const T*>(value));
+  560|     41|        }
 _ZN10tinyformat11formatValueIPKcEEvRNSt3__113basic_ostreamIcNS3_11char_traitsIcEEEES2_S2_iRKT_:
-  351|     43|{
-  352|     43|#ifndef TINYFORMAT_ALLOW_WCHAR_STRINGS
+  351|     41|{
+  352|     41|#ifndef TINYFORMAT_ALLOW_WCHAR_STRINGS
   353|       |    // Since we don't support printing of wchar_t using "%ls", make it fail at
   354|       |    // compile time in preference to printing as a void* at runtime.
-  355|     43|    typedef typename detail::is_wchar<T>::tinyformat_wchar_is_not_supported DummyType;
-  356|     43|    (void) DummyType(); // avoid unused type warning with gcc-4.8
-  357|     43|#endif
+  355|     41|    typedef typename detail::is_wchar<T>::tinyformat_wchar_is_not_supported DummyType;
+  356|     41|    (void) DummyType(); // avoid unused type warning with gcc-4.8
+  357|     41|#endif
   358|       |    // The mess here is to support the %c and %p conversions: if these
   359|       |    // conversions are active we try to convert the type to a char or const
   360|       |    // void* respectively and format that instead of the value itself.  For the
   361|       |    // %p conversion it's important to avoid dereferencing the pointer, which
   362|       |    // could otherwise lead to a crash when printing a dangling (const char*).
-  363|     43|    const bool canConvertToChar = detail::is_convertible<T,char>::value;
-  364|     43|    const bool canConvertToVoidPtr = detail::is_convertible<T, const void*>::value;
-  365|     43|    if (canConvertToChar && *(fmtEnd-1) == 'c')
+  363|     41|    const bool canConvertToChar = detail::is_convertible<T,char>::value;
+  364|     41|    const bool canConvertToVoidPtr = detail::is_convertible<T, const void*>::value;
+  365|     41|    if (canConvertToChar && *(fmtEnd-1) == 'c')
   ------------------
-  |  Branch (365:9): [Folded, False: 43]
+  |  Branch (365:9): [Folded, False: 41]
   |  Branch (365:29): [True: 0, False: 0]
   ------------------
   366|      0|        detail::formatValueAsType<T, char>::invoke(out, value);
-  367|     43|    else if (canConvertToVoidPtr && *(fmtEnd-1) == 'p')
+  367|     41|    else if (canConvertToVoidPtr && *(fmtEnd-1) == 'p')
   ------------------
-  |  Branch (367:14): [True: 43, Folded]
-  |  Branch (367:37): [True: 0, False: 43]
+  |  Branch (367:14): [True: 41, Folded]
+  |  Branch (367:37): [True: 0, False: 41]
   ------------------
   368|      0|        detail::formatValueAsType<T, const void*>::invoke(out, value);
   369|       |#ifdef TINYFORMAT_OLD_LIBSTDCPLUSPLUS_WORKAROUND
   370|       |    else if (detail::formatZeroIntegerWorkaround<T>::invoke(out, value)) /**/;
   371|       |#endif
-  372|     43|    else if (ntrunc >= 0) {
+  372|     41|    else if (ntrunc >= 0) {
   ------------------
-  |  Branch (372:14): [True: 0, False: 43]
+  |  Branch (372:14): [True: 0, False: 41]
   ------------------
   373|       |        // Take care not to overread C strings in truncating conversions like
   374|       |        // "%.4s" where at most 4 characters may be read.
   375|      0|        detail::formatTruncated(out, value, ntrunc);
   376|      0|    }
-  377|     43|    else
-  378|     43|        out << value;
-  379|     43|}
+  377|     41|    else
+  378|     41|        out << value;
+  379|     41|}
 _ZNK10tinyformat6detail9FormatArg6formatERNSt3__113basic_ostreamIcNS2_11char_traitsIcEEEEPKcS9_i:
-  541|     86|        {
-  542|     86|            TINYFORMAT_ASSERT(m_value);
+  541|     82|        {
+  542|     82|            TINYFORMAT_ASSERT(m_value);
   ------------------
-  |  |  153|     86|#   define TINYFORMAT_ASSERT(cond) assert(cond)
+  |  |  153|     82|#   define TINYFORMAT_ASSERT(cond) assert(cond)
   ------------------
-  |  Branch (542:13): [True: 86, False: 0]
+  |  Branch (542:13): [True: 82, False: 0]
   ------------------
-  543|     86|            TINYFORMAT_ASSERT(m_formatImpl);
+  543|     82|            TINYFORMAT_ASSERT(m_formatImpl);
   ------------------
-  |  |  153|     86|#   define TINYFORMAT_ASSERT(cond) assert(cond)
+  |  |  153|     82|#   define TINYFORMAT_ASSERT(cond) assert(cond)
   ------------------
-  |  Branch (543:13): [True: 86, False: 0]
+  |  Branch (543:13): [True: 82, False: 0]
   ------------------
-  544|     86|            m_formatImpl(out, fmtBegin, fmtEnd, ntrunc, m_value);
-  545|     86|        }
+  544|     82|            m_formatImpl(out, fmtBegin, fmtEnd, ntrunc, m_value);
+  545|     82|        }
 _ZN10tinyformat10FormatListC2EPNS_6detail9FormatArgEi:
-  966|     43|            : m_args(args), m_N(N) { }
+  966|     41|            : m_args(args), m_N(N) { }
 _ZN10tinyformat6detail21parseWidthOrPrecisionERiRPKcbPKNS0_9FormatArgES1_i:
-  593|     86|{
-  594|     86|    if (*c >= '0' && *c <= '9') {
+  593|     82|{
+  594|     82|    if (*c >= '0' && *c <= '9') {
   ------------------
-  |  Branch (594:9): [True: 86, False: 0]
-  |  Branch (594:22): [True: 0, False: 86]
+  |  Branch (594:9): [True: 82, False: 0]
+  |  Branch (594:22): [True: 0, False: 82]
   ------------------
   595|      0|        n = parseIntAndAdvance(c);
   596|      0|    }
-  597|     86|    else if (*c == '*') {
+  597|     82|    else if (*c == '*') {
   ------------------
-  |  Branch (597:14): [True: 0, False: 86]
+  |  Branch (597:14): [True: 0, False: 82]
   ------------------
   598|      0|        ++c;
   599|      0|        n = 0;
@@ -1174,64 +1174,64 @@ _ZN10tinyformat6detail21parseWidthOrPrecisionERiRPKcbPKNS0_9FormatArgES1_i:
   ------------------
   615|      0|        }
   616|      0|    }
-  617|     86|    else {
-  618|     86|        return false;
-  619|     86|    }
+  617|     82|    else {
+  618|     82|        return false;
+  619|     82|    }
   620|      0|    return true;
-  621|     86|}
+  621|     82|}
 _ZN10tinyformat6detail24printFormatStringLiteralERNSt3__113basic_ostreamIcNS1_11char_traitsIcEEEEPKc:
-  629|    129|{
-  630|    129|    const char* c = fmt;
-  631|  1.97k|    for (;; ++c) {
-  632|  1.97k|        if (*c == '\0') {
+  629|    123|{
+  630|    123|    const char* c = fmt;
+  631|  1.88k|    for (;; ++c) {
+  632|  1.88k|        if (*c == '\0') {
   ------------------
-  |  Branch (632:13): [True: 43, False: 1.93k]
+  |  Branch (632:13): [True: 41, False: 1.84k]
   ------------------
-  633|     43|            out.write(fmt, c - fmt);
-  634|     43|            return c;
-  635|     43|        }
-  636|  1.93k|        else if (*c == '%') {
+  633|     41|            out.write(fmt, c - fmt);
+  634|     41|            return c;
+  635|     41|        }
+  636|  1.84k|        else if (*c == '%') {
   ------------------
-  |  Branch (636:18): [True: 86, False: 1.84k]
+  |  Branch (636:18): [True: 82, False: 1.76k]
   ------------------
-  637|     86|            out.write(fmt, c - fmt);
-  638|     86|            if (*(c+1) != '%')
+  637|     82|            out.write(fmt, c - fmt);
+  638|     82|            if (*(c+1) != '%')
   ------------------
-  |  Branch (638:17): [True: 86, False: 0]
+  |  Branch (638:17): [True: 82, False: 0]
   ------------------
-  639|     86|                return c;
+  639|     82|                return c;
   640|       |            // for "%%", tack trailing % onto next literal section.
   641|      0|            fmt = ++c;
   642|      0|        }
-  643|  1.97k|    }
-  644|    129|}
+  643|  1.88k|    }
+  644|    123|}
 _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11char_traitsIcEEEERbS7_RiPKcPKNS0_9FormatArgES8_i:
-  685|     86|{
-  686|     86|    TINYFORMAT_ASSERT(*fmtStart == '%');
+  685|     82|{
+  686|     82|    TINYFORMAT_ASSERT(*fmtStart == '%');
   ------------------
-  |  |  153|     86|#   define TINYFORMAT_ASSERT(cond) assert(cond)
+  |  |  153|     82|#   define TINYFORMAT_ASSERT(cond) assert(cond)
   ------------------
-  |  Branch (686:5): [True: 86, False: 0]
+  |  Branch (686:5): [True: 82, False: 0]
   ------------------
   687|       |    // Reset stream state to defaults.
-  688|     86|    out.width(0);
-  689|     86|    out.precision(6);
-  690|     86|    out.fill(' ');
+  688|     82|    out.width(0);
+  689|     82|    out.precision(6);
+  690|     82|    out.fill(' ');
   691|       |    // Reset most flags; ignore irrelevant unitbuf & skipws.
-  692|     86|    out.unsetf(std::ios::adjustfield | std::ios::basefield |
-  693|     86|               std::ios::floatfield | std::ios::showbase | std::ios::boolalpha |
-  694|     86|               std::ios::showpoint | std::ios::showpos | std::ios::uppercase);
-  695|     86|    bool precisionSet = false;
-  696|     86|    bool widthSet = false;
-  697|     86|    int widthExtra = 0;
-  698|     86|    const char* c = fmtStart + 1;
+  692|     82|    out.unsetf(std::ios::adjustfield | std::ios::basefield |
+  693|     82|               std::ios::floatfield | std::ios::showbase | std::ios::boolalpha |
+  694|     82|               std::ios::showpoint | std::ios::showpos | std::ios::uppercase);
+  695|     82|    bool precisionSet = false;
+  696|     82|    bool widthSet = false;
+  697|     82|    int widthExtra = 0;
+  698|     82|    const char* c = fmtStart + 1;
   699|       |
   700|       |    // 1) Parse an argument index (if followed by '$') or a width possibly
   701|       |    // preceded with '0' flag.
-  702|     86|    if (*c >= '0' && *c <= '9') {
+  702|     82|    if (*c >= '0' && *c <= '9') {
   ------------------
-  |  Branch (702:9): [True: 86, False: 0]
-  |  Branch (702:22): [True: 0, False: 86]
+  |  Branch (702:9): [True: 82, False: 0]
+  |  Branch (702:22): [True: 0, False: 82]
   ------------------
   703|      0|        const char tmpc = *c;
   704|      0|        int value = parseIntAndAdvance(c);
@@ -1283,9 +1283,9 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   728|      0|            }
   729|      0|        }
   730|      0|    }
-  731|     86|    else if (positionalMode) {
+  731|     82|    else if (positionalMode) {
   ------------------
-  |  Branch (731:14): [True: 0, False: 86]
+  |  Branch (731:14): [True: 0, False: 82]
   ------------------
   732|      0|        TINYFORMAT_ERROR("tinyformat: Non-positional argument used after a positional one");
   ------------------
@@ -1293,22 +1293,22 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   ------------------
   733|      0|    }
   734|       |    // 2) Parse flags and width if we did not do it in previous step.
-  735|     86|    if (!widthSet) {
+  735|     82|    if (!widthSet) {
   ------------------
-  |  Branch (735:9): [True: 86, False: 0]
+  |  Branch (735:9): [True: 82, False: 0]
   ------------------
   736|       |        // Parse flags
-  737|     86|        for (;; ++c) {
-  738|     86|            switch (*c) {
+  737|     82|        for (;; ++c) {
+  738|     82|            switch (*c) {
   739|      0|                case '#':
   ------------------
-  |  Branch (739:17): [True: 0, False: 86]
+  |  Branch (739:17): [True: 0, False: 82]
   ------------------
   740|      0|                    out.setf(std::ios::showpoint | std::ios::showbase);
   741|      0|                    continue;
   742|      0|                case '0':
   ------------------
-  |  Branch (742:17): [True: 0, False: 86]
+  |  Branch (742:17): [True: 0, False: 82]
   ------------------
   743|       |                    // overridden by left alignment ('-' flag)
   744|      0|                    if (!(out.flags() & std::ios::left)) {
@@ -1323,14 +1323,14 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   750|      0|                    continue;
   751|      0|                case '-':
   ------------------
-  |  Branch (751:17): [True: 0, False: 86]
+  |  Branch (751:17): [True: 0, False: 82]
   ------------------
   752|      0|                    out.fill(' ');
   753|      0|                    out.setf(std::ios::left, std::ios::adjustfield);
   754|      0|                    continue;
   755|      0|                case ' ':
   ------------------
-  |  Branch (755:17): [True: 0, False: 86]
+  |  Branch (755:17): [True: 0, False: 82]
   ------------------
   756|       |                    // overridden by show positive sign, '+' flag.
   757|      0|                    if (!(out.flags() & std::ios::showpos))
@@ -1341,27 +1341,27 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   759|      0|                    continue;
   760|      0|                case '+':
   ------------------
-  |  Branch (760:17): [True: 0, False: 86]
+  |  Branch (760:17): [True: 0, False: 82]
   ------------------
   761|      0|                    out.setf(std::ios::showpos);
   762|      0|                    spacePadPositive = false;
   763|      0|                    widthExtra = 1;
   764|      0|                    continue;
-  765|     86|                default:
+  765|     82|                default:
   ------------------
-  |  Branch (765:17): [True: 86, False: 0]
+  |  Branch (765:17): [True: 82, False: 0]
   ------------------
-  766|     86|                    break;
-  767|     86|            }
-  768|     86|            break;
-  769|     86|        }
+  766|     82|                    break;
+  767|     82|            }
+  768|     82|            break;
+  769|     82|        }
   770|       |        // Parse width
-  771|     86|        int width = 0;
-  772|     86|        widthSet = parseWidthOrPrecision(width, c, positionalMode,
-  773|     86|                                         args, argIndex, numArgs);
-  774|     86|        if (widthSet) {
+  771|     82|        int width = 0;
+  772|     82|        widthSet = parseWidthOrPrecision(width, c, positionalMode,
+  773|     82|                                         args, argIndex, numArgs);
+  774|     82|        if (widthSet) {
   ------------------
-  |  Branch (774:13): [True: 0, False: 86]
+  |  Branch (774:13): [True: 0, False: 82]
   ------------------
   775|      0|            if (width < 0) {
   ------------------
@@ -1374,11 +1374,11 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   780|      0|            }
   781|      0|            out.width(width);
   782|      0|        }
-  783|     86|    }
+  783|     82|    }
   784|       |    // 3) Parse precision
-  785|     86|    if (*c == '.') {
+  785|     82|    if (*c == '.') {
   ------------------
-  |  Branch (785:9): [True: 0, False: 86]
+  |  Branch (785:9): [True: 0, False: 82]
   ------------------
   786|      0|        ++c;
   787|      0|        int precision = 0;
@@ -1394,89 +1394,89 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   794|      0|            out.precision(precision);
   795|      0|    }
   796|       |    // 4) Ignore any C99 length modifier
-  797|     86|    while (*c == 'l' || *c == 'h' || *c == 'L' ||
+  797|     82|    while (*c == 'l' || *c == 'h' || *c == 'L' ||
   ------------------
-  |  Branch (797:12): [True: 0, False: 86]
-  |  Branch (797:25): [True: 0, False: 86]
-  |  Branch (797:38): [True: 0, False: 86]
+  |  Branch (797:12): [True: 0, False: 82]
+  |  Branch (797:25): [True: 0, False: 82]
+  |  Branch (797:38): [True: 0, False: 82]
   ------------------
-  798|     86|           *c == 'j' || *c == 'z' || *c == 't') {
+  798|     82|           *c == 'j' || *c == 'z' || *c == 't') {
   ------------------
-  |  Branch (798:12): [True: 0, False: 86]
-  |  Branch (798:25): [True: 0, False: 86]
-  |  Branch (798:38): [True: 0, False: 86]
+  |  Branch (798:12): [True: 0, False: 82]
+  |  Branch (798:25): [True: 0, False: 82]
+  |  Branch (798:38): [True: 0, False: 82]
   ------------------
   799|      0|        ++c;
   800|      0|    }
   801|       |    // 5) We're up to the conversion specifier character.
   802|       |    // Set stream flags based on conversion specifier (thanks to the
   803|       |    // boost::format class for forging the way here).
-  804|     86|    bool intConversion = false;
-  805|     86|    switch (*c) {
+  804|     82|    bool intConversion = false;
+  805|     82|    switch (*c) {
   806|      0|        case 'u': case 'd': case 'i':
   ------------------
-  |  Branch (806:9): [True: 0, False: 86]
-  |  Branch (806:19): [True: 0, False: 86]
-  |  Branch (806:29): [True: 0, False: 86]
+  |  Branch (806:9): [True: 0, False: 82]
+  |  Branch (806:19): [True: 0, False: 82]
+  |  Branch (806:29): [True: 0, False: 82]
   ------------------
   807|      0|            out.setf(std::ios::dec, std::ios::basefield);
   808|      0|            intConversion = true;
   809|      0|            break;
   810|      0|        case 'o':
   ------------------
-  |  Branch (810:9): [True: 0, False: 86]
+  |  Branch (810:9): [True: 0, False: 82]
   ------------------
   811|      0|            out.setf(std::ios::oct, std::ios::basefield);
   812|      0|            intConversion = true;
   813|      0|            break;
   814|      0|        case 'X':
   ------------------
-  |  Branch (814:9): [True: 0, False: 86]
+  |  Branch (814:9): [True: 0, False: 82]
   ------------------
   815|      0|            out.setf(std::ios::uppercase);
   816|      0|            [[fallthrough]];
   817|      0|        case 'x': case 'p':
   ------------------
-  |  Branch (817:9): [True: 0, False: 86]
-  |  Branch (817:19): [True: 0, False: 86]
+  |  Branch (817:9): [True: 0, False: 82]
+  |  Branch (817:19): [True: 0, False: 82]
   ------------------
   818|      0|            out.setf(std::ios::hex, std::ios::basefield);
   819|      0|            intConversion = true;
   820|      0|            break;
   821|      0|        case 'E':
   ------------------
-  |  Branch (821:9): [True: 0, False: 86]
+  |  Branch (821:9): [True: 0, False: 82]
   ------------------
   822|      0|            out.setf(std::ios::uppercase);
   823|      0|            [[fallthrough]];
   824|      0|        case 'e':
   ------------------
-  |  Branch (824:9): [True: 0, False: 86]
+  |  Branch (824:9): [True: 0, False: 82]
   ------------------
   825|      0|            out.setf(std::ios::scientific, std::ios::floatfield);
   826|      0|            out.setf(std::ios::dec, std::ios::basefield);
   827|      0|            break;
   828|      0|        case 'F':
   ------------------
-  |  Branch (828:9): [True: 0, False: 86]
+  |  Branch (828:9): [True: 0, False: 82]
   ------------------
   829|      0|            out.setf(std::ios::uppercase);
   830|      0|            [[fallthrough]];
   831|      0|        case 'f':
   ------------------
-  |  Branch (831:9): [True: 0, False: 86]
+  |  Branch (831:9): [True: 0, False: 82]
   ------------------
   832|      0|            out.setf(std::ios::fixed, std::ios::floatfield);
   833|      0|            break;
   834|      0|        case 'A':
   ------------------
-  |  Branch (834:9): [True: 0, False: 86]
+  |  Branch (834:9): [True: 0, False: 82]
   ------------------
   835|      0|            out.setf(std::ios::uppercase);
   836|      0|            [[fallthrough]];
   837|      0|        case 'a':
   ------------------
-  |  Branch (837:9): [True: 0, False: 86]
+  |  Branch (837:9): [True: 0, False: 82]
   ------------------
   838|       |#           ifdef _MSC_VER
   839|       |            // Workaround https://developercommunity.visualstudio.com/content/problem/520472/hexfloat-stream-output-does-not-ignore-precision-a.html
@@ -1488,13 +1488,13 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   845|      0|            break;
   846|      0|        case 'G':
   ------------------
-  |  Branch (846:9): [True: 0, False: 86]
+  |  Branch (846:9): [True: 0, False: 82]
   ------------------
   847|      0|            out.setf(std::ios::uppercase);
   848|      0|            [[fallthrough]];
   849|      0|        case 'g':
   ------------------
-  |  Branch (849:9): [True: 0, False: 86]
+  |  Branch (849:9): [True: 0, False: 82]
   ------------------
   850|      0|            out.setf(std::ios::dec, std::ios::basefield);
   851|       |            // As in boost::format, let stream decide float format.
@@ -1502,25 +1502,25 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   853|      0|            break;
   854|      0|        case 'c':
   ------------------
-  |  Branch (854:9): [True: 0, False: 86]
+  |  Branch (854:9): [True: 0, False: 82]
   ------------------
   855|       |            // Handled as special case inside formatValue()
   856|      0|            break;
-  857|     86|        case 's':
+  857|     82|        case 's':
   ------------------
-  |  Branch (857:9): [True: 86, False: 0]
+  |  Branch (857:9): [True: 82, False: 0]
   ------------------
-  858|     86|            if (precisionSet)
+  858|     82|            if (precisionSet)
   ------------------
-  |  Branch (858:17): [True: 0, False: 86]
+  |  Branch (858:17): [True: 0, False: 82]
   ------------------
   859|      0|                ntrunc = static_cast<int>(out.precision());
   860|       |            // Make %s print Booleans as "true" and "false"
-  861|     86|            out.setf(std::ios::boolalpha);
-  862|     86|            break;
+  861|     82|            out.setf(std::ios::boolalpha);
+  862|     82|            break;
   863|      0|        case 'n':
   ------------------
-  |  Branch (863:9): [True: 0, False: 86]
+  |  Branch (863:9): [True: 0, False: 82]
   ------------------
   864|       |            // Not supported - will cause problems!
   865|      0|            TINYFORMAT_ERROR("tinyformat: %n conversion spec not supported");
@@ -1530,7 +1530,7 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   866|      0|            break;
   867|      0|        case '\0':
   ------------------
-  |  Branch (867:9): [True: 0, False: 86]
+  |  Branch (867:9): [True: 0, False: 82]
   ------------------
   868|      0|            TINYFORMAT_ERROR("tinyformat: Conversion spec incorrectly "
   ------------------
@@ -1540,13 +1540,13 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   870|      0|            return c;
   871|      0|        default:
   ------------------
-  |  Branch (871:9): [True: 0, False: 86]
+  |  Branch (871:9): [True: 0, False: 82]
   ------------------
   872|      0|            break;
-  873|     86|    }
-  874|     86|    if (intConversion && precisionSet && !widthSet) {
+  873|     82|    }
+  874|     82|    if (intConversion && precisionSet && !widthSet) {
   ------------------
-  |  Branch (874:9): [True: 0, False: 86]
+  |  Branch (874:9): [True: 0, False: 82]
   |  Branch (874:26): [True: 0, False: 0]
   |  Branch (874:42): [True: 0, False: 0]
   ------------------
@@ -1558,50 +1558,50 @@ _ZN10tinyformat6detail21streamStateFromFormatERNSt3__113basic_ostreamIcNS1_11cha
   880|      0|        out.setf(std::ios::internal, std::ios::adjustfield);
   881|      0|        out.fill('0');
   882|      0|    }
-  883|     86|    return c+1;
-  884|     86|}
+  883|     82|    return c+1;
+  884|     82|}
 _ZN10tinyformat6detail10formatImplERNSt3__113basic_ostreamIcNS1_11char_traitsIcEEEEPKcPKNS0_9FormatArgEi:
-  891|     43|{
+  891|     41|{
   892|       |    // Saved stream state
-  893|     43|    std::streamsize origWidth = out.width();
-  894|     43|    std::streamsize origPrecision = out.precision();
-  895|     43|    std::ios::fmtflags origFlags = out.flags();
-  896|     43|    char origFill = out.fill();
+  893|     41|    std::streamsize origWidth = out.width();
+  894|     41|    std::streamsize origPrecision = out.precision();
+  895|     41|    std::ios::fmtflags origFlags = out.flags();
+  896|     41|    char origFill = out.fill();
   897|       |
   898|       |    // "Positional mode" means all format specs should be of the form "%n$..."
   899|       |    // with `n` an integer. We detect this in `streamStateFromFormat`.
-  900|     43|    bool positionalMode = false;
-  901|     43|    int argIndex = 0;
-  902|    129|    while (true) {
+  900|     41|    bool positionalMode = false;
+  901|     41|    int argIndex = 0;
+  902|    123|    while (true) {
   ------------------
-  |  Branch (902:12): [True: 129, Folded]
+  |  Branch (902:12): [True: 123, Folded]
   ------------------
-  903|    129|        fmt = printFormatStringLiteral(out, fmt);
-  904|    129|        if (*fmt == '\0') {
+  903|    123|        fmt = printFormatStringLiteral(out, fmt);
+  904|    123|        if (*fmt == '\0') {
   ------------------
-  |  Branch (904:13): [True: 43, False: 86]
+  |  Branch (904:13): [True: 41, False: 82]
   ------------------
-  905|     43|            if (!positionalMode && argIndex < numArgs) {
+  905|     41|            if (!positionalMode && argIndex < numArgs) {
   ------------------
-  |  Branch (905:17): [True: 43, False: 0]
-  |  Branch (905:36): [True: 0, False: 43]
+  |  Branch (905:17): [True: 41, False: 0]
+  |  Branch (905:36): [True: 0, False: 41]
   ------------------
   906|      0|                TINYFORMAT_ERROR("tinyformat: Not enough conversion specifiers in format string");
   ------------------
   |  |  135|      0|#define TINYFORMAT_ERROR(reasonString) throw tinyformat::format_error(reasonString)
   ------------------
   907|      0|            }
-  908|     43|            break;
-  909|     43|        }
-  910|     86|        bool spacePadPositive = false;
-  911|     86|        int ntrunc = -1;
-  912|     86|        const char* fmtEnd = streamStateFromFormat(out, positionalMode, spacePadPositive, ntrunc, fmt,
-  913|     86|                                                   args, argIndex, numArgs);
+  908|     41|            break;
+  909|     41|        }
+  910|     82|        bool spacePadPositive = false;
+  911|     82|        int ntrunc = -1;
+  912|     82|        const char* fmtEnd = streamStateFromFormat(out, positionalMode, spacePadPositive, ntrunc, fmt,
+  913|     82|                                                   args, argIndex, numArgs);
   914|       |        // NB: argIndex may be incremented by reading variable width/precision
   915|       |        // in `streamStateFromFormat`, so do the bounds check here.
-  916|     86|        if (argIndex >= numArgs) {
+  916|     82|        if (argIndex >= numArgs) {
   ------------------
-  |  Branch (916:13): [True: 0, False: 86]
+  |  Branch (916:13): [True: 0, False: 82]
   ------------------
   917|      0|            TINYFORMAT_ERROR("tinyformat: Too many conversion specifiers in format string");
   ------------------
@@ -1609,14 +1609,14 @@ _ZN10tinyformat6detail10formatImplERNSt3__113basic_ostreamIcNS1_11char_traitsIcE
   ------------------
   918|      0|            return;
   919|      0|        }
-  920|     86|        const FormatArg& arg = args[argIndex];
+  920|     82|        const FormatArg& arg = args[argIndex];
   921|       |        // Format the arg into the stream.
-  922|     86|        if (!spacePadPositive) {
+  922|     82|        if (!spacePadPositive) {
   ------------------
-  |  Branch (922:13): [True: 86, False: 0]
+  |  Branch (922:13): [True: 82, False: 0]
   ------------------
-  923|     86|            arg.format(out, fmt, fmtEnd, ntrunc);
-  924|     86|        }
+  923|     82|            arg.format(out, fmt, fmtEnd, ntrunc);
+  924|     82|        }
   925|      0|        else {
   926|       |            // The following is a special case with no direct correspondence
   927|       |            // between stream formatting and the printf() behaviour.  Simulate
@@ -1639,73 +1639,73 @@ _ZN10tinyformat6detail10formatImplERNSt3__113basic_ostreamIcNS1_11char_traitsIcE
   938|      0|            }
   939|      0|            out << result;
   940|      0|        }
-  941|     86|        if (!positionalMode)
+  941|     82|        if (!positionalMode)
   ------------------
-  |  Branch (941:13): [True: 86, False: 0]
+  |  Branch (941:13): [True: 82, False: 0]
   ------------------
-  942|     86|            ++argIndex;
-  943|     86|        fmt = fmtEnd;
-  944|     86|    }
+  942|     82|            ++argIndex;
+  943|     82|        fmt = fmtEnd;
+  944|     82|    }
   945|       |
   946|       |    // Restore stream state
-  947|     43|    out.width(origWidth);
-  948|     43|    out.precision(origPrecision);
-  949|     43|    out.flags(origFlags);
-  950|     43|    out.fill(origFill);
-  951|     43|}
+  947|     41|    out.width(origWidth);
+  948|     41|    out.precision(origPrecision);
+  949|     41|    out.flags(origFlags);
+  950|     41|    out.fill(origFill);
+  951|     41|}
 _ZN10tinyformat7vformatERNSt3__113basic_ostreamIcNS0_11char_traitsIcEEEEPKcRKNS_10FormatListE:
- 1070|     43|{
- 1071|     43|    detail::formatImpl(out, fmt, list.m_args, list.m_N);
- 1072|     43|}
+ 1070|     41|{
+ 1071|     41|    detail::formatImpl(out, fmt, list.m_args, list.m_N);
+ 1072|     41|}
 _ZN10tinyformat6detail9FormatArgC2INSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEERKT_:
-  534|     43|            : m_value(static_cast<const void*>(&value)),
-  535|     43|            m_formatImpl(&formatImpl<T>),
-  536|     43|            m_toIntImpl(&toIntImpl<T>)
-  537|     43|        { }
+  534|     41|            : m_value(static_cast<const void*>(&value)),
+  535|     41|            m_formatImpl(&formatImpl<T>),
+  536|     41|            m_toIntImpl(&toIntImpl<T>)
+  537|     41|        { }
 _ZN10tinyformat17FormatStringCheckILj2EEcvPKcEv:
-  197|     43|    operator const char*() { return fmt; }
+  197|     41|    operator const char*() { return fmt; }
 _ZN10tinyformat17FormatStringCheckILj2EEC2EN4util21ConstevalFormatStringILj2EEE:
-  196|     43|    FormatStringCheck(util::ConstevalFormatString<num_params> str) : fmt{str.fmt} {}
+  196|     41|    FormatStringCheck(util::ConstevalFormatString<num_params> str) : fmt{str.fmt} {}
 
 _ZNK9base_blobILj256EE6GetHexEv:
-   12|     43|{
-   13|     43|    uint8_t m_data_rev[WIDTH];
-   14|  1.41k|    for (int i = 0; i < WIDTH; ++i) {
+   12|     41|{
+   13|     41|    uint8_t m_data_rev[WIDTH];
+   14|  1.35k|    for (int i = 0; i < WIDTH; ++i) {
   ------------------
-  |  Branch (14:21): [True: 1.37k, False: 43]
+  |  Branch (14:21): [True: 1.31k, False: 41]
   ------------------
-   15|  1.37k|        m_data_rev[i] = m_data[WIDTH - 1 - i];
-   16|  1.37k|    }
-   17|     43|    return HexStr(m_data_rev);
-   18|     43|}
+   15|  1.31k|        m_data_rev[i] = m_data[WIDTH - 1 - i];
+   16|  1.31k|    }
+   17|     41|    return HexStr(m_data_rev);
+   18|     41|}
 
 _ZN9base_blobILj256EE4sizeEv:
-  107|     43|    static constexpr unsigned int size() { return WIDTH; }
+  107|     41|    static constexpr unsigned int size() { return WIDTH; }
 _ZNK9base_blobILj256EE4dataEv:
-   98|     43|    constexpr const unsigned char* data() const { return m_data.data(); }
+   98|     41|    constexpr const unsigned char* data() const { return m_data.data(); }
 
 _Z22inline_assertion_checkILb1ERPKNSt3__18functionIFvNS0_4spanIKhLm18446744073709551615EEEEEEEOT0_SB_PKciSD_SD_:
-   77|     43|{
-   78|     43|    if (IS_ASSERT || std::is_constant_evaluated() || G_FUZZING_BUILD || G_ABORT_ON_FAILED_ASSUME) {
+   77|     41|{
+   78|     41|    if (IS_ASSERT || std::is_constant_evaluated() || G_FUZZING_BUILD || G_ABORT_ON_FAILED_ASSUME) {
   ------------------
-  |  Branch (78:9): [True: 43, Folded]
+  |  Branch (78:9): [True: 41, Folded]
   |  Branch (78:22): [Folded, False: 0]
   |  Branch (78:54): [True: 0, Folded]
   |  Branch (78:73): [Folded, False: 0]
   ------------------
-   79|     43|        if (!val) {
+   79|     41|        if (!val) {
   ------------------
-  |  Branch (79:13): [True: 0, False: 43]
+  |  Branch (79:13): [True: 0, False: 41]
   ------------------
    80|      0|            assertion_fail(file, line, func, assertion);
    81|      0|        }
-   82|     43|    }
-   83|     43|    return std::forward<T>(val);
-   84|     43|}
+   82|     41|    }
+   83|     41|    return std::forward<T>(val);
+   84|     41|}
 _Z21EnableFuzzDeterminismv:
-   35|     43|{
-   36|     43|    if constexpr (G_FUZZING_BUILD) {
-   37|     43|        return true;
+   35|     41|{
+   36|     41|    if constexpr (G_FUZZING_BUILD) {
+   37|     41|        return true;
    38|       |    } else if constexpr (!G_ABORT_ON_FAILED_ASSUME) {
    39|       |        // Running fuzz tests is always disabled if Assume() doesn't abort
    40|       |        // (ie, non-fuzz non-debug builds), as otherwise tests which
@@ -1715,77 +1715,77 @@ _Z21EnableFuzzDeterminismv:
    44|       |    } else {
    45|       |        return g_enable_dynamic_fuzz_determinism;
    46|       |    }
-   47|     43|}
+   47|     41|}
 _Z22inline_assertion_checkILb1ERNSt3__16atomicIbEEEOT0_S5_PKciS7_S7_:
-   77|     43|{
-   78|     43|    if (IS_ASSERT || std::is_constant_evaluated() || G_FUZZING_BUILD || G_ABORT_ON_FAILED_ASSUME) {
+   77|     41|{
+   78|     41|    if (IS_ASSERT || std::is_constant_evaluated() || G_FUZZING_BUILD || G_ABORT_ON_FAILED_ASSUME) {
   ------------------
-  |  Branch (78:9): [True: 43, Folded]
+  |  Branch (78:9): [True: 41, Folded]
   |  Branch (78:22): [Folded, False: 0]
   |  Branch (78:54): [True: 0, Folded]
   |  Branch (78:73): [Folded, False: 0]
   ------------------
-   79|     43|        if (!val) {
+   79|     41|        if (!val) {
   ------------------
-  |  Branch (79:13): [True: 0, False: 43]
+  |  Branch (79:13): [True: 0, False: 41]
   ------------------
    80|      0|            assertion_fail(file, line, func, assertion);
    81|      0|        }
-   82|     43|    }
-   83|     43|    return std::forward<T>(val);
-   84|     43|}
+   82|     41|    }
+   83|     41|    return std::forward<T>(val);
+   84|     41|}
 _Z22inline_assertion_checkILb1EbEOT0_S1_PKciS3_S3_:
-   77|     88|{
-   78|     88|    if (IS_ASSERT || std::is_constant_evaluated() || G_FUZZING_BUILD || G_ABORT_ON_FAILED_ASSUME) {
+   77|     84|{
+   78|     84|    if (IS_ASSERT || std::is_constant_evaluated() || G_FUZZING_BUILD || G_ABORT_ON_FAILED_ASSUME) {
   ------------------
-  |  Branch (78:9): [True: 88, Folded]
+  |  Branch (78:9): [True: 84, Folded]
   |  Branch (78:22): [Folded, False: 0]
   |  Branch (78:54): [True: 0, Folded]
   |  Branch (78:73): [Folded, False: 0]
   ------------------
-   79|     88|        if (!val) {
+   79|     84|        if (!val) {
   ------------------
-  |  Branch (79:13): [True: 0, False: 88]
+  |  Branch (79:13): [True: 0, False: 84]
   ------------------
    80|      0|            assertion_fail(file, line, func, assertion);
    81|      0|        }
-   82|     88|    }
-   83|     88|    return std::forward<T>(val);
-   84|     88|}
+   82|     84|    }
+   83|     84|    return std::forward<T>(val);
+   84|     84|}
 
 _Z10CheckedAddImENSt3__18optionalIT_EES2_S2_:
-   27|    328|{
-   28|    328|    if (AdditionOverflow(i, j)) {
+   27|    324|{
+   28|    324|    if (AdditionOverflow(i, j)) {
   ------------------
-  |  Branch (28:9): [True: 0, False: 328]
+  |  Branch (28:9): [True: 0, False: 324]
   ------------------
    29|      0|        return std::nullopt;
    30|      0|    }
-   31|    328|    return i + j;
-   32|    328|}
+   31|    324|    return i + j;
+   32|    324|}
 _Z16AdditionOverflowImEbT_S0_:
-   16|    328|{
-   17|    328|    static_assert(std::is_integral_v<T>, "Integral required.");
+   16|    324|{
+   17|    324|    static_assert(std::is_integral_v<T>, "Integral required.");
    18|       |    if constexpr (std::numeric_limits<T>::is_signed) {
    19|       |        return (i > 0 && j > std::numeric_limits<T>::max() - i) ||
    20|       |               (i < 0 && j < std::numeric_limits<T>::min() - i);
    21|       |    }
-   22|    328|    return std::numeric_limits<T>::max() - i < j;
-   23|    328|}
+   22|    324|    return std::numeric_limits<T>::max() - i < j;
+   23|    324|}
 
 _ZN4util21ThreadGetInternalNameEv:
-   45|     43|std::string util::ThreadGetInternalName() { return g_thread_name; }
+   45|     41|std::string util::ThreadGetInternalName() { return g_thread_name; }
 
 _Z11SetMockTimeNSt3__16chrono8durationIxNS_5ratioILl1ELl1EEEEE:
-   43|     45|{
-   44|     45|    Assert(mock_time_in >= 0s);
+   43|     43|{
+   44|     43|    Assert(mock_time_in >= 0s);
   ------------------
-  |  |  106|     45|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
+  |  |  106|     43|#define Assert(val) inline_assertion_check<true>(val, __FILE__, __LINE__, __func__, #val)
   ------------------
-   45|     45|    g_mock_time.store(mock_time_in, std::memory_order_relaxed);
-   46|     45|}
+   45|     43|    g_mock_time.store(mock_time_in, std::memory_order_relaxed);
+   46|     43|}
 _Z11GetMockTimev:
-   49|     43|{
-   50|     43|    return g_mock_time.load(std::memory_order_relaxed);
-   51|     43|}
+   49|     41|{
+   50|     41|    return g_mock_time.load(std::memory_order_relaxed);
+   51|     41|}
 
