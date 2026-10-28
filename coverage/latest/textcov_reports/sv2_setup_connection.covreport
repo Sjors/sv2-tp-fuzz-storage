@@ -21,15 +21,15 @@ _ZN11ArgsManager9ClearArgsEv:
   450|      2|}
 
 _Z16htole16_internalt:
-   19|    204|{
+   19|    207|{
    20|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_16(host_16bits);
-   21|    204|        else return host_16bits;
-   22|    204|}
+   21|    207|        else return host_16bits;
+   22|    207|}
 _Z16le16toh_internalt:
-   29|    204|{
+   29|    207|{
    30|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_16(little_endian_16bits);
-   31|    204|        else return little_endian_16bits;
-   32|    204|}
+   31|    207|        else return little_endian_16bits;
+   32|    207|}
 _Z16htole32_internalj:
    39|     62|{
    40|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_32(host_32bits);
@@ -367,27 +367,27 @@ _Z9SerializeI10DataStreamcEvRT_RKNSt3__112basic_stringIT0_NS3_11char_traitsIS5_E
   781|    310|    WriteCompactSize(os, str.size());
   782|    310|    if (!str.empty())
   ------------------
-  |  Branch (782:9): [True: 93, False: 217]
+  |  Branch (782:9): [True: 94, False: 216]
   ------------------
-  783|     93|        os.write(MakeByteSpan(str));
+  783|     94|        os.write(MakeByteSpan(str));
   784|    310|}
 _Z16WriteCompactSizeI10DataStreamEvRT_m:
   300|    310|{
   301|    310|    if (nSize < 253)
   ------------------
-  |  Branch (301:9): [True: 292, False: 18]
+  |  Branch (301:9): [True: 289, False: 21]
   ------------------
-  302|    292|    {
-  303|    292|        ser_writedata8(os, nSize);
-  304|    292|    }
-  305|     18|    else if (nSize <= std::numeric_limits<uint16_t>::max())
+  302|    289|    {
+  303|    289|        ser_writedata8(os, nSize);
+  304|    289|    }
+  305|     21|    else if (nSize <= std::numeric_limits<uint16_t>::max())
   ------------------
-  |  Branch (305:14): [True: 18, False: 0]
+  |  Branch (305:14): [True: 21, False: 0]
   ------------------
-  306|     18|    {
-  307|     18|        ser_writedata8(os, 253);
-  308|     18|        ser_writedata16(os, nSize);
-  309|     18|    }
+  306|     21|    {
+  307|     21|        ser_writedata8(os, 253);
+  308|     21|        ser_writedata16(os, nSize);
+  309|     21|    }
   310|      0|    else if (nSize <= std::numeric_limits<unsigned int>::max())
   ------------------
   |  Branch (310:14): [True: 0, False: 0]
@@ -413,9 +413,9 @@ _Z11UnserializeI10DataStreamcEvRT_RNSt3__112basic_stringIT0_NS3_11char_traitsIS5
   790|    310|    str.resize(nSize);
   791|    310|    if (nSize != 0)
   ------------------
-  |  Branch (791:9): [True: 93, False: 217]
+  |  Branch (791:9): [True: 94, False: 216]
   ------------------
-  792|     93|        is.read(MakeWritableByteSpan(str));
+  792|     94|        is.read(MakeWritableByteSpan(str));
   793|    310|}
 _Z15ReadCompactSizeI10DataStreamEmRT_b:
   331|    310|{
@@ -423,23 +423,23 @@ _Z15ReadCompactSizeI10DataStreamEmRT_b:
   333|    310|    uint64_t nSizeRet = 0;
   334|    310|    if (chSize < 253)
   ------------------
-  |  Branch (334:9): [True: 292, False: 18]
+  |  Branch (334:9): [True: 289, False: 21]
   ------------------
-  335|    292|    {
-  336|    292|        nSizeRet = chSize;
-  337|    292|    }
-  338|     18|    else if (chSize == 253)
+  335|    289|    {
+  336|    289|        nSizeRet = chSize;
+  337|    289|    }
+  338|     21|    else if (chSize == 253)
   ------------------
-  |  Branch (338:14): [True: 18, False: 0]
+  |  Branch (338:14): [True: 21, False: 0]
   ------------------
-  339|     18|    {
-  340|     18|        nSizeRet = ser_readdata16(is);
-  341|     18|        if (nSizeRet < 253)
+  339|     21|    {
+  340|     21|        nSizeRet = ser_readdata16(is);
+  341|     21|        if (nSizeRet < 253)
   ------------------
-  |  Branch (341:13): [True: 0, False: 18]
+  |  Branch (341:13): [True: 0, False: 21]
   ------------------
   342|      0|            throw std::ios_base::failure("non-canonical ReadCompactSize()");
-  343|     18|    }
+  343|     21|    }
   344|      0|    else if (chSize == 254)
   ------------------
   |  Branch (344:14): [True: 0, False: 0]
@@ -473,10 +473,10 @@ _Z15ReadCompactSizeI10DataStreamEmRT_b:
 _Z9SerializeI10DataStreamEvRT_t:
   249|    186|template <typename Stream> void Serialize(Stream& s, uint16_t a)  { ser_writedata16(s, a); }
 _Z15ser_writedata16I10DataStreamEvRT_t:
-   59|    204|{
-   60|    204|    obj = htole16_internal(obj);
-   61|    204|    s.write(std::as_bytes(std::span{&obj, 1}));
-   62|    204|}
+   59|    207|{
+   60|    207|    obj = htole16_internal(obj);
+   61|    207|    s.write(std::as_bytes(std::span{&obj, 1}));
+   62|    207|}
 _Z9SerializeI10DataStreamEvRT_j:
   251|     62|template <typename Stream> void Serialize(Stream& s, uint32_t a)  { ser_writedata32(s, a); }
 _Z15ser_writedata32I10DataStreamEvRT_j:
@@ -487,11 +487,11 @@ _Z15ser_writedata32I10DataStreamEvRT_j:
 _Z11UnserializeI10DataStreamEvRT_Rt:
   265|    186|template <typename Stream> void Unserialize(Stream& s, uint16_t& a)  { a = ser_readdata16(s); }
 _Z14ser_readdata16I10DataStreamEtRT_:
-   85|    204|{
-   86|    204|    uint16_t obj;
-   87|    204|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
-   88|    204|    return le16toh_internal(obj);
-   89|    204|}
+   85|    207|{
+   86|    207|    uint16_t obj;
+   87|    207|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
+   88|    207|    return le16toh_internal(obj);
+   89|    207|}
 _Z11UnserializeI10DataStreamEvRT_Rj:
   267|     62|template <typename Stream> void Unserialize(Stream& s, uint32_t& a)  { a = ser_readdata32(s); }
 _Z14ser_readdata32I10DataStreamEjRT_:
@@ -502,13 +502,13 @@ _Z14ser_readdata32I10DataStreamEjRT_:
    95|     62|}
 
 _Z12MakeByteSpanINSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEEDaRKT_:
-   85|     93|{
-   86|     93|    return std::as_bytes(std::span{v});
-   87|     93|}
+   85|     94|{
+   86|     94|    return std::as_bytes(std::span{v});
+   87|     94|}
 _Z20MakeWritableByteSpanIRNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEEDaOT_:
-   90|     93|{
-   91|     93|    return std::as_writable_bytes(std::span{std::forward<V>(v)});
-   92|     93|}
+   90|     94|{
+   91|     94|    return std::as_writable_bytes(std::span{std::forward<V>(v)});
+   92|     94|}
 _Z12MakeByteSpanI7uint256EDaRKT_:
    85|     62|{
    86|     62|    return std::as_bytes(std::span{v});
@@ -547,10 +547,10 @@ _ZN10DataStreamlsItEERS_RKT_:
   244|    186|        return (*this);
   245|    186|    }
 _ZN10DataStream5writeENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-  235|    731|    {
+  235|    735|    {
   236|       |        // Write to the end of the buffer
-  237|    731|        vch.insert(vch.end(), src.begin(), src.end());
-  238|    731|    }
+  237|    735|        vch.insert(vch.end(), src.begin(), src.end());
+  238|    735|    }
 _ZN10DataStreamlsIjEERS_RKT_:
   242|     62|    {
   243|     62|        ::Serialize(*this, obj);
@@ -562,32 +562,32 @@ _ZN10DataStreamrsIRtEERS_OT_:
   251|    186|        return (*this);
   252|    186|    }
 _ZN10DataStream4readENSt3__14spanISt4byteLm18446744073709551615EEE:
-  202|    731|    {
-  203|    731|        if (dst.size() == 0) return;
+  202|    735|    {
+  203|    735|        if (dst.size() == 0) return;
   ------------------
-  |  Branch (203:13): [True: 0, False: 731]
+  |  Branch (203:13): [True: 0, False: 735]
   ------------------
   204|       |
   205|       |        // Read from the beginning of the buffer
-  206|    731|        auto next_read_pos{CheckedAdd(m_read_pos, dst.size())};
-  207|    731|        if (!next_read_pos.has_value() || next_read_pos.value() > vch.size()) {
+  206|    735|        auto next_read_pos{CheckedAdd(m_read_pos, dst.size())};
+  207|    735|        if (!next_read_pos.has_value() || next_read_pos.value() > vch.size()) {
   ------------------
-  |  Branch (207:13): [True: 0, False: 731]
-  |  Branch (207:43): [True: 0, False: 731]
+  |  Branch (207:13): [True: 0, False: 735]
+  |  Branch (207:43): [True: 0, False: 735]
   ------------------
   208|      0|            throw std::ios_base::failure("DataStream::read(): end of data");
   209|      0|        }
-  210|    731|        memcpy(dst.data(), &vch[m_read_pos], dst.size());
-  211|    731|        if (next_read_pos.value() == vch.size()) {
+  210|    735|        memcpy(dst.data(), &vch[m_read_pos], dst.size());
+  211|    735|        if (next_read_pos.value() == vch.size()) {
   ------------------
-  |  Branch (211:13): [True: 62, False: 669]
+  |  Branch (211:13): [True: 62, False: 673]
   ------------------
   212|     62|            m_read_pos = 0;
   213|     62|            vch.clear();
   214|     62|            return;
   215|     62|        }
-  216|    669|        m_read_pos = next_read_pos.value();
-  217|    669|    }
+  216|    673|        m_read_pos = next_read_pos.value();
+  217|    673|    }
 _ZN10DataStreamrsIRjEERS_OT_:
   249|     62|    {
   250|     62|        ::Unserialize(*this, obj);
@@ -606,26 +606,26 @@ random.cpp:_ZN16secure_allocatorIN12_GLOBAL__N_18RNGStateEE10deallocateEPS1_m:
    42|      2|    }
 
 _ZN25zero_after_free_allocatorISt4byteE10deallocateEPS0_m:
-   30|    369|    {
-   31|    369|        if (p != nullptr)
+   30|    368|    {
+   31|    368|        if (p != nullptr)
   ------------------
-  |  Branch (31:13): [True: 369, False: 0]
+  |  Branch (31:13): [True: 368, False: 0]
   ------------------
-   32|    369|            memory_cleanse(p, sizeof(T) * n);
-   33|    369|        std::allocator<T>{}.deallocate(p, n);
-   34|    369|    }
+   32|    368|            memory_cleanse(p, sizeof(T) * n);
+   33|    368|        std::allocator<T>{}.deallocate(p, n);
+   34|    368|    }
 _ZN25zero_after_free_allocatorISt4byteE8allocateEm:
-   25|    369|    {
-   26|    369|        return std::allocator<T>{}.allocate(n);
-   27|    369|    }
+   25|    368|    {
+   26|    368|        return std::allocator<T>{}.allocate(n);
+   27|    368|    }
 
 _Z14memory_cleansePvm:
-   15|    505|{
+   15|    504|{
    16|       |#if defined(WIN32)
    17|       |    /* SecureZeroMemory is guaranteed not to be optimized out. */
    18|       |    SecureZeroMemory(ptr, len);
    19|       |#else
-   20|    505|    std::memset(ptr, 0, len);
+   20|    504|    std::memset(ptr, 0, len);
    21|       |
    22|       |    /* Memory barrier that scares the compiler away from optimizing out the memset.
    23|       |     *
@@ -638,9 +638,9 @@ _Z14memory_cleansePvm:
    30|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
    31|       |     * Yang et al. (USENIX Security 2017) for more background.
    32|       |     */
-   33|    505|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-   34|    505|#endif
-   35|    505|}
+   33|    504|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+   34|    504|#endif
+   35|    504|}
 
 _ZN5ArenaD2Ev:
    48|      2|Arena::~Arena() = default;
@@ -926,14 +926,14 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeImEET_S1_S1_:
   214|    310|  uint64_t result = 0;
   215|    310|  size_t offset = 0;
   216|       |
-  217|    442|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
+  217|    443|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
   ------------------
-  |  Branch (217:10): [True: 442, False: 0]
-  |  Branch (217:43): [True: 310, False: 132]
+  |  Branch (217:10): [True: 443, False: 0]
+  |  Branch (217:43): [True: 310, False: 133]
   ------------------
   218|    310|         remaining_bytes_ != 0) {
   ------------------
-  |  Branch (218:10): [True: 132, False: 178]
+  |  Branch (218:10): [True: 133, False: 177]
   ------------------
   219|       |    // Pull bytes off the end of the seed data. Experimentally, this seems to
   220|       |    // allow the fuzzer to more easily explore the input space. This makes
@@ -941,10 +941,10 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeImEET_S1_S1_:
   222|       |    // and this data is often used to encode length of data read by
   223|       |    // |ConsumeBytes|. Separating out read lengths makes it easier modify the
   224|       |    // contents of the data that is actually read.
-  225|    132|    --remaining_bytes_;
-  226|    132|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
-  227|    132|    offset += CHAR_BIT;
-  228|    132|  }
+  225|    133|    --remaining_bytes_;
+  226|    133|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
+  227|    133|    offset += CHAR_BIT;
+  228|    133|  }
   229|       |
   230|       |  // Avoid division by 0, in case |range + 1| results in overflow.
   231|    310|  if (range != std::numeric_limits<decltype(range)>::max())
@@ -1021,14 +1021,14 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeItEET_S1_S1_:
   214|    186|  uint64_t result = 0;
   215|    186|  size_t offset = 0;
   216|       |
-  217|    496|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
+  217|    497|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
   ------------------
-  |  Branch (217:10): [True: 343, False: 153]
+  |  Branch (217:10): [True: 343, False: 154]
   |  Branch (217:43): [True: 343, False: 0]
   ------------------
   218|    343|         remaining_bytes_ != 0) {
   ------------------
-  |  Branch (218:10): [True: 310, False: 33]
+  |  Branch (218:10): [True: 311, False: 32]
   ------------------
   219|       |    // Pull bytes off the end of the seed data. Experimentally, this seems to
   220|       |    // allow the fuzzer to more easily explore the input space. This makes
@@ -1036,10 +1036,10 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeItEET_S1_S1_:
   222|       |    // and this data is often used to encode length of data read by
   223|       |    // |ConsumeBytes|. Separating out read lengths makes it easier modify the
   224|       |    // contents of the data that is actually read.
-  225|    310|    --remaining_bytes_;
-  226|    310|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
-  227|    310|    offset += CHAR_BIT;
-  228|    310|  }
+  225|    311|    --remaining_bytes_;
+  226|    311|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
+  227|    311|    offset += CHAR_BIT;
+  228|    311|  }
   229|       |
   230|       |  // Avoid division by 0, in case |range + 1| results in overflow.
   231|    186|  if (range != std::numeric_limits<decltype(range)>::max())
@@ -1351,24 +1351,24 @@ _Z22inline_assertion_checkILb1EbEOT0_S1_PKciS3_S3_:
    84|    126|}
 
 _Z10CheckedAddImENSt3__18optionalIT_EES2_S2_:
-   27|    731|{
-   28|    731|    if (AdditionOverflow(i, j)) {
+   27|    735|{
+   28|    735|    if (AdditionOverflow(i, j)) {
   ------------------
-  |  Branch (28:9): [True: 0, False: 731]
+  |  Branch (28:9): [True: 0, False: 735]
   ------------------
    29|      0|        return std::nullopt;
    30|      0|    }
-   31|    731|    return i + j;
-   32|    731|}
+   31|    735|    return i + j;
+   32|    735|}
 _Z16AdditionOverflowImEbT_S0_:
-   16|    731|{
-   17|    731|    static_assert(std::is_integral_v<T>, "Integral required.");
+   16|    735|{
+   17|    735|    static_assert(std::is_integral_v<T>, "Integral required.");
    18|       |    if constexpr (std::numeric_limits<T>::is_signed) {
    19|       |        return (i > 0 && j > std::numeric_limits<T>::max() - i) ||
    20|       |               (i < 0 && j < std::numeric_limits<T>::min() - i);
    21|       |    }
-   22|    731|    return std::numeric_limits<T>::max() - i < j;
-   23|    731|}
+   22|    735|    return std::numeric_limits<T>::max() - i < j;
+   23|    735|}
 
 _Z11SetMockTimeNSt3__16chrono8durationIxNS_5ratioILl1ELl1EEEEE:
    43|     64|{
