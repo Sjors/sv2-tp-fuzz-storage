@@ -234,17 +234,17 @@ secp256k1.c:secp256k1_scalar_clear:
    32|      2|}
 
 secp256k1_context_preallocated_destroy:
-  176|      2|void secp256k1_context_preallocated_destroy(secp256k1_context* ctx) {
-  177|      2|    ARG_CHECK_VOID(ctx == NULL || secp256k1_context_is_proper(ctx));
+  178|      2|void secp256k1_context_preallocated_destroy(secp256k1_context* ctx) {
+  179|      2|    ARG_CHECK_VOID(ctx == NULL || secp256k1_context_is_proper(ctx));
   ------------------
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  136|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (136:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (136:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (136:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -255,29 +255,29 @@ secp256k1_context_preallocated_destroy:
   |  |  |  Branch (57:9): [Folded, False: 2]
   |  |  ------------------
   ------------------
-  178|       |
-  179|       |    /* Defined as noop */
-  180|      2|    if (ctx == NULL) {
+  180|       |
+  181|       |    /* Defined as noop */
+  182|      2|    if (ctx == NULL) {
   ------------------
-  |  Branch (180:9): [True: 0, False: 2]
+  |  Branch (182:9): [True: 0, False: 2]
   ------------------
-  181|      0|        return;
-  182|      0|    }
-  183|       |
-  184|      2|    secp256k1_ecmult_gen_context_clear(&ctx->ecmult_gen_ctx);
-  185|      2|}
+  183|      0|        return;
+  184|      0|    }
+  185|       |
+  186|      2|    secp256k1_ecmult_gen_context_clear(&ctx->ecmult_gen_ctx);
+  187|      2|}
 secp256k1_context_destroy:
-  187|      2|void secp256k1_context_destroy(secp256k1_context* ctx) {
-  188|      2|    ARG_CHECK_VOID(ctx == NULL || secp256k1_context_is_proper(ctx));
+  189|      2|void secp256k1_context_destroy(secp256k1_context* ctx) {
+  190|      2|    ARG_CHECK_VOID(ctx == NULL || secp256k1_context_is_proper(ctx));
   ------------------
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  136|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (136:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (136:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (136:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -288,55 +288,55 @@ secp256k1_context_destroy:
   |  |  |  Branch (57:9): [Folded, False: 2]
   |  |  ------------------
   ------------------
-  189|       |
-  190|       |    /* Defined as noop */
-  191|      2|    if (ctx == NULL) {
+  191|       |
+  192|       |    /* Defined as noop */
+  193|      2|    if (ctx == NULL) {
   ------------------
-  |  Branch (191:9): [True: 0, False: 2]
+  |  Branch (193:9): [True: 0, False: 2]
   ------------------
-  192|      0|        return;
-  193|      0|    }
-  194|       |
-  195|      2|    secp256k1_context_preallocated_destroy(ctx);
-  196|      2|    free(ctx);
-  197|      2|}
+  194|      0|        return;
+  195|      0|    }
+  196|       |
+  197|      2|    secp256k1_context_preallocated_destroy(ctx);
+  198|      2|    free(ctx);
+  199|      2|}
 secp256k1.c:secp256k1_context_is_proper:
-   82|      4|static int secp256k1_context_is_proper(const secp256k1_context* ctx) {
-   83|      4|    return secp256k1_ecmult_gen_context_is_built(&ctx->ecmult_gen_ctx);
-   84|      4|}
+   83|      4|static int secp256k1_context_is_proper(const secp256k1_context* ctx) {
+   84|      4|    return secp256k1_ecmult_gen_context_is_built(&ctx->ecmult_gen_ctx);
+   85|      4|}
 
 secp256k1.c:secp256k1_memclear_explicit:
-  256|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
-  257|       |    /* The current implementation zeroes, but callers must not rely on this */
-  258|      6|    secp256k1_memzero_explicit(ptr, len);
-  259|       |#ifdef VERIFY
-  260|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
-  261|       |#endif
-  262|      6|}
+  268|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
+  269|       |    /* The current implementation zeroes, but callers must not rely on this */
+  270|      6|    secp256k1_memzero_explicit(ptr, len);
+  271|       |#ifdef VERIFY
+  272|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
+  273|       |#endif
+  274|      6|}
 secp256k1.c:secp256k1_memzero_explicit:
-  224|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
-  225|       |#if defined(_MSC_VER)
-  226|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
-  227|       |    SecureZeroMemory(ptr, len);
-  228|       |#elif defined(__GNUC__)
-  229|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
-  230|       |     *
-  231|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
-  232|       |     * in BoringSSL (ISC License):
-  233|       |     *    As best as we can tell, this is sufficient to break any optimisations that
-  234|       |     *    might try to eliminate "superfluous" memsets.
-  235|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
-  236|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
-  237|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
-  238|       |     * Yang et al. (USENIX Security 2017) for more background.
-  239|       |     */
-  240|      6|    memset(ptr, 0, len);
-  241|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-  242|       |#else
-  243|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
-  244|       |    volatile_memset(ptr, 0, len);
-  245|       |#endif
-  246|      6|}
+  236|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
+  237|       |#if defined(_MSC_VER)
+  238|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
+  239|       |    SecureZeroMemory(ptr, len);
+  240|       |#elif defined(__GNUC__)
+  241|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
+  242|       |     *
+  243|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
+  244|       |     * in BoringSSL (ISC License):
+  245|       |     *    As best as we can tell, this is sufficient to break any optimisations that
+  246|       |     *    might try to eliminate "superfluous" memsets.
+  247|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
+  248|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
+  249|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
+  250|       |     * Yang et al. (USENIX Security 2017) for more background.
+  251|       |     */
+  252|      6|    memset(ptr, 0, len);
+  253|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+  254|       |#else
+  255|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
+  256|       |    volatile_memset(ptr, 0, len);
+  257|       |#endif
+  258|      6|}
 
 _Z11UnserializeI10DataStreamRN4node12Sv2NetHeaderEQ14UnserializableIT0_T_EEvRS5_OS4_:
   753|      6|{
