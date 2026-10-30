@@ -14,15 +14,15 @@ _ZN9base_uintILj256EElSEj:
   ------------------
    22|    160|        if (i + k + 1 < WIDTH && shift != 0)
   ------------------
-  |  Branch (22:13): [True: 46, False: 114]
-  |  Branch (22:34): [True: 36, False: 10]
+  |  Branch (22:13): [True: 53, False: 107]
+  |  Branch (22:34): [True: 41, False: 12]
   ------------------
-   23|     36|            pn[i + k + 1] |= (a.pn[i] >> (32 - shift));
+   23|     41|            pn[i + k + 1] |= (a.pn[i] >> (32 - shift));
    24|    160|        if (i + k < WIDTH)
   ------------------
-  |  Branch (24:13): [True: 62, False: 98]
+  |  Branch (24:13): [True: 69, False: 91]
   ------------------
-   25|     62|            pn[i + k] |= (a.pn[i] << shift);
+   25|     69|            pn[i + k] |= (a.pn[i] << shift);
    26|    160|    }
    27|     20|    return *this;
    28|     20|}
@@ -292,31 +292,31 @@ _ZN5BCLog6Logger20DisconnectTestLoggerEv:
   109|      2|}
 
 _ZNK5BCLog6Logger7EnabledEv:
-  130|     44|        {
-  131|     44|            StdLockGuard scoped_lock(m_cs);
-  132|     44|            return m_buffering || m_print_to_console || m_print_to_file || !m_print_callbacks.empty();
+  131|     44|        {
+  132|     44|            StdLockGuard scoped_lock(m_cs);
+  133|     44|            return m_buffering || m_print_to_console || m_print_to_file || !m_print_callbacks.empty();
   ------------------
-  |  Branch (132:20): [True: 0, False: 44]
-  |  Branch (132:35): [True: 0, False: 44]
-  |  Branch (132:57): [True: 0, False: 44]
-  |  Branch (132:76): [True: 0, False: 44]
+  |  Branch (133:20): [True: 0, False: 44]
+  |  Branch (133:35): [True: 0, False: 44]
+  |  Branch (133:57): [True: 0, False: 44]
+  |  Branch (133:76): [True: 0, False: 44]
   ------------------
-  133|     44|        }
+  134|     44|        }
 _Z22LogPrintFormatInternalIJPKcNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEEvONS2_15source_locationEN5BCLog8LogFlagsENSB_5LevelEN4util21ConstevalFormatStringIXsZT_EEEDpRKT_:
-  223|     44|{
-  224|     44|    if (LogInstance().Enabled()) {
+  224|     44|{
+  225|     44|    if (LogInstance().Enabled()) {
   ------------------
-  |  Branch (224:9): [True: 0, False: 44]
+  |  Branch (225:9): [True: 0, False: 44]
   ------------------
-  225|      0|        std::string log_msg;
-  226|      0|        try {
-  227|      0|            log_msg = tfm::format(fmt, args...);
-  228|      0|        } catch (tinyformat::format_error& fmterr) {
-  229|      0|            log_msg = "Error \"" + std::string{fmterr.what()} + "\" while formatting log message: " + fmt.fmt;
-  230|      0|        }
-  231|      0|        LogInstance().LogPrintStr(log_msg, std::move(source_loc), flag, level);
-  232|      0|    }
-  233|     44|}
+  226|      0|        std::string log_msg;
+  227|      0|        try {
+  228|      0|            log_msg = tfm::format(fmt, args...);
+  229|      0|        } catch (tinyformat::format_error& fmterr) {
+  230|      0|            log_msg = "Error \"" + std::string{fmterr.what()} + "\" while formatting log message: " + fmt.fmt;
+  231|      0|        }
+  232|      0|        LogInstance().LogPrintStr(log_msg, std::move(source_loc), flag, level);
+  233|      0|    }
+  234|     44|}
 
 _ZN12CBlockHeaderC2Ev:
    33|     44|    {
@@ -1262,9 +1262,9 @@ _Z22SeedRandomStateForTest8SeedRand:
   ------------------
    48|     44|    LogInfo("Setting random seed for current tests to %s=%s\n", RANDOM_CTX_SEED, seed.GetHex());
   ------------------
-  |  |  240|     44|#define LogInfo(...) LogPrintLevel_(BCLog::LogFlags::ALL, BCLog::Level::Info, __VA_ARGS__)
+  |  |  241|     44|#define LogInfo(...) LogPrintLevel_(BCLog::LogFlags::ALL, BCLog::Level::Info, __VA_ARGS__)
   |  |  ------------------
-  |  |  |  |  235|     44|#define LogPrintLevel_(category, level, ...) LogPrintFormatInternal(std::source_location::current(), category, level, __VA_ARGS__)
+  |  |  |  |  236|     44|#define LogPrintLevel_(category, level, ...) LogPrintFormatInternal(std::source_location::current(), category, level, __VA_ARGS__)
   |  |  ------------------
   ------------------
    49|     44|    MakeRandDeterministicDANGEROUS(seed);
