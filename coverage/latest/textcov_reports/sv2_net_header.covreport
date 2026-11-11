@@ -621,44 +621,44 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node12Sv2NetHeaderC2ENS_10Sv2MsgTypeEj:
-  611|      5|    explicit Sv2NetHeader(Sv2MsgType msg_type, uint32_t msg_len) : m_msg_type{msg_type}, m_msg_len{msg_len} {};
+  614|      5|    explicit Sv2NetHeader(Sv2MsgType msg_type, uint32_t msg_len) : m_msg_type{msg_type}, m_msg_len{msg_len} {};
 _ZN4node12Sv2NetHeader11UnserializeI10DataStreamEEvRT_:
-  632|      6|    {
-  633|       |        // Ignore the first 2 bytes (extension type) as the template provider currently doesn't
-  634|       |        // interpret this field.
-  635|      6|        s.ignore(2);
-  636|       |
-  637|      6|        uint8_t msg_type;
-  638|      6|        s >> msg_type;
-  639|      6|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
-  640|       |
-  641|      6|        u24_t msg_len_bytes;
-  642|     24|        for (unsigned int i = 0; i < sizeof(u24_t); ++i) {
+  635|      6|    {
+  636|       |        // Ignore the first 2 bytes (extension type) as the template provider currently doesn't
+  637|       |        // interpret this field.
+  638|      6|        s.ignore(2);
+  639|       |
+  640|      6|        uint8_t msg_type;
+  641|      6|        s >> msg_type;
+  642|      6|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
+  643|       |
+  644|      6|        u24_t msg_len_bytes;
+  645|     24|        for (unsigned int i = 0; i < sizeof(u24_t); ++i) {
   ------------------
-  |  Branch (642:34): [True: 18, False: 6]
+  |  Branch (645:34): [True: 18, False: 6]
   ------------------
-  643|     18|            s >> msg_len_bytes[i];
-  644|     18|        }
-  645|       |
-  646|      6|        m_msg_len = msg_len_bytes[2];
-  647|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[1];
-  648|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[0];
-  649|      6|    }
+  646|     18|            s >> msg_len_bytes[i];
+  647|     18|        }
+  648|       |
+  649|      6|        m_msg_len = msg_len_bytes[2];
+  650|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[1];
+  651|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[0];
+  652|      6|    }
 _ZNK4node12Sv2NetHeader9SerializeI10DataStreamEEvRT_:
-  615|      6|    {
-  616|       |        // The template provider currently does not use the extension_type field,
-  617|       |        // but the field is still required for all headers.
-  618|      6|        uint16_t extension_type = 0;
-  619|       |
-  620|      6|        u24_t msg_len;
-  621|      6|        msg_len[2] = (m_msg_len >> 16) & 0xff;
-  622|      6|        msg_len[1] = (m_msg_len >> 8) & 0xff;
-  623|      6|        msg_len[0] = m_msg_len & 0xff;
-  624|       |
-  625|      6|        s << extension_type
-  626|      6|          << static_cast<uint8_t>(m_msg_type)
-  627|      6|          << msg_len;
-  628|      6|    };
+  618|      6|    {
+  619|       |        // The template provider currently does not use the extension_type field,
+  620|       |        // but the field is still required for all headers.
+  621|      6|        uint16_t extension_type = 0;
+  622|       |
+  623|      6|        u24_t msg_len;
+  624|      6|        msg_len[2] = (m_msg_len >> 16) & 0xff;
+  625|      6|        msg_len[1] = (m_msg_len >> 8) & 0xff;
+  626|      6|        msg_len[0] = m_msg_len & 0xff;
+  627|       |
+  628|      6|        s << extension_type
+  629|      6|          << static_cast<uint8_t>(m_msg_type)
+  630|      6|          << msg_len;
+  631|      6|    };
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {

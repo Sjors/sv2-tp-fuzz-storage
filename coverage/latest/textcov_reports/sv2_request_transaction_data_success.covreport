@@ -591,41 +591,41 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node35Sv2RequestTransactionDataSuccessMsgC2EmONSt3__16vectorIhNS1_9allocatorIhEEEEONS2_INS1_10shared_ptrIK12CTransactionEENS3_ISA_EEEE:
-  470|     23|    explicit Sv2RequestTransactionDataSuccessMsg(uint64_t template_id, std::vector<uint8_t>&& excess_data, std::vector<CTransactionRef>&& transactions_list) : m_template_id{template_id}, m_excess_data{excess_data}, m_transactions_list{transactions_list} {};
+  473|     23|    explicit Sv2RequestTransactionDataSuccessMsg(uint64_t template_id, std::vector<uint8_t>&& excess_data, std::vector<CTransactionRef>&& transactions_list) : m_template_id{template_id}, m_excess_data{excess_data}, m_transactions_list{transactions_list} {};
 _ZNK4node35Sv2RequestTransactionDataSuccessMsg9SerializeI10DataStreamEEvRT_:
-  474|     23|    {
-  475|     23|        s << m_template_id;
-  476|       |
-  477|       |        // excess data is expected to be serialized as a B0_64K type.
-  478|     23|        if (m_excess_data.empty()) {
+  477|     23|    {
+  478|     23|        s << m_template_id;
+  479|       |
+  480|       |        // excess data is expected to be serialized as a B0_64K type.
+  481|     23|        if (m_excess_data.empty()) {
   ------------------
-  |  Branch (478:13): [True: 5, False: 18]
+  |  Branch (481:13): [True: 5, False: 18]
   ------------------
-  479|      5|            s << static_cast<uint16_t>(0);
-  480|     18|        } else {
-  481|     18|            s << static_cast<uint16_t>(m_excess_data.size());
-  482|     18|            s.write(MakeByteSpan(m_excess_data));
-  483|     18|        }
-  484|       |
-  485|       |        // transactions list is expected to be serialized as a SEQ0_64K[B0_16M].
-  486|     23|        s << static_cast<uint16_t>(m_transactions_list.size());
-  487|     23|        for (const auto& tx : m_transactions_list) {
+  482|      5|            s << static_cast<uint16_t>(0);
+  483|     18|        } else {
+  484|     18|            s << static_cast<uint16_t>(m_excess_data.size());
+  485|     18|            s.write(MakeByteSpan(m_excess_data));
+  486|     18|        }
+  487|       |
+  488|       |        // transactions list is expected to be serialized as a SEQ0_64K[B0_16M].
+  489|     23|        s << static_cast<uint16_t>(m_transactions_list.size());
+  490|     23|        for (const auto& tx : m_transactions_list) {
   ------------------
-  |  Branch (487:29): [True: 0, False: 23]
+  |  Branch (490:29): [True: 0, False: 23]
   ------------------
-  488|      0|            DataStream ss_tx{};
-  489|      0|            ss_tx << TX_WITH_WITNESS(*tx);
-  490|      0|            auto tx_size = static_cast<uint32_t>(ss_tx.size());
-  491|       |
-  492|      0|            u24_t tx_byte_len;
-  493|      0|            tx_byte_len[2] = (tx_size >> 16) & 0xff;
-  494|      0|            tx_byte_len[1] = (tx_size >> 8) & 0xff;
-  495|      0|            tx_byte_len[0] = tx_size & 0xff;
-  496|       |
-  497|      0|            s << tx_byte_len;
-  498|      0|            s.write(MakeByteSpan(ss_tx));
-  499|      0|        }
-  500|     23|    };
+  491|      0|            DataStream ss_tx{};
+  492|      0|            ss_tx << TX_WITH_WITNESS(*tx);
+  493|      0|            auto tx_size = static_cast<uint32_t>(ss_tx.size());
+  494|       |
+  495|      0|            u24_t tx_byte_len;
+  496|      0|            tx_byte_len[2] = (tx_size >> 16) & 0xff;
+  497|      0|            tx_byte_len[1] = (tx_size >> 8) & 0xff;
+  498|      0|            tx_byte_len[0] = tx_size & 0xff;
+  499|       |
+  500|      0|            s << tx_byte_len;
+  501|      0|            s.write(MakeByteSpan(ss_tx));
+  502|      0|        }
+  503|     23|    };
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
