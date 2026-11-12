@@ -31,10 +31,10 @@ _Z16htole16_internalt:
    21|    114|        else return host_16bits;
    22|    114|}
 _Z16htole64_internalm:
-   59|    399|{
+   59|    401|{
    60|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_64(host_64bits);
-   61|    399|        else return host_64bits;
-   62|    399|}
+   61|    401|        else return host_64bits;
+   62|    401|}
 _Z16htole32_internalj:
    39|    570|{
    40|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_32(host_32bits);
@@ -250,25 +250,25 @@ _ZN9prevectorILj36EhjiEaSEOS0_:
   252|    114|        return *this;
   253|    114|    }
 _ZN9prevectorILj36EhjiE8item_ptrEi:
-  167|    627|    T* item_ptr(difference_type pos) { return is_direct() ? direct_ptr(pos) : indirect_ptr(pos); }
+  167|    633|    T* item_ptr(difference_type pos) { return is_direct() ? direct_ptr(pos) : indirect_ptr(pos); }
   ------------------
-  |  Branch (167:47): [True: 384, False: 243]
+  |  Branch (167:47): [True: 393, False: 240]
   ------------------
 _ZNK9prevectorILj36EhjiE9is_directEv:
-  134|  4.78k|    bool is_direct() const { return _size <= N; }
+  134|  4.82k|    bool is_direct() const { return _size <= N; }
 _ZN9prevectorILj36EhjiE10direct_ptrEi:
-  130|    627|    T* direct_ptr(difference_type pos) { return reinterpret_cast<T*>(_union.direct) + pos; }
+  130|    633|    T* direct_ptr(difference_type pos) { return reinterpret_cast<T*>(_union.direct) + pos; }
 _ZN9prevectorILj36EhjiE12indirect_ptrEi:
-  132|    243|    T* indirect_ptr(difference_type pos) { return reinterpret_cast<T*>(_union.indirect_contents.indirect) + pos; }
+  132|    240|    T* indirect_ptr(difference_type pos) { return reinterpret_cast<T*>(_union.indirect_contents.indirect) + pos; }
 _ZN9prevectorILj36EhjiE15change_capacityEj:
-  136|    537|    void change_capacity(size_type new_capacity) {
-  137|    537|        if (new_capacity <= N) {
+  136|    540|    void change_capacity(size_type new_capacity) {
+  137|    540|        if (new_capacity <= N) {
   ------------------
-  |  Branch (137:13): [True: 294, False: 243]
+  |  Branch (137:13): [True: 300, False: 240]
   ------------------
-  138|    294|            if (!is_direct()) {
+  138|    300|            if (!is_direct()) {
   ------------------
-  |  Branch (138:17): [True: 0, False: 294]
+  |  Branch (138:17): [True: 0, False: 300]
   ------------------
   139|      0|                T* indirect = indirect_ptr(0);
   140|      0|                T* src = indirect;
@@ -277,10 +277,10 @@ _ZN9prevectorILj36EhjiE15change_capacityEj:
   143|      0|                free(indirect);
   144|      0|                _size -= N + 1;
   145|      0|            }
-  146|    294|        } else {
-  147|    243|            if (!is_direct()) {
+  146|    300|        } else {
+  147|    240|            if (!is_direct()) {
   ------------------
-  |  Branch (147:17): [True: 0, False: 243]
+  |  Branch (147:17): [True: 0, False: 240]
   ------------------
   148|       |                /* FIXME: Because malloc/realloc here won't call new_handler if allocation fails, assert
   149|       |                    success. These should instead use an allocator or new/delete so that handlers
@@ -291,99 +291,99 @@ _ZN9prevectorILj36EhjiE15change_capacityEj:
   |  Branch (152:17): [True: 0, False: 0]
   ------------------
   153|      0|                _union.indirect_contents.capacity = new_capacity;
-  154|    243|            } else {
-  155|    243|                char* new_indirect = static_cast<char*>(malloc(((size_t)sizeof(T)) * new_capacity));
-  156|    243|                assert(new_indirect);
+  154|    240|            } else {
+  155|    240|                char* new_indirect = static_cast<char*>(malloc(((size_t)sizeof(T)) * new_capacity));
+  156|    240|                assert(new_indirect);
   ------------------
-  |  Branch (156:17): [True: 243, False: 0]
+  |  Branch (156:17): [True: 240, False: 0]
   ------------------
-  157|    243|                T* src = direct_ptr(0);
-  158|    243|                T* dst = reinterpret_cast<T*>(new_indirect);
-  159|    243|                memcpy(dst, src, size() * sizeof(T));
-  160|    243|                _union.indirect_contents.indirect = new_indirect;
-  161|    243|                _union.indirect_contents.capacity = new_capacity;
-  162|    243|                _size += N + 1;
-  163|    243|            }
-  164|    243|        }
-  165|    537|    }
+  157|    240|                T* src = direct_ptr(0);
+  158|    240|                T* dst = reinterpret_cast<T*>(new_indirect);
+  159|    240|                memcpy(dst, src, size() * sizeof(T));
+  160|    240|                _union.indirect_contents.indirect = new_indirect;
+  161|    240|                _union.indirect_contents.capacity = new_capacity;
+  162|    240|                _size += N + 1;
+  163|    240|            }
+  164|    240|        }
+  165|    540|    }
 _ZNK9prevectorILj36EhjiE3endEv:
-  266|    342|    const_iterator end() const { return const_iterator(item_ptr(size())); }
+  266|    346|    const_iterator end() const { return const_iterator(item_ptr(size())); }
 _ZNK9prevectorILj36EhjiE8item_ptrEi:
-  168|    826|    const T* item_ptr(difference_type pos) const { return is_direct() ? direct_ptr(pos) : indirect_ptr(pos); }
+  168|    839|    const T* item_ptr(difference_type pos) const { return is_direct() ? direct_ptr(pos) : indirect_ptr(pos); }
   ------------------
-  |  Branch (168:59): [True: 421, False: 405]
+  |  Branch (168:59): [True: 439, False: 400]
   ------------------
 _ZNK9prevectorILj36EhjiE10direct_ptrEi:
-  131|    421|    const T* direct_ptr(difference_type pos) const { return reinterpret_cast<const T*>(_union.direct) + pos; }
+  131|    439|    const T* direct_ptr(difference_type pos) const { return reinterpret_cast<const T*>(_union.direct) + pos; }
 _ZNK9prevectorILj36EhjiE12indirect_ptrEi:
-  133|    405|    const T* indirect_ptr(difference_type pos) const { return reinterpret_cast<const T*>(_union.indirect_contents.indirect) + pos; }
+  133|    400|    const T* indirect_ptr(difference_type pos) const { return reinterpret_cast<const T*>(_union.indirect_contents.indirect) + pos; }
 _ZNK9prevectorILj36EhjiE4sizeEv:
-  255|  1.63k|    size_type size() const {
-  256|  1.63k|        return is_direct() ? _size : _size - N - 1;
+  255|  1.65k|    size_type size() const {
+  256|  1.65k|        return is_direct() ? _size : _size - N - 1;
   ------------------
-  |  Branch (256:16): [True: 1.15k, False: 486]
+  |  Branch (256:16): [True: 1.17k, False: 480]
   ------------------
-  257|  1.63k|    }
+  257|  1.65k|    }
 _ZNK9prevectorILj36EhjiE5beginEv:
-  264|    342|    const_iterator begin() const { return const_iterator(item_ptr(0)); }
+  264|    346|    const_iterator begin() const { return const_iterator(item_ptr(0)); }
 _ZNK9prevectorILj36EhjiE14const_iteratordeEv:
-   93|  11.8k|        const T& operator*() const { return *ptr; }
+   93|  11.4k|        const T& operator*() const { return *ptr; }
 _ZNK9prevectorILj36EhjiE14const_iteratorneES1_:
-  107|  11.8k|        bool operator!=(const_iterator x) const { return ptr != x.ptr; }
+  107|  11.4k|        bool operator!=(const_iterator x) const { return ptr != x.ptr; }
 _ZN9prevectorILj36EhjiE14const_iteratorppEv:
-   96|  11.5k|        const_iterator& operator++() { ptr++; return *this; }
+   96|  11.0k|        const_iterator& operator++() { ptr++; return *this; }
 _ZNK9prevectorILj36EhjiE5emptyEv:
-  259|    285|    bool empty() const {
-  260|    285|        return size() == 0;
-  261|    285|    }
+  259|    287|    bool empty() const {
+  260|    287|        return size() == 0;
+  261|    287|    }
 _ZN9prevectorILj36EhjiEC2EOS0_:
-  232|    131|        : _union(std::move(other._union)), _size(other._size)
-  233|    131|    {
-  234|    131|        other._size = 0;
-  235|    131|    }
+  232|    126|        : _union(std::move(other._union)), _size(other._size)
+  233|    126|    {
+  234|    126|        other._size = 0;
+  235|    126|    }
 _ZNK9prevectorILj36EhjiE4dataEv:
-  493|    142|    const value_type* data() const {
-  494|    142|        return item_ptr(0);
-  495|    142|    }
+  493|    147|    const value_type* data() const {
+  494|    147|        return item_ptr(0);
+  495|    147|    }
 _ZN9prevectorILj36EhjiEC2Ev:
-  204|    285|    prevector() = default;
+  204|    287|    prevector() = default;
 _ZN9prevectorILj36EhjiEaSERKS0_:
-  237|    171|    prevector& operator=(const prevector<N, T, Size, Diff>& other) {
-  238|    171|        if (&other == this) {
+  237|    173|    prevector& operator=(const prevector<N, T, Size, Diff>& other) {
+  238|    173|        if (&other == this) {
   ------------------
-  |  Branch (238:13): [True: 0, False: 171]
+  |  Branch (238:13): [True: 0, False: 173]
   ------------------
   239|      0|            return *this;
   240|      0|        }
-  241|    171|        assign(other.begin(), other.end());
-  242|    171|        return *this;
-  243|    171|    }
+  241|    173|        assign(other.begin(), other.end());
+  242|    173|        return *this;
+  243|    173|    }
 _ZN9prevectorILj36EhjiE6assignITkNSt3__114input_iteratorENS0_14const_iteratorEEEvT_S4_:
-  194|    171|    void assign(InputIterator first, InputIterator last) {
-  195|    171|        size_type n = last - first;
-  196|    171|        clear();
-  197|    171|        if (capacity() < n) {
+  194|    173|    void assign(InputIterator first, InputIterator last) {
+  195|    173|        size_type n = last - first;
+  196|    173|        clear();
+  197|    173|        if (capacity() < n) {
   ------------------
-  |  Branch (197:13): [True: 81, False: 90]
+  |  Branch (197:13): [True: 80, False: 93]
   ------------------
-  198|     81|            change_capacity(n);
-  199|     81|        }
-  200|    171|        _size += n;
-  201|    171|        fill(item_ptr(0), first, last);
-  202|    171|    }
+  198|     80|            change_capacity(n);
+  199|     80|        }
+  200|    173|        _size += n;
+  201|    173|        fill(item_ptr(0), first, last);
+  202|    173|    }
 _ZN9prevectorILj36EhjiE5clearEv:
-  311|    171|    void clear() {
-  312|    171|        resize(0);
-  313|    171|    }
+  311|    173|    void clear() {
+  312|    173|        resize(0);
+  313|    173|    }
 _ZN9prevectorILj36EhjiE6resizeEj:
-  284|    171|    void resize(size_type new_size) {
-  285|    171|        size_type cur_size = size();
-  286|    171|        if (cur_size == new_size) {
+  284|    173|    void resize(size_type new_size) {
+  285|    173|        size_type cur_size = size();
+  286|    173|        if (cur_size == new_size) {
   ------------------
-  |  Branch (286:13): [True: 171, False: 0]
+  |  Branch (286:13): [True: 173, False: 0]
   ------------------
-  287|    171|            return;
-  288|    171|        }
+  287|    173|            return;
+  288|    173|        }
   289|      0|        if (cur_size > new_size) {
   ------------------
   |  Branch (289:13): [True: 0, False: 0]
@@ -402,77 +402,77 @@ _ZN9prevectorILj36EhjiE6resizeEj:
   298|      0|        _size += increase;
   299|      0|    }
 _ZNK9prevectorILj36EhjiE8capacityEv:
-  268|    171|    size_t capacity() const {
-  269|    171|        if (is_direct()) {
+  268|    173|    size_t capacity() const {
+  269|    173|        if (is_direct()) {
   ------------------
-  |  Branch (269:13): [True: 171, False: 0]
+  |  Branch (269:13): [True: 173, False: 0]
   ------------------
-  270|    171|            return N;
-  271|    171|        } else {
+  270|    173|            return N;
+  271|    173|        } else {
   272|      0|            return _union.indirect_contents.capacity;
   273|      0|        }
-  274|    171|    }
+  274|    173|    }
 _ZN9prevectorILj36EhjiE4fillITkNSt3__114input_iteratorENS0_14const_iteratorEEEvPhT_S5_:
-  175|    342|    void fill(T* dst, InputIterator first, InputIterator last) {
-  176|  11.8k|        while (first != last) {
+  175|    346|    void fill(T* dst, InputIterator first, InputIterator last) {
+  176|  11.4k|        while (first != last) {
   ------------------
-  |  Branch (176:16): [True: 11.5k, False: 342]
+  |  Branch (176:16): [True: 11.0k, False: 346]
   ------------------
-  177|  11.5k|            new(static_cast<void*>(dst)) T(*first);
-  178|  11.5k|            ++dst;
-  179|  11.5k|            ++first;
-  180|  11.5k|        }
-  181|    342|    }
+  177|  11.0k|            new(static_cast<void*>(dst)) T(*first);
+  178|  11.0k|            ++dst;
+  179|  11.0k|            ++first;
+  180|  11.0k|        }
+  181|    346|    }
 _ZN9prevectorILj36EhjiEC2ERKS0_:
-  224|    171|    prevector(const prevector<N, T, Size, Diff>& other) {
-  225|    171|        size_type n = other.size();
-  226|    171|        change_capacity(n);
-  227|    171|        _size += n;
-  228|    171|        fill(item_ptr(0), other.begin(),  other.end());
-  229|    171|    }
+  224|    173|    prevector(const prevector<N, T, Size, Diff>& other) {
+  225|    173|        size_type n = other.size();
+  226|    173|        change_capacity(n);
+  227|    173|        _size += n;
+  228|    173|        fill(item_ptr(0), other.begin(),  other.end());
+  229|    173|    }
 _ZN9prevectorILj36EhjiED2Ev:
-  430|    872|    ~prevector() {
-  431|    872|        if (!is_direct()) {
+  430|    873|    ~prevector() {
+  431|    873|        if (!is_direct()) {
   ------------------
-  |  Branch (431:13): [True: 243, False: 629]
+  |  Branch (431:13): [True: 240, False: 633]
   ------------------
-  432|    243|            free(_union.indirect_contents.indirect);
-  433|    243|            _union.indirect_contents.indirect = nullptr;
-  434|    243|        }
-  435|    872|    }
+  432|    240|            free(_union.indirect_contents.indirect);
+  433|    240|            _union.indirect_contents.indirect = nullptr;
+  434|    240|        }
+  435|    873|    }
 _ZN9prevectorILj36EhjiE14const_iteratorC2EPKh:
-   91|    684|        const_iterator(const T* ptr_) : ptr(ptr_) {}
+   91|    692|        const_iterator(const T* ptr_) : ptr(ptr_) {}
 _ZN9prevectorILj36EhjiEC2ITkNSt3__114input_iteratorENS2_11__wrap_iterIPhEEEET_S6_:
-  217|    285|    prevector(InputIterator first, InputIterator last) {
-  218|    285|        size_type n = last - first;
-  219|    285|        change_capacity(n);
-  220|    285|        _size += n;
-  221|    285|        fill(item_ptr(0), first, last);
-  222|    285|    }
+  217|    287|    prevector(InputIterator first, InputIterator last) {
+  218|    287|        size_type n = last - first;
+  219|    287|        change_capacity(n);
+  220|    287|        _size += n;
+  221|    287|        fill(item_ptr(0), first, last);
+  222|    287|    }
 _ZN9prevectorILj36EhjiE4fillITkNSt3__114input_iteratorENS2_11__wrap_iterIPhEEEEvS4_T_S6_:
-  175|    285|    void fill(T* dst, InputIterator first, InputIterator last) {
-  176|  6.12k|        while (first != last) {
+  175|    287|    void fill(T* dst, InputIterator first, InputIterator last) {
+  176|  5.91k|        while (first != last) {
   ------------------
-  |  Branch (176:16): [True: 5.83k, False: 285]
+  |  Branch (176:16): [True: 5.63k, False: 287]
   ------------------
-  177|  5.83k|            new(static_cast<void*>(dst)) T(*first);
-  178|  5.83k|            ++dst;
-  179|  5.83k|            ++first;
-  180|  5.83k|        }
-  181|    285|    }
+  177|  5.63k|            new(static_cast<void*>(dst)) T(*first);
+  178|  5.63k|            ++dst;
+  179|  5.63k|            ++first;
+  180|  5.63k|        }
+  181|    287|    }
 _ZmiN9prevectorILj36EhjiE14const_iteratorES1_:
-  100|    171|        difference_type friend operator-(const_iterator a, const_iterator b) { return (&(*a) - &(*b)); }
+  100|    173|        difference_type friend operator-(const_iterator a, const_iterator b) { return (&(*a) - &(*b)); }
 
 _ZN6CTxOutC2ERKl7CScript:
-   56|    171|{
-   57|    171|    nValue = nValueIn;
-   58|    171|    scriptPubKey = scriptPubKeyIn;
-   59|    171|}
+   56|    173|{
+   57|    173|    nValue = nValueIn;
+   58|    173|    scriptPubKey = scriptPubKeyIn;
+   59|    173|}
 
 _ZN6CTxOut16SerializationOpsI12VectorWriterKS_15ActionSerializeEEvRT0_RT_T1_:
-  162|    171|    SERIALIZE_METHODS(CTxOut, obj) { READWRITE(obj.nValue, obj.scriptPubKey); }
+  162|    173|    SERIALIZE_METHODS(CTxOut, obj) { READWRITE(obj.nValue, obj.scriptPubKey); }
   ------------------
-  |  |  145|    171|#define READWRITE(...) (ser_action.SerReadWriteMany(s, __VA_ARGS__))
+  |  |  145|    173|#define READWRITE(...) (ser_action.SerReadWriteMany(s, __VA_ARGS__))
   ------------------
 
 _Z30MakeRandDeterministicDANGEROUSRK7uint256:
@@ -512,14 +512,14 @@ _ZN7CScript16SerializationOpsI10DataStreamKS_15ActionSerializeEEvRT0_RT_T1_:
   |  |  145|    114|#define READWRITE(...) (ser_action.SerReadWriteMany(s, __VA_ARGS__))
   ------------------
 _ZN7CScript16SerializationOpsI12VectorWriterKS_15ActionSerializeEEvRT0_RT_T1_:
-  463|    171|    SERIALIZE_METHODS(CScript, obj) { READWRITE(AsBase<CScriptBase>(obj)); }
+  463|    173|    SERIALIZE_METHODS(CScript, obj) { READWRITE(AsBase<CScriptBase>(obj)); }
   ------------------
-  |  |  145|    171|#define READWRITE(...) (ser_action.SerReadWriteMany(s, __VA_ARGS__))
+  |  |  145|    173|#define READWRITE(...) (ser_action.SerReadWriteMany(s, __VA_ARGS__))
   ------------------
 _ZN7CScriptC2Ev:
-  459|    285|    CScript() = default;
+  459|    287|    CScript() = default;
 _ZN7CScriptC2ITkNSt3__114input_iteratorENS1_11__wrap_iterIPhEEEET_S5_:
-  461|    285|    CScript(InputIterator first, InputIterator last) : CScriptBase{first, last} { }
+  461|    287|    CScript(InputIterator first, InputIterator last) : CScriptBase{first, last} { }
 
 secp256k1.c:secp256k1_ecmult_gen_context_clear:
    26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ctx) {
@@ -711,14 +711,14 @@ _Z14ser_readdata64I10DataStreamEmRT_:
 _Z11UnserializeI10DataStreamEvRT_Rm:
   269|    114|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 _Z16WriteCompactSizeI12VectorWriterEvRT_m:
-  300|    171|{
-  301|    171|    if (nSize < 253)
+  300|    173|{
+  301|    173|    if (nSize < 253)
   ------------------
-  |  Branch (301:9): [True: 171, False: 0]
+  |  Branch (301:9): [True: 173, False: 0]
   ------------------
-  302|    171|    {
-  303|    171|        ser_writedata8(os, nSize);
-  304|    171|    }
+  302|    173|    {
+  303|    173|        ser_writedata8(os, nSize);
+  304|    173|    }
   305|      0|    else if (nSize <= std::numeric_limits<uint16_t>::max())
   ------------------
   |  Branch (305:14): [True: 0, False: 0]
@@ -740,17 +740,17 @@ _Z16WriteCompactSizeI12VectorWriterEvRT_m:
   317|      0|        ser_writedata8(os, 255);
   318|      0|        ser_writedata64(os, nSize);
   319|      0|    }
-  320|    171|    return;
-  321|    171|}
+  320|    173|    return;
+  321|    173|}
 _Z14ser_writedata8I12VectorWriterEvRT_h:
-   55|    171|{
-   56|    171|    s.write(std::as_bytes(std::span{&obj, 1}));
-   57|    171|}
+   55|    173|{
+   56|    173|    s.write(std::as_bytes(std::span{&obj, 1}));
+   57|    173|}
 _Z15ser_writedata64I12VectorWriterEvRT_m:
-   74|    171|{
-   75|    171|    obj = htole64_internal(obj);
-   76|    171|    s.write(std::as_bytes(std::span{&obj, 1}));
-   77|    171|}
+   74|    173|{
+   75|    173|    obj = htole64_internal(obj);
+   76|    173|    s.write(std::as_bytes(std::span{&obj, 1}));
+   77|    173|}
 _Z9SerializeI10DataStreamN4node17Sv2NewTemplateMsgEQ12SerializableIT0_T_EEvRS4_RKS3_:
   744|    114|{
   745|    114|    a.Serialize(os);
@@ -782,68 +782,68 @@ _Z9SerializeI10DataStreamLj36EhEvRT_RK9prevectorIXT0_ET1_jiE:
   804|    114|        WriteCompactSize(os, v.size());
   805|    114|        if (!v.empty()) os.write(MakeByteSpan(v));
   ------------------
-  |  Branch (805:13): [True: 23, False: 91]
+  |  Branch (805:13): [True: 24, False: 90]
   ------------------
   806|       |    } else {
   807|       |        Serialize(os, Using<VectorFormatter<DefaultFormatter>>(v));
   808|       |    }
   809|    114|}
 _Z13SerializeManyI12VectorWriterJ6CTxOutEEvRT_DpRKT0_:
-  986|    171|{
-  987|    171|    (::Serialize(s, args), ...);
-  988|    171|}
+  986|    173|{
+  987|    173|    (::Serialize(s, args), ...);
+  988|    173|}
 _Z9SerializeI12VectorWriter6CTxOutQ12SerializableIT0_T_EEvRS3_RKS2_:
-  744|    171|{
-  745|    171|    a.Serialize(os);
-  746|    171|}
+  744|    173|{
+  745|    173|    a.Serialize(os);
+  746|    173|}
 _ZNK6CTxOut9SerializeI12VectorWriterEEvRT_:
-  211|    171|    {                                                                                               \
-  212|    171|        static_assert(std::is_same_v<const cls&, decltype(*this)>, "Serialize type mismatch");      \
-  213|    171|        Ser(s, *this);                                                                              \
-  214|    171|    }                                                                                               \
+  211|    173|    {                                                                                               \
+  212|    173|        static_assert(std::is_same_v<const cls&, decltype(*this)>, "Serialize type mismatch");      \
+  213|    173|        Ser(s, *this);                                                                              \
+  214|    173|    }                                                                                               \
 _ZN6CTxOut3SerI12VectorWriterEEvRT_RKS_:
-  167|    171|    static void Ser(Stream& s, const cls& obj) { SerializationOps(obj, s, ActionSerialize{}); } \
+  167|    173|    static void Ser(Stream& s, const cls& obj) { SerializationOps(obj, s, ActionSerialize{}); } \
 _ZN15ActionSerialize16SerReadWriteManyI12VectorWriterJl7CScriptEEEvRT_DpRKT0_:
- 1004|    171|    {
- 1005|    171|        ::SerializeMany(s, args...);
- 1006|    171|    }
+ 1004|    173|    {
+ 1005|    173|        ::SerializeMany(s, args...);
+ 1006|    173|    }
 _Z13SerializeManyI12VectorWriterJl7CScriptEEvRT_DpRKT0_:
-  986|    171|{
-  987|    171|    (::Serialize(s, args), ...);
-  988|    171|}
+  986|    173|{
+  987|    173|    (::Serialize(s, args), ...);
+  988|    173|}
 _Z9SerializeI12VectorWriterEvRT_l:
-  252|    171|template <typename Stream> void Serialize(Stream& s, int64_t a)   { ser_writedata64(s, uint64_t(a)); }
+  252|    173|template <typename Stream> void Serialize(Stream& s, int64_t a)   { ser_writedata64(s, uint64_t(a)); }
 _Z9SerializeI12VectorWriter7CScriptQ12SerializableIT0_T_EEvRS3_RKS2_:
-  744|    171|{
-  745|    171|    a.Serialize(os);
-  746|    171|}
+  744|    173|{
+  745|    173|    a.Serialize(os);
+  746|    173|}
 _ZNK7CScript9SerializeI12VectorWriterEEvRT_:
-  211|    171|    {                                                                                               \
-  212|    171|        static_assert(std::is_same_v<const cls&, decltype(*this)>, "Serialize type mismatch");      \
-  213|    171|        Ser(s, *this);                                                                              \
-  214|    171|    }                                                                                               \
+  211|    173|    {                                                                                               \
+  212|    173|        static_assert(std::is_same_v<const cls&, decltype(*this)>, "Serialize type mismatch");      \
+  213|    173|        Ser(s, *this);                                                                              \
+  214|    173|    }                                                                                               \
 _ZN7CScript3SerI12VectorWriterEEvRT_RKS_:
-  167|    171|    static void Ser(Stream& s, const cls& obj) { SerializationOps(obj, s, ActionSerialize{}); } \
+  167|    173|    static void Ser(Stream& s, const cls& obj) { SerializationOps(obj, s, ActionSerialize{}); } \
 _ZN15ActionSerialize16SerReadWriteManyI12VectorWriterJ9prevectorILj36EhjiEEEEvRT_DpRKT0_:
- 1004|    171|    {
- 1005|    171|        ::SerializeMany(s, args...);
- 1006|    171|    }
+ 1004|    173|    {
+ 1005|    173|        ::SerializeMany(s, args...);
+ 1006|    173|    }
 _Z13SerializeManyI12VectorWriterJ9prevectorILj36EhjiEEEvRT_DpRKT0_:
-  986|    171|{
-  987|    171|    (::Serialize(s, args), ...);
-  988|    171|}
+  986|    173|{
+  987|    173|    (::Serialize(s, args), ...);
+  988|    173|}
 _Z9SerializeI12VectorWriterLj36EhEvRT_RK9prevectorIXT0_ET1_jiE:
-  802|    171|{
-  803|    171|    if constexpr (BasicByte<T>) { // Use optimized version for unformatted basic bytes
-  804|    171|        WriteCompactSize(os, v.size());
-  805|    171|        if (!v.empty()) os.write(MakeByteSpan(v));
+  802|    173|{
+  803|    173|    if constexpr (BasicByte<T>) { // Use optimized version for unformatted basic bytes
+  804|    173|        WriteCompactSize(os, v.size());
+  805|    173|        if (!v.empty()) os.write(MakeByteSpan(v));
   ------------------
-  |  Branch (805:13): [True: 119, False: 52]
+  |  Branch (805:13): [True: 123, False: 50]
   ------------------
   806|       |    } else {
   807|       |        Serialize(os, Using<VectorFormatter<DefaultFormatter>>(v));
   808|       |    }
-  809|    171|}
+  809|    173|}
 _Z9SerializeI10DataStream7uint256NSt3__19allocatorIS1_EEEvRT_RKNS2_6vectorIT0_T1_EE:
   837|    114|{
   838|       |    if constexpr (BasicByte<T>) { // Use optimized version for unformatted basic bytes
@@ -873,13 +873,13 @@ _ZN15VectorFormatterI16DefaultFormatterE3SerI10DataStreamNSt3__16vectorI7uint256
   655|    114|        WriteCompactSize(s, v.size());
   656|    114|        for (const typename V::value_type& elem : v) {
   ------------------
-  |  Branch (656:49): [True: 58, False: 114]
+  |  Branch (656:49): [True: 64, False: 114]
   ------------------
-  657|     58|            formatter.Ser(s, elem);
-  658|     58|        }
+  657|     64|            formatter.Ser(s, elem);
+  658|     64|        }
   659|    114|    }
 _ZN16DefaultFormatter3SerI10DataStream7uint256EEvRT_RKT0_:
-  765|     58|    static void Ser(Stream& s, const T& t) { Serialize(s, t); }
+  765|     64|    static void Ser(Stream& s, const T& t) { Serialize(s, t); }
 sv2_messages.cpp:_ZL5UsingI15VectorFormatterI16DefaultFormatterERKNSt3__16vectorI7uint256NS3_9allocatorIS5_EEEEE7WrapperIT_RT0_EOSD_:
   488|    114|static inline Wrapper<Formatter, T&> Using(T&& t) { return Wrapper<Formatter, T&>(t); }
 _ZN7WrapperI15VectorFormatterI16DefaultFormatterERKNSt3__16vectorI7uint256NS3_9allocatorIS5_EEEEEC2ESA_:
@@ -901,11 +901,11 @@ _Z15ser_writedata32I10DataStreamEvRT_j:
    66|    570|    s.write(std::as_bytes(std::span{&obj, 1}));
    67|    570|}
 _Z9SerializeI10DataStream7uint256Q12SerializableIT0_T_EEvRS3_RKS2_:
-  744|     58|{
-  745|     58|    a.Serialize(os);
-  746|     58|}
+  744|     64|{
+  745|     64|    a.Serialize(os);
+  746|     64|}
 _Z9SerializeI10DataStreamTk9BasicByteKhLm32EEvRT_NSt3__14spanIT0_XT1_EEE:
-  257|     58|template <typename Stream, BasicByte B, size_t N> void Serialize(Stream& s, std::span<B, N> span)      { s.write(std::as_bytes(span)); }
+  257|     64|template <typename Stream, BasicByte B, size_t N> void Serialize(Stream& s, std::span<B, N> span)      { s.write(std::as_bytes(span)); }
 _Z11UnserializeI10DataStreamEvRT_Rj:
   267|    228|template <typename Stream> void Unserialize(Stream& s, uint32_t& a)  { a = ser_readdata32(s); }
 _Z14ser_readdata32I10DataStreamEjRT_:
@@ -915,10 +915,10 @@ _Z14ser_readdata32I10DataStreamEjRT_:
    94|    228|    return le32toh_internal(obj);
    95|    228|}
 _Z6AsBaseI9prevectorILj36EhjiE7CScriptERKT_RKT0_:
-  140|    285|{
-  141|    285|    static_assert(std::is_base_of_v<Out, In>);
-  142|    285|    return x;
-  143|    285|}
+  140|    287|{
+  141|    287|    static_assert(std::is_base_of_v<Out, In>);
+  142|    287|    return x;
+  143|    287|}
 
 _Z12MakeByteSpanI7uint256EDaRKT_:
    85|    114|{
@@ -929,11 +929,11 @@ _Z12MakeByteSpanINSt3__16vectorIhNS0_9allocatorIhEEEEEDaRKT_:
    86|     64|    return std::as_bytes(std::span{v});
    87|     64|}
 _Z12MakeByteSpanI9prevectorILj36EhjiEEDaRKT_:
-   85|    142|{
-   86|    142|    return std::as_bytes(std::span{v});
-   87|    142|}
+   85|    147|{
+   86|    147|    return std::as_bytes(std::span{v});
+   87|    147|}
 _Z9UCharCastPKSt4byte:
-  102|    922|inline const unsigned char* UCharCast(const std::byte* c) { return reinterpret_cast<const unsigned char*>(c); }
+  102|    938|inline const unsigned char* UCharCast(const std::byte* c) { return reinterpret_cast<const unsigned char*>(c); }
 
 _ZN10DataStreamlsImEERS_RKT_:
   242|    228|    {
@@ -946,35 +946,35 @@ _ZN10DataStreamrsIRmEERS_OT_:
   251|    114|        return (*this);
   252|    114|    }
 _ZN12VectorWriterC2ERNSt3__16vectorIhNS0_9allocatorIhEEEEm:
-   42|    171|    VectorWriter(std::vector<unsigned char>& vchDataIn, size_t nPosIn) : vchData{vchDataIn}, nPos{nPosIn}
-   43|    171|    {
-   44|    171|        if(nPos > vchData.size())
+   42|    173|    VectorWriter(std::vector<unsigned char>& vchDataIn, size_t nPosIn) : vchData{vchDataIn}, nPos{nPosIn}
+   43|    173|    {
+   44|    173|        if(nPos > vchData.size())
   ------------------
-  |  Branch (44:12): [True: 0, False: 171]
+  |  Branch (44:12): [True: 0, False: 173]
   ------------------
    45|      0|            vchData.resize(nPos);
-   46|    171|    }
+   46|    173|    }
 _ZN12VectorWriter5writeENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-   57|    461|    {
-   58|    461|        assert(nPos <= vchData.size());
+   57|    469|    {
+   58|    469|        assert(nPos <= vchData.size());
   ------------------
-  |  Branch (58:9): [True: 461, False: 0]
+  |  Branch (58:9): [True: 469, False: 0]
   ------------------
-   59|    461|        size_t nOverwrite = std::min(src.size(), vchData.size() - nPos);
-   60|    461|        if (nOverwrite) {
+   59|    469|        size_t nOverwrite = std::min(src.size(), vchData.size() - nPos);
+   60|    469|        if (nOverwrite) {
   ------------------
-  |  Branch (60:13): [True: 0, False: 461]
+  |  Branch (60:13): [True: 0, False: 469]
   ------------------
    61|      0|            memcpy(vchData.data() + nPos, src.data(), nOverwrite);
    62|      0|        }
-   63|    461|        if (nOverwrite < src.size()) {
+   63|    469|        if (nOverwrite < src.size()) {
   ------------------
-  |  Branch (63:13): [True: 461, False: 0]
+  |  Branch (63:13): [True: 469, False: 0]
   ------------------
-   64|    461|            vchData.insert(vchData.end(), UCharCast(src.data()) + nOverwrite, UCharCast(src.data() + src.size()));
-   65|    461|        }
-   66|    461|        nPos += src.size();
-   67|    461|    }
+   64|    469|            vchData.insert(vchData.end(), UCharCast(src.data()) + nOverwrite, UCharCast(src.data() + src.size()));
+   65|    469|        }
+   66|    469|        nPos += src.size();
+   67|    469|    }
 _ZN10DataStreamlsIN4node17Sv2NewTemplateMsgEEERS_RKT_:
   242|    114|    {
   243|    114|        ::Serialize(*this, obj);
@@ -991,10 +991,10 @@ _ZN10DataStreamlsI7CScriptEERS_RKT_:
   244|    114|        return (*this);
   245|    114|    }
 _ZN12VectorWriterC2IJRK6CTxOutEEERNSt3__16vectorIhNS4_9allocatorIhEEEEmDpOT_:
-   52|    171|    VectorWriter(std::vector<unsigned char>& vchDataIn, size_t nPosIn, Args&&... args) : VectorWriter{vchDataIn, nPosIn}
-   53|    171|    {
-   54|    171|        ::SerializeMany(*this, std::forward<Args>(args)...);
-   55|    171|    }
+   52|    173|    VectorWriter(std::vector<unsigned char>& vchDataIn, size_t nPosIn, Args&&... args) : VectorWriter{vchDataIn, nPosIn}
+   53|    173|    {
+   54|    173|        ::SerializeMany(*this, std::forward<Args>(args)...);
+   55|    173|    }
 _ZN10DataStreamlsINSt3__16vectorI7uint256NS1_9allocatorIS3_EEEEEERS_RKT_:
   242|    114|    {
   243|    114|        ::Serialize(*this, obj);
@@ -1013,20 +1013,20 @@ _ZN10DataStreamlsItEERS_RKT_:
   244|    114|        return (*this);
   245|    114|    }
 _ZN10DataStream5writeENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-  235|  1.39k|    {
+  235|  1.40k|    {
   236|       |        // Write to the end of the buffer
-  237|  1.39k|        vch.insert(vch.end(), src.begin(), src.end());
-  238|  1.39k|    }
+  237|  1.40k|        vch.insert(vch.end(), src.begin(), src.end());
+  238|  1.40k|    }
 _ZN10DataStreamlsIjEERS_RKT_:
   242|    570|    {
   243|    570|        ::Serialize(*this, obj);
   244|    570|        return (*this);
   245|    570|    }
 _ZN10DataStreamlsINSt3__14spanIKhLm32EEEEERS_RKT_:
-  242|     58|    {
-  243|     58|        ::Serialize(*this, obj);
-  244|     58|        return (*this);
-  245|     58|    }
+  242|     64|    {
+  243|     64|        ::Serialize(*this, obj);
+  244|     64|        return (*this);
+  245|     64|    }
 _ZN10DataStream4readENSt3__14spanISt4byteLm18446744073709551615EEE:
   202|    456|    {
   203|    456|        if (dst.size() == 0) return;
@@ -1072,26 +1072,26 @@ random.cpp:_ZN16secure_allocatorIN12_GLOBAL__N_18RNGStateEE10deallocateEPS1_m:
    42|      2|    }
 
 _ZN25zero_after_free_allocatorISt4byteE10deallocateEPS0_m:
-   30|    557|    {
-   31|    557|        if (p != nullptr)
+   30|    558|    {
+   31|    558|        if (p != nullptr)
   ------------------
-  |  Branch (31:13): [True: 557, False: 0]
+  |  Branch (31:13): [True: 558, False: 0]
   ------------------
-   32|    557|            memory_cleanse(p, sizeof(T) * n);
-   33|    557|        std::allocator<T>{}.deallocate(p, n);
-   34|    557|    }
+   32|    558|            memory_cleanse(p, sizeof(T) * n);
+   33|    558|        std::allocator<T>{}.deallocate(p, n);
+   34|    558|    }
 _ZN25zero_after_free_allocatorISt4byteE8allocateEm:
-   25|    557|    {
-   26|    557|        return std::allocator<T>{}.allocate(n);
-   27|    557|    }
+   25|    558|    {
+   26|    558|        return std::allocator<T>{}.allocate(n);
+   27|    558|    }
 
 _Z14memory_cleansePvm:
-   15|    797|{
+   15|    798|{
    16|       |#if defined(WIN32)
    17|       |    /* SecureZeroMemory is guaranteed not to be optimized out. */
    18|       |    SecureZeroMemory(ptr, len);
    19|       |#else
-   20|    797|    std::memset(ptr, 0, len);
+   20|    798|    std::memset(ptr, 0, len);
    21|       |
    22|       |    /* Memory barrier that scares the compiler away from optimizing out the memset.
    23|       |     *
@@ -1104,9 +1104,9 @@ _Z14memory_cleansePvm:
    30|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
    31|       |     * Yang et al. (USENIX Security 2017) for more background.
    32|       |     */
-   33|    797|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-   34|    797|#endif
-   35|    797|}
+   33|    798|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+   34|    798|#endif
+   35|    798|}
 
 _ZN5ArenaD2Ev:
    48|      2|Arena::~Arena() = default;
@@ -1231,12 +1231,12 @@ _ZNK4node17Sv2NewTemplateMsg9SerializeI10DataStreamEEvRT_:
   |  Branch (338:13): [True: 64, False: 50]
   ------------------
   339|     64|            std::vector<uint8_t> outputs_bytes;
-  340|    171|            for (const auto& output : m_coinbase_tx_outputs) {
+  340|    173|            for (const auto& output : m_coinbase_tx_outputs) {
   ------------------
-  |  Branch (340:37): [True: 171, False: 64]
+  |  Branch (340:37): [True: 173, False: 64]
   ------------------
-  341|    171|                VectorWriter{outputs_bytes, outputs_bytes.size(), output};
-  342|    171|            }
+  341|    173|                VectorWriter{outputs_bytes, outputs_bytes.size(), output};
+  342|    173|            }
   343|       |
   344|     64|            LogPrintLevel(BCLog::SV2, BCLog::Level::Trace, "Serialized %zu coinbase output(s), total size: %zu bytes\n",
   ------------------
@@ -1349,13 +1349,13 @@ _ZN10UniqueLockI14AnnotatedMixinINSt3__15mutexEEED2Ev:
   195|    114|    }
 
 _ZN18FuzzedDataProvider12ConsumeBytesIhEENSt3__16vectorIT_NS1_9allocatorIS3_EEEEm:
-  109|    343|std::vector<T> FuzzedDataProvider::ConsumeBytes(size_t num_bytes) {
-  110|    343|  num_bytes = std::min(num_bytes, remaining_bytes_);
-  111|    343|  return ConsumeBytes<T>(num_bytes, num_bytes);
-  112|    343|}
+  109|    351|std::vector<T> FuzzedDataProvider::ConsumeBytes(size_t num_bytes) {
+  110|    351|  num_bytes = std::min(num_bytes, remaining_bytes_);
+  111|    351|  return ConsumeBytes<T>(num_bytes, num_bytes);
+  112|    351|}
 _ZN18FuzzedDataProvider12ConsumeBytesIhEENSt3__16vectorIT_NS1_9allocatorIS3_EEEEmm:
-  353|    343|std::vector<T> FuzzedDataProvider::ConsumeBytes(size_t size, size_t num_bytes) {
-  354|    343|  static_assert(sizeof(T) == sizeof(uint8_t), "Incompatible data type.");
+  353|    351|std::vector<T> FuzzedDataProvider::ConsumeBytes(size_t size, size_t num_bytes) {
+  354|    351|  static_assert(sizeof(T) == sizeof(uint8_t), "Incompatible data type.");
   355|       |
   356|       |  // The point of using the size-based constructor below is to increase the
   357|       |  // odds of having a vector object with capacity being equal to the length.
@@ -1363,42 +1363,42 @@ _ZN18FuzzedDataProvider12ConsumeBytesIhEENSt3__16vectorIT_NS1_9allocatorIS3_EEEE
   359|       |  // libstdc++ allocate the requested number of bytes in that constructor,
   360|       |  // which seems to be a natural choice for other implementations as well.
   361|       |  // To increase the odds even more, we also call |shrink_to_fit| below.
-  362|    343|  std::vector<T> result(size);
-  363|    343|  if (size == 0) {
+  362|    351|  std::vector<T> result(size);
+  363|    351|  if (size == 0) {
   ------------------
-  |  Branch (363:7): [True: 143, False: 200]
+  |  Branch (363:7): [True: 140, False: 211]
   ------------------
-  364|    143|    if (num_bytes != 0)
+  364|    140|    if (num_bytes != 0)
   ------------------
-  |  Branch (364:9): [True: 0, False: 143]
+  |  Branch (364:9): [True: 0, False: 140]
   ------------------
   365|      0|      abort();
-  366|    143|    return result;
-  367|    143|  }
+  366|    140|    return result;
+  367|    140|  }
   368|       |
-  369|    200|  CopyAndAdvance(result.data(), num_bytes);
+  369|    211|  CopyAndAdvance(result.data(), num_bytes);
   370|       |
   371|       |  // Even though |shrink_to_fit| is also implementation specific, we expect it
   372|       |  // to provide an additional assurance in case vector's constructor allocated
   373|       |  // a buffer which is larger than the actual amount of data we put inside it.
-  374|    200|  result.shrink_to_fit();
-  375|    200|  return result;
-  376|    343|}
+  374|    211|  result.shrink_to_fit();
+  375|    211|  return result;
+  376|    351|}
 _ZN18FuzzedDataProviderC2EPKhm:
    37|    114|      : data_ptr_(data), remaining_bytes_(size) {}
 _ZN18FuzzedDataProvider15remaining_bytesEv:
-   85|    266|  size_t remaining_bytes() { return remaining_bytes_; }
+   85|    275|  size_t remaining_bytes() { return remaining_bytes_; }
 _ZN18FuzzedDataProvider7AdvanceEm:
-  344|    200|inline void FuzzedDataProvider::Advance(size_t num_bytes) {
-  345|    200|  if (num_bytes > remaining_bytes_)
+  344|    211|inline void FuzzedDataProvider::Advance(size_t num_bytes) {
+  345|    211|  if (num_bytes > remaining_bytes_)
   ------------------
-  |  Branch (345:7): [True: 0, False: 200]
+  |  Branch (345:7): [True: 0, False: 211]
   ------------------
   346|      0|    abort();
   347|       |
-  348|    200|  data_ptr_ += num_bytes;
-  349|    200|  remaining_bytes_ -= num_bytes;
-  350|    200|}
+  348|    211|  data_ptr_ += num_bytes;
+  349|    211|  remaining_bytes_ -= num_bytes;
+  350|    211|}
 _ZN18FuzzedDataProvider11ConsumeBoolEv:
   289|    114|inline bool FuzzedDataProvider::ConsumeBool() {
   290|    114|  return 1 & ConsumeIntegral<uint8_t>();
@@ -1454,34 +1454,34 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeIhEET_S1_S1_:
   234|    114|  return static_cast<T>(static_cast<uint64_t>(min) + result);
   235|    114|}
 _ZN18FuzzedDataProvider14CopyAndAdvanceEPvm:
-  339|    200|                                               size_t num_bytes) {
-  340|    200|  std::memcpy(destination, data_ptr_, num_bytes);
-  341|    200|  Advance(num_bytes);
-  342|    200|}
+  339|    211|                                               size_t num_bytes) {
+  340|    211|  std::memcpy(destination, data_ptr_, num_bytes);
+  341|    211|  Advance(num_bytes);
+  342|    211|}
 _ZN18FuzzedDataProvider22ConsumeIntegralInRangeImEET_S1_S1_:
-  205|    627|T FuzzedDataProvider::ConsumeIntegralInRange(T min, T max) {
-  206|    627|  static_assert(std::is_integral_v<T>, "An integral type is required.");
-  207|    627|  static_assert(sizeof(T) <= sizeof(uint64_t), "Unsupported integral type.");
+  205|    629|T FuzzedDataProvider::ConsumeIntegralInRange(T min, T max) {
+  206|    629|  static_assert(std::is_integral_v<T>, "An integral type is required.");
+  207|    629|  static_assert(sizeof(T) <= sizeof(uint64_t), "Unsupported integral type.");
   208|       |
-  209|    627|  if (min > max)
+  209|    629|  if (min > max)
   ------------------
-  |  Branch (209:7): [True: 0, False: 627]
+  |  Branch (209:7): [True: 0, False: 629]
   ------------------
   210|      0|    abort();
   211|       |
   212|       |  // Use the biggest type possible to hold the range and the result.
-  213|    627|  uint64_t range = static_cast<uint64_t>(max) - static_cast<uint64_t>(min);
-  214|    627|  uint64_t result = 0;
-  215|    627|  size_t offset = 0;
+  213|    629|  uint64_t range = static_cast<uint64_t>(max) - static_cast<uint64_t>(min);
+  214|    629|  uint64_t result = 0;
+  215|    629|  size_t offset = 0;
   216|       |
-  217|  2.42k|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
+  217|  2.43k|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
   ------------------
-  |  Branch (217:10): [True: 2.23k, False: 189]
-  |  Branch (217:43): [True: 1.98k, False: 256]
+  |  Branch (217:10): [True: 2.24k, False: 189]
+  |  Branch (217:43): [True: 1.98k, False: 261]
   ------------------
   218|  1.98k|         remaining_bytes_ != 0) {
   ------------------
-  |  Branch (218:10): [True: 1.79k, False: 182]
+  |  Branch (218:10): [True: 1.80k, False: 179]
   ------------------
   219|       |    // Pull bytes off the end of the seed data. Experimentally, this seems to
   220|       |    // allow the fuzzer to more easily explore the input space. This makes
@@ -1489,20 +1489,20 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeImEET_S1_S1_:
   222|       |    // and this data is often used to encode length of data read by
   223|       |    // |ConsumeBytes|. Separating out read lengths makes it easier modify the
   224|       |    // contents of the data that is actually read.
-  225|  1.79k|    --remaining_bytes_;
-  226|  1.79k|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
-  227|  1.79k|    offset += CHAR_BIT;
-  228|  1.79k|  }
+  225|  1.80k|    --remaining_bytes_;
+  226|  1.80k|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
+  227|  1.80k|    offset += CHAR_BIT;
+  228|  1.80k|  }
   229|       |
   230|       |  // Avoid division by 0, in case |range + 1| results in overflow.
-  231|    627|  if (range != std::numeric_limits<decltype(range)>::max())
+  231|    629|  if (range != std::numeric_limits<decltype(range)>::max())
   ------------------
-  |  Branch (231:7): [True: 399, False: 228]
+  |  Branch (231:7): [True: 401, False: 228]
   ------------------
-  232|    399|    result = result % (range + 1);
+  232|    401|    result = result % (range + 1);
   233|       |
-  234|    627|  return static_cast<T>(static_cast<uint64_t>(min) + result);
-  235|    627|}
+  234|    629|  return static_cast<T>(static_cast<uint64_t>(min) + result);
+  235|    629|}
 _ZN18FuzzedDataProvider22ConsumeIntegralInRangeIjEET_S1_S1_:
   205|    570|T FuzzedDataProvider::ConsumeIntegralInRange(T min, T max) {
   206|    570|  static_assert(std::is_integral_v<T>, "An integral type is required.");
@@ -1521,12 +1521,12 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeIjEET_S1_S1_:
   216|       |
   217|  1.92k|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
   ------------------
-  |  Branch (217:10): [True: 1.61k, False: 309]
+  |  Branch (217:10): [True: 1.61k, False: 310]
   |  Branch (217:43): [True: 1.53k, False: 79]
   ------------------
   218|  1.53k|         remaining_bytes_ != 0) {
   ------------------
-  |  Branch (218:10): [True: 1.35k, False: 182]
+  |  Branch (218:10): [True: 1.35k, False: 181]
   ------------------
   219|       |    // Pull bytes off the end of the seed data. Experimentally, this seems to
   220|       |    // allow the fuzzer to more easily explore the input space. This makes
@@ -1559,34 +1559,34 @@ _ZN18FuzzedDataProvider15ConsumeIntegralImEET_v:
   197|    228|                                std::numeric_limits<T>::max());
   198|    228|}
 _ZN18FuzzedDataProvider15ConsumeIntegralIlEET_v:
-  195|    171|template <typename T> T FuzzedDataProvider::ConsumeIntegral() {
-  196|    171|  return ConsumeIntegralInRange(std::numeric_limits<T>::min(),
-  197|    171|                                std::numeric_limits<T>::max());
-  198|    171|}
+  195|    173|template <typename T> T FuzzedDataProvider::ConsumeIntegral() {
+  196|    173|  return ConsumeIntegralInRange(std::numeric_limits<T>::min(),
+  197|    173|                                std::numeric_limits<T>::max());
+  198|    173|}
 _ZN18FuzzedDataProvider22ConsumeIntegralInRangeIlEET_S1_S1_:
-  205|    171|T FuzzedDataProvider::ConsumeIntegralInRange(T min, T max) {
-  206|    171|  static_assert(std::is_integral_v<T>, "An integral type is required.");
-  207|    171|  static_assert(sizeof(T) <= sizeof(uint64_t), "Unsupported integral type.");
+  205|    173|T FuzzedDataProvider::ConsumeIntegralInRange(T min, T max) {
+  206|    173|  static_assert(std::is_integral_v<T>, "An integral type is required.");
+  207|    173|  static_assert(sizeof(T) <= sizeof(uint64_t), "Unsupported integral type.");
   208|       |
-  209|    171|  if (min > max)
+  209|    173|  if (min > max)
   ------------------
-  |  Branch (209:7): [True: 0, False: 171]
+  |  Branch (209:7): [True: 0, False: 173]
   ------------------
   210|      0|    abort();
   211|       |
   212|       |  // Use the biggest type possible to hold the range and the result.
-  213|    171|  uint64_t range = static_cast<uint64_t>(max) - static_cast<uint64_t>(min);
-  214|    171|  uint64_t result = 0;
-  215|    171|  size_t offset = 0;
+  213|    173|  uint64_t range = static_cast<uint64_t>(max) - static_cast<uint64_t>(min);
+  214|    173|  uint64_t result = 0;
+  215|    173|  size_t offset = 0;
   216|       |
-  217|  1.36k|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
+  217|  1.39k|  while (offset < sizeof(T) * CHAR_BIT && (range >> offset) > 0 &&
   ------------------
-  |  Branch (217:10): [True: 1.22k, False: 145]
-  |  Branch (217:43): [True: 1.22k, False: 0]
+  |  Branch (217:10): [True: 1.24k, False: 149]
+  |  Branch (217:43): [True: 1.24k, False: 0]
   ------------------
-  218|  1.22k|         remaining_bytes_ != 0) {
+  218|  1.24k|         remaining_bytes_ != 0) {
   ------------------
-  |  Branch (218:10): [True: 1.19k, False: 26]
+  |  Branch (218:10): [True: 1.22k, False: 24]
   ------------------
   219|       |    // Pull bytes off the end of the seed data. Experimentally, this seems to
   220|       |    // allow the fuzzer to more easily explore the input space. This makes
@@ -1594,20 +1594,20 @@ _ZN18FuzzedDataProvider22ConsumeIntegralInRangeIlEET_S1_S1_:
   222|       |    // and this data is often used to encode length of data read by
   223|       |    // |ConsumeBytes|. Separating out read lengths makes it easier modify the
   224|       |    // contents of the data that is actually read.
-  225|  1.19k|    --remaining_bytes_;
-  226|  1.19k|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
-  227|  1.19k|    offset += CHAR_BIT;
-  228|  1.19k|  }
+  225|  1.22k|    --remaining_bytes_;
+  226|  1.22k|    result = (result << CHAR_BIT) | data_ptr_[remaining_bytes_];
+  227|  1.22k|    offset += CHAR_BIT;
+  228|  1.22k|  }
   229|       |
   230|       |  // Avoid division by 0, in case |range + 1| results in overflow.
-  231|    171|  if (range != std::numeric_limits<decltype(range)>::max())
+  231|    173|  if (range != std::numeric_limits<decltype(range)>::max())
   ------------------
-  |  Branch (231:7): [True: 0, False: 171]
+  |  Branch (231:7): [True: 0, False: 173]
   ------------------
   232|      0|    result = result % (range + 1);
   233|       |
-  234|    171|  return static_cast<T>(static_cast<uint64_t>(min) + result);
-  235|    171|}
+  234|    173|  return static_cast<T>(static_cast<uint64_t>(min) + result);
+  235|    173|}
 
 _ZN12CheckGlobalsC2Ev:
    56|    114|CheckGlobals::CheckGlobals() : m_impl(std::make_unique<CheckGlobalsImpl>()) {}
@@ -1673,16 +1673,16 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|    114|}
 
 _Z14ConsumeUint256R18FuzzedDataProvider:
-   64|     58|{
-   65|     58|    const std::vector<uint8_t> v256 = provider.ConsumeBytes<uint8_t>(32);
-   66|     58|    if (v256.size() != 32) {
+   64|     64|{
+   65|     64|    const std::vector<uint8_t> v256 = provider.ConsumeBytes<uint8_t>(32);
+   66|     64|    if (v256.size() != 32) {
   ------------------
-  |  Branch (66:9): [True: 0, False: 58]
+  |  Branch (66:9): [True: 0, False: 64]
   ------------------
    67|      0|        return {};
    68|      0|    }
-   69|     58|    return uint256{std::span<const unsigned char>(v256)};
-   70|     58|}
+   69|     64|    return uint256{std::span<const unsigned char>(v256)};
+   70|     64|}
 
 _Z28sv2_new_template_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
   404|    114|{
@@ -1708,17 +1708,17 @@ _Z28sv2_new_template_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
   424|       |    // Generate a small number of coinbase outputs
   425|    114|    uint32_t num_outputs = provider.ConsumeIntegralInRange<uint32_t>(0, 4);
   426|    114|    msg.m_coinbase_tx_outputs_count = num_outputs;
-  427|    285|    for (uint32_t i = 0; i < num_outputs && provider.remaining_bytes() > 0; i++) {
+  427|    287|    for (uint32_t i = 0; i < num_outputs && provider.remaining_bytes() > 0; i++) {
   ------------------
-  |  Branch (427:26): [True: 197, False: 88]
-  |  Branch (427:45): [True: 171, False: 26]
+  |  Branch (427:26): [True: 199, False: 88]
+  |  Branch (427:45): [True: 173, False: 26]
   ------------------
-  428|    171|        CAmount value = provider.ConsumeIntegral<int64_t>();
-  429|    171|        size_t script_len = provider.ConsumeIntegralInRange<size_t>(0, 100);
-  430|    171|        auto script_bytes = provider.ConsumeBytes<uint8_t>(script_len);
-  431|    171|        CScript script(script_bytes.begin(), script_bytes.end());
-  432|    171|        msg.m_coinbase_tx_outputs.emplace_back(value, script);
-  433|    171|    }
+  428|    173|        CAmount value = provider.ConsumeIntegral<int64_t>();
+  429|    173|        size_t script_len = provider.ConsumeIntegralInRange<size_t>(0, 100);
+  430|    173|        auto script_bytes = provider.ConsumeBytes<uint8_t>(script_len);
+  431|    173|        CScript script(script_bytes.begin(), script_bytes.end());
+  432|    173|        msg.m_coinbase_tx_outputs.emplace_back(value, script);
+  433|    173|    }
   434|       |    // Ensure count matches actual vector size
   435|    114|    msg.m_coinbase_tx_outputs_count = static_cast<uint32_t>(msg.m_coinbase_tx_outputs.size());
   436|       |
@@ -1726,13 +1726,13 @@ _Z28sv2_new_template_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
   438|       |
   439|       |    // Generate a small merkle path
   440|    114|    size_t path_len = provider.ConsumeIntegralInRange<size_t>(0, 8);
-  441|    172|    for (size_t i = 0; i < path_len && provider.remaining_bytes() >= 32; i++) {
+  441|    178|    for (size_t i = 0; i < path_len && provider.remaining_bytes() >= 32; i++) {
   ------------------
-  |  Branch (441:24): [True: 69, False: 103]
-  |  Branch (441:40): [True: 58, False: 11]
+  |  Branch (441:24): [True: 76, False: 102]
+  |  Branch (441:40): [True: 64, False: 12]
   ------------------
-  442|     58|        msg.m_merkle_path.push_back(ConsumeUint256(provider));
-  443|     58|    }
+  442|     64|        msg.m_merkle_path.push_back(ConsumeUint256(provider));
+  443|     64|    }
   444|       |
   445|       |    // Serialize
   446|    114|    DataStream ss{};
@@ -1846,19 +1846,19 @@ _ZNK9base_blobILj256EE6GetHexEv:
    18|    114|}
 
 _ZNK9base_blobILj256EE9SerializeI10DataStreamEEvRT_:
-  113|     58|    {
-  114|     58|        s << std::span(m_data);
-  115|     58|    }
+  113|     64|    {
+  114|     64|        s << std::span(m_data);
+  115|     64|    }
 _ZN7uint256C2ENSt3__14spanIKhLm18446744073709551615EEE:
-  203|     58|    constexpr explicit uint256(std::span<const unsigned char> vch) : base_blob<256>(vch) {}
+  203|     64|    constexpr explicit uint256(std::span<const unsigned char> vch) : base_blob<256>(vch) {}
 _ZN9base_blobILj256EEC2ENSt3__14spanIKhLm18446744073709551615EEE:
-   41|     58|    {
-   42|     58|        assert(vch.size() == WIDTH);
+   41|     64|    {
+   42|     64|        assert(vch.size() == WIDTH);
   ------------------
-  |  Branch (42:9): [True: 58, False: 0]
+  |  Branch (42:9): [True: 64, False: 0]
   ------------------
-   43|     58|        std::copy(vch.begin(), vch.end(), m_data.begin());
-   44|     58|    }
+   43|     64|        std::copy(vch.begin(), vch.end(), m_data.begin());
+   44|     64|    }
 _ZN9base_blobILj256EE4sizeEv:
   107|    114|    static constexpr unsigned int size() { return WIDTH; }
 _ZNK9base_blobILj256EE4dataEv:
