@@ -600,12 +600,12 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node28Sv2SetupConnectionSuccessMsgC2Etj:
-  211|      6|    explicit Sv2SetupConnectionSuccessMsg(uint16_t used_version, uint32_t required_flags) : m_used_version{used_version}, m_required_flags{required_flags} {};
+  248|      6|    explicit Sv2SetupConnectionSuccessMsg(uint16_t used_version, uint32_t required_flags) : m_used_version{used_version}, m_required_flags{required_flags} {};
 _ZNK4node28Sv2SetupConnectionSuccessMsg9SerializeI10DataStreamEEvRT_:
-  215|      6|    {
-  216|      6|        s << m_used_version
-  217|      6|          << m_required_flags;
-  218|      6|    }
+  252|      6|    {
+  253|      6|        s << m_used_version
+  254|      6|          << m_required_flags;
+  255|      6|    }
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -851,33 +851,33 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|      6|}
 
 _Z40sv2_setup_connection_success_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  228|      6|{
-  229|      6|    const CheckGlobals check_globals{};
-  230|      6|    SeedRandomStateForTest(SeedRand::ZEROS);
-  231|      6|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  232|       |
-  233|      6|    uint16_t used_version = provider.ConsumeIntegral<uint16_t>();
-  234|      6|    uint32_t flags = provider.ConsumeIntegral<uint32_t>();
+  231|      6|{
+  232|      6|    const CheckGlobals check_globals{};
+  233|      6|    SeedRandomStateForTest(SeedRand::ZEROS);
+  234|      6|    FuzzedDataProvider provider(buffer.data(), buffer.size());
   235|       |
-  236|      6|    Sv2SetupConnectionSuccessMsg msg(used_version, flags);
-  237|       |
-  238|       |    // Serialize
-  239|      6|    DataStream ss{};
-  240|      6|    ss << msg;
-  241|       |
-  242|       |    // Roundtrip: read back serialized fields and verify
-  243|      6|    uint16_t rt_version;
-  244|      6|    uint32_t rt_flags;
-  245|      6|    ss >> rt_version >> rt_flags;
-  246|      6|    assert(rt_version == used_version);
+  236|      6|    uint16_t used_version = provider.ConsumeIntegral<uint16_t>();
+  237|      6|    uint32_t flags = provider.ConsumeIntegral<uint32_t>();
+  238|       |
+  239|      6|    Sv2SetupConnectionSuccessMsg msg(used_version, flags);
+  240|       |
+  241|       |    // Serialize
+  242|      6|    DataStream ss{};
+  243|      6|    ss << msg;
+  244|       |
+  245|       |    // Roundtrip: read back serialized fields and verify
+  246|      6|    uint16_t rt_version;
+  247|      6|    uint32_t rt_flags;
+  248|      6|    ss >> rt_version >> rt_flags;
+  249|      6|    assert(rt_version == used_version);
   ------------------
-  |  Branch (246:5): [True: 6, False: 0]
+  |  Branch (249:5): [True: 6, False: 0]
   ------------------
-  247|      6|    assert(rt_flags == flags);
+  250|      6|    assert(rt_flags == flags);
   ------------------
-  |  Branch (247:5): [True: 6, False: 0]
+  |  Branch (250:5): [True: 6, False: 0]
   ------------------
-  248|      6|}
+  251|      6|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{

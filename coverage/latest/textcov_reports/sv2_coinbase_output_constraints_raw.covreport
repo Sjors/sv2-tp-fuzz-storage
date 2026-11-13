@@ -613,22 +613,22 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node31Sv2CoinbaseOutputConstraintsMsg11UnserializeI10DataStreamEEvRT_:
-  174|     19|    {
-  175|     19|        s >> m_coinbase_output_max_additional_size;
-  176|     19|       try {
-  177|       |            // This field was added to the spec in March 2025.
-  178|       |            // SRI roles before v1.3.0 do not provide it.
-  179|     19|            s >> m_coinbase_output_max_additional_sigops;
-  180|     19|        } catch (...) {
-  181|       |            // Just use the default if it's missing
-  182|      2|            m_coinbase_output_max_additional_sigops = 400;
-  183|      2|        }
-  184|     19|    }
+  211|     19|    {
+  212|     19|        s >> m_coinbase_output_max_additional_size;
+  213|     19|       try {
+  214|       |            // This field was added to the spec in March 2025.
+  215|       |            // SRI roles before v1.3.0 do not provide it.
+  216|     19|            s >> m_coinbase_output_max_additional_sigops;
+  217|     19|        } catch (...) {
+  218|       |            // Just use the default if it's missing
+  219|      2|            m_coinbase_output_max_additional_sigops = 400;
+  220|      2|        }
+  221|     19|    }
 _ZNK4node31Sv2CoinbaseOutputConstraintsMsg9SerializeI10DataStreamEEvRT_:
-  166|      8|    {
-  167|      8|        s << m_coinbase_output_max_additional_size;
-  168|      8|        s << m_coinbase_output_max_additional_sigops;
-  169|      8|    };
+  203|      8|    {
+  204|      8|        s << m_coinbase_output_max_additional_size;
+  205|      8|        s << m_coinbase_output_max_additional_sigops;
+  206|      8|    };
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -771,31 +771,31 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     11|}
 
 _Z47sv2_coinbase_output_constraints_raw_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  482|     11|{
-  483|     11|    const CheckGlobals check_globals{};
-  484|     11|    SeedRandomStateForTest(SeedRand::ZEROS);
-  485|       |
-  486|     11|    DataStream ds{buffer};
-  487|     11|    try {
-  488|     11|        Sv2CoinbaseOutputConstraintsMsg msg;
-  489|     11|        ds >> msg;
-  490|       |
-  491|       |        // If deserialization succeeded, verify roundtrip invariant
-  492|     11|        DataStream ss_rt{};
-  493|     11|        ss_rt << msg;
-  494|     11|        Sv2CoinbaseOutputConstraintsMsg msg_rt;
-  495|     11|        ss_rt >> msg_rt;
-  496|     11|        assert(msg.m_coinbase_output_max_additional_size == msg_rt.m_coinbase_output_max_additional_size);
+  485|     11|{
+  486|     11|    const CheckGlobals check_globals{};
+  487|     11|    SeedRandomStateForTest(SeedRand::ZEROS);
+  488|       |
+  489|     11|    DataStream ds{buffer};
+  490|     11|    try {
+  491|     11|        Sv2CoinbaseOutputConstraintsMsg msg;
+  492|     11|        ds >> msg;
+  493|       |
+  494|       |        // If deserialization succeeded, verify roundtrip invariant
+  495|     11|        DataStream ss_rt{};
+  496|     11|        ss_rt << msg;
+  497|     11|        Sv2CoinbaseOutputConstraintsMsg msg_rt;
+  498|     11|        ss_rt >> msg_rt;
+  499|     11|        assert(msg.m_coinbase_output_max_additional_size == msg_rt.m_coinbase_output_max_additional_size);
   ------------------
-  |  Branch (496:9): [True: 8, False: 3]
+  |  Branch (499:9): [True: 8, False: 3]
   ------------------
-  497|     11|        assert(msg.m_coinbase_output_max_additional_sigops == msg_rt.m_coinbase_output_max_additional_sigops);
+  500|     11|        assert(msg.m_coinbase_output_max_additional_sigops == msg_rt.m_coinbase_output_max_additional_sigops);
   ------------------
-  |  Branch (497:9): [True: 8, False: 0]
+  |  Branch (500:9): [True: 8, False: 0]
   ------------------
-  498|      8|    } catch (const std::ios_base::failure&) {
-  499|      3|    }
-  500|     11|}
+  501|      8|    } catch (const std::ios_base::failure&) {
+  502|      3|    }
+  503|     11|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{

@@ -551,15 +551,15 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node9Sv2NetMsg11UnserializeI10DataStreamEEvRT_:
-  727|     11|    {
-  728|     11|        uint8_t msg_type;
-  729|     11|        s >> msg_type;
-  730|     11|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
-  731|     11|        m_msg.resize(s.size());
-  732|     11|        s.read(MakeWritableByteSpan(m_msg));
-  733|     11|    }
+  761|     11|    {
+  762|     11|        uint8_t msg_type;
+  763|     11|        s >> msg_type;
+  764|     11|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
+  765|     11|        m_msg.resize(s.size());
+  766|     11|        s.read(MakeWritableByteSpan(m_msg));
+  767|     11|    }
 _ZN4node9Sv2NetMsgC2ENS_10Sv2MsgTypeEOKNSt3__16vectorIhNS2_9allocatorIhEEEE:
-  665|     11|    explicit Sv2NetMsg(const Sv2MsgType msg_type, const std::vector<uint8_t>&& msg) : m_msg_type{msg_type}, m_msg{msg} {};
+  699|     11|    explicit Sv2NetMsg(const Sv2MsgType msg_type, const std::vector<uint8_t>&& msg) : m_msg_type{msg_type}, m_msg{msg} {};
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -702,17 +702,17 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     11|}
 
 _Z27sv2_net_msg_raw_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  529|     11|{
-  530|     11|    const CheckGlobals check_globals{};
-  531|     11|    SeedRandomStateForTest(SeedRand::ZEROS);
-  532|       |
-  533|     11|    DataStream ds{buffer};
-  534|     11|    try {
-  535|     11|        Sv2NetMsg msg(Sv2MsgType::SETUP_CONNECTION, {});
-  536|     11|        ds >> msg;
-  537|     11|    } catch (const std::ios_base::failure&) {
-  538|      0|    }
-  539|     11|}
+  532|     11|{
+  533|     11|    const CheckGlobals check_globals{};
+  534|     11|    SeedRandomStateForTest(SeedRand::ZEROS);
+  535|       |
+  536|     11|    DataStream ds{buffer};
+  537|     11|    try {
+  538|     11|        Sv2NetMsg msg(Sv2MsgType::SETUP_CONNECTION, {});
+  539|     11|        ds >> msg;
+  540|     11|    } catch (const std::ios_base::failure&) {
+  541|      0|    }
+  542|     11|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{

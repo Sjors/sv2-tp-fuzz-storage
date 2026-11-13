@@ -352,6 +352,10 @@ _Z14ser_writedata8I10DataStreamEvRT_h:
    55|     13|{
    56|     13|    s.write(std::as_bytes(std::span{&obj, 1}));
    57|     13|}
+sv2_messages.cpp:_ZL5UsingIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE7WrapperIT_RT0_EOSD_:
+  488|     13|static inline Wrapper<Formatter, T&> Using(T&& t) { return Wrapper<Formatter, T&>(t); }
+_ZN7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2ESA_:
+  472|     13|    explicit Wrapper(T obj) : m_object(obj) {}
 _Z13SerializeManyI12VectorWriterJN4node26Sv2SetupConnectionErrorMsgEEEvRT_DpRKT0_:
   986|     13|{
   987|     13|    (::Serialize(s, args), ...);
@@ -367,47 +371,14 @@ _Z15ser_writedata32I12VectorWriterEvRT_j:
    65|     13|    obj = htole32_internal(obj);
    66|     13|    s.write(std::as_bytes(std::span{&obj, 1}));
    67|     13|}
-_Z9SerializeI12VectorWritercEvRT_RKNSt3__112basic_stringIT0_NS3_11char_traitsIS5_EENS3_9allocatorIS5_EEEE:
-  780|     13|{
-  781|     13|    WriteCompactSize(os, str.size());
-  782|     13|    if (!str.empty())
-  ------------------
-  |  Branch (782:9): [True: 9, False: 4]
-  ------------------
-  783|      9|        os.write(MakeByteSpan(str));
-  784|     13|}
-_Z16WriteCompactSizeI12VectorWriterEvRT_m:
-  300|     13|{
-  301|     13|    if (nSize < 253)
-  ------------------
-  |  Branch (301:9): [True: 13, False: 0]
-  ------------------
-  302|     13|    {
-  303|     13|        ser_writedata8(os, nSize);
-  304|     13|    }
-  305|      0|    else if (nSize <= std::numeric_limits<uint16_t>::max())
-  ------------------
-  |  Branch (305:14): [True: 0, False: 0]
-  ------------------
-  306|      0|    {
-  307|      0|        ser_writedata8(os, 253);
-  308|      0|        ser_writedata16(os, nSize);
-  309|      0|    }
-  310|      0|    else if (nSize <= std::numeric_limits<unsigned int>::max())
-  ------------------
-  |  Branch (310:14): [True: 0, False: 0]
-  ------------------
-  311|      0|    {
-  312|      0|        ser_writedata8(os, 254);
-  313|      0|        ser_writedata32(os, nSize);
-  314|      0|    }
-  315|      0|    else
-  316|      0|    {
-  317|      0|        ser_writedata8(os, 255);
-  318|      0|        ser_writedata64(os, nSize);
-  319|      0|    }
-  320|     13|    return;
-  321|     13|}
+_Z9SerializeI12VectorWriter7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEEQ12SerializableIT0_T_EEvRSF_RKSE_:
+  744|     13|{
+  745|     13|    a.Serialize(os);
+  746|     13|}
+_ZNK7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE9SerializeI12VectorWriterEEvRT_:
+  473|     13|    template<typename Stream> void Serialize(Stream &s) const { Formatter().Ser(s, m_object); }
+_Z9SerializeI12VectorWriterEvRT_h:
+  247|     13|template <typename Stream> void Serialize(Stream& s, uint8_t a)   { ser_writedata8(s, a); }
 _Z14ser_writedata8I12VectorWriterEvRT_h:
    55|     13|{
    56|     13|    s.write(std::as_bytes(std::span{&obj, 1}));
@@ -490,7 +461,12 @@ _ZN12VectorWriter5writeENSt3__14spanIKSt4byteLm18446744073709551615EEE:
    65|     35|        }
    66|     35|        nPos += src.size();
    67|     35|    }
-_ZN12VectorWriterlsINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEERS_RKT_:
+_ZN12VectorWriterlsI7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEEEERS_RKT_:
+   70|     13|    {
+   71|     13|        ::Serialize(*this, obj);
+   72|     13|        return (*this);
+   73|     13|    }
+_ZN12VectorWriterlsIhEERS_RKT_:
    70|     13|    {
    71|     13|        ::Serialize(*this, obj);
    72|     13|        return (*this);
@@ -694,43 +670,55 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node26Sv2SetupConnectionErrorMsgC2EjONSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE:
-  236|     13|    explicit Sv2SetupConnectionErrorMsg(uint32_t flags, std::string&& error_code) : m_flags{flags}, m_error_code{std::move(error_code)} {};
+  273|     13|    explicit Sv2SetupConnectionErrorMsg(uint32_t flags, std::string&& error_code) : m_flags{flags}, m_error_code{std::move(error_code)} {};
 _ZN4node9Sv2NetMsgcvNS_12Sv2NetHeaderEEv:
-  718|     13|    {
-  719|     13|        Sv2NetHeader hdr;
-  720|     13|        hdr.m_msg_type = m_msg_type;
-  721|     13|        hdr.m_msg_len = static_cast<uint32_t>(m_msg.size());
-  722|     13|        return hdr;
-  723|     13|    }
+  752|     13|    {
+  753|     13|        Sv2NetHeader hdr;
+  754|     13|        hdr.m_msg_type = m_msg_type;
+  755|     13|        hdr.m_msg_len = static_cast<uint32_t>(m_msg.size());
+  756|     13|        return hdr;
+  757|     13|    }
 _ZN4node9Sv2NetMsg4sizeEv:
-  715|     13|    size_t size() { return m_msg.size(); }
+  749|     13|    size_t size() { return m_msg.size(); }
 _ZN4node9Sv2NetMsgC2INS_26Sv2SetupConnectionErrorMsgEEERKT_:
-  707|     13|    {
-  708|     13|        m_msg_type = msg.m_msg_type;
-  709|       |
-  710|       |        // Serialize the sv2 message.
-  711|     13|        VectorWriter{m_msg, 0, msg};
-  712|     13|    }
+  741|     13|    {
+  742|     13|        m_msg_type = msg.m_msg_type;
+  743|       |
+  744|       |        // Serialize the sv2 message.
+  745|     13|        VectorWriter{m_msg, 0, msg};
+  746|     13|    }
 _ZNK4node26Sv2SetupConnectionErrorMsg9SerializeI12VectorWriterEEvRT_:
-  240|     13|    {
-  241|     13|        s << m_flags
-  242|     13|          << m_error_code;
-  243|     13|    }
+  277|     13|    {
+  278|     13|        s << m_flags
+  279|     13|          << Using<Sv2Bytes255Formatter>(m_error_code);
+  280|     13|    }
+_ZN4node20Sv2Bytes255Formatter3SerI12VectorWriterNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEvRT_RKT0_:
+   47|     13|    {
+   48|     13|        if (v.size() > 255) throw std::ios_base::failure("B0_255 length limit exceeded");
+  ------------------
+  |  Branch (48:13): [True: 0, False: 13]
+  ------------------
+   49|     13|        s << static_cast<uint8_t>(v.size());
+   50|     13|        if (!v.empty()) s.write(MakeByteSpan(v));
+  ------------------
+  |  Branch (50:13): [True: 9, False: 4]
+  ------------------
+   51|     13|    }
 _ZNK4node9Sv2NetMsg9SerializeI10DataStreamEEvRT_:
-  737|     13|    {
-  738|     13|        s << static_cast<uint8_t>(m_msg_type);
-  739|     13|        s.write(MakeByteSpan(m_msg));
-  740|     13|    }
+  771|     13|    {
+  772|     13|        s << static_cast<uint8_t>(m_msg_type);
+  773|     13|        s.write(MakeByteSpan(m_msg));
+  774|     13|    }
 _ZN4node9Sv2NetMsg11UnserializeI10DataStreamEEvRT_:
-  727|     13|    {
-  728|     13|        uint8_t msg_type;
-  729|     13|        s >> msg_type;
-  730|     13|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
-  731|     13|        m_msg.resize(s.size());
-  732|     13|        s.read(MakeWritableByteSpan(m_msg));
-  733|     13|    }
+  761|     13|    {
+  762|     13|        uint8_t msg_type;
+  763|     13|        s >> msg_type;
+  764|     13|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
+  765|     13|        m_msg.resize(s.size());
+  766|     13|        s.read(MakeWritableByteSpan(m_msg));
+  767|     13|    }
 _ZN4node9Sv2NetMsgC2ENS_10Sv2MsgTypeEOKNSt3__16vectorIhNS2_9allocatorIhEEEE:
-  665|     13|    explicit Sv2NetMsg(const Sv2MsgType msg_type, const std::vector<uint8_t>&& msg) : m_msg_type{msg_type}, m_msg{msg} {};
+  699|     13|    explicit Sv2NetMsg(const Sv2MsgType msg_type, const std::vector<uint8_t>&& msg) : m_msg_type{msg_type}, m_msg{msg} {};
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -993,46 +981,46 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     13|}
 
 _Z23sv2_net_msg_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  372|     13|{
-  373|     13|    const CheckGlobals check_globals{};
-  374|     13|    SeedRandomStateForTest(SeedRand::ZEROS);
-  375|     13|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  376|       |
-  377|       |    // Create a simple message to wrap
-  378|     13|    uint32_t flags = provider.ConsumeIntegral<uint32_t>();
-  379|     13|    std::string error_code = FuzzedString(provider, 50);
-  380|       |
-  381|     13|    Sv2SetupConnectionErrorMsg inner_msg(flags, std::move(error_code));
-  382|     13|    Sv2NetMsg net_msg(inner_msg);
+  375|     13|{
+  376|     13|    const CheckGlobals check_globals{};
+  377|     13|    SeedRandomStateForTest(SeedRand::ZEROS);
+  378|     13|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  379|       |
+  380|       |    // Create a simple message to wrap
+  381|     13|    uint32_t flags = provider.ConsumeIntegral<uint32_t>();
+  382|     13|    std::string error_code = FuzzedString(provider, 50);
   383|       |
-  384|       |    // Verify message type
-  385|     13|    assert(net_msg.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
-  ------------------
-  |  Branch (385:5): [True: 13, False: 0]
-  ------------------
+  384|     13|    Sv2SetupConnectionErrorMsg inner_msg(flags, std::move(error_code));
+  385|     13|    Sv2NetMsg net_msg(inner_msg);
   386|       |
-  387|       |    // Convert to header
-  388|     13|    Sv2NetHeader hdr = net_msg;
-  389|     13|    assert(hdr.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
+  387|       |    // Verify message type
+  388|     13|    assert(net_msg.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
   ------------------
-  |  Branch (389:5): [True: 13, False: 0]
+  |  Branch (388:5): [True: 13, False: 0]
   ------------------
-  390|     13|    assert(hdr.m_msg_len == net_msg.size());
+  389|       |
+  390|       |    // Convert to header
+  391|     13|    Sv2NetHeader hdr = net_msg;
+  392|     13|    assert(hdr.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
   ------------------
-  |  Branch (390:5): [True: 13, False: 0]
+  |  Branch (392:5): [True: 13, False: 0]
   ------------------
-  391|       |
-  392|       |    // Serialize and deserialize
-  393|     13|    DataStream ss{};
-  394|     13|    ss << net_msg;
-  395|       |
-  396|     13|    Sv2NetMsg net_msg_rt(Sv2MsgType::SETUP_CONNECTION_ERROR, {});
-  397|     13|    ss >> net_msg_rt;
-  398|       |    assert(net_msg_rt.m_msg_type == net_msg.m_msg_type);
+  393|     13|    assert(hdr.m_msg_len == net_msg.size());
   ------------------
-  |  Branch (398:5): [True: 13, False: 0]
+  |  Branch (393:5): [True: 13, False: 0]
   ------------------
-  399|     13|}
+  394|       |
+  395|       |    // Serialize and deserialize
+  396|     13|    DataStream ss{};
+  397|     13|    ss << net_msg;
+  398|       |
+  399|     13|    Sv2NetMsg net_msg_rt(Sv2MsgType::SETUP_CONNECTION_ERROR, {});
+  400|     13|    ss >> net_msg_rt;
+  401|       |    assert(net_msg_rt.m_msg_type == net_msg.m_msg_type);
+  ------------------
+  |  Branch (401:5): [True: 13, False: 0]
+  ------------------
+  402|     13|}
 sv2_messages.cpp:_ZN12_GLOBAL__N_112FuzzedStringER18FuzzedDataProviderm:
    37|     13|{
    38|     13|    size_t len = provider.ConsumeIntegralInRange<size_t>(0, max_len);

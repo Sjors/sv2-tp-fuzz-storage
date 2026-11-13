@@ -25,16 +25,6 @@ _Z16le64toh_internalm:
    70|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_64(little_endian_64bits);
    71|     20|        else return little_endian_64bits;
    72|     20|}
-_Z16htole16_internalt:
-   19|      1|{
-   20|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_16(host_16bits);
-   21|      1|        else return host_16bits;
-   22|      1|}
-_Z16le16toh_internalt:
-   29|      1|{
-   30|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_16(little_endian_16bits);
-   31|      1|        else return little_endian_16bits;
-   32|      1|}
 _Z16htole64_internalm:
    59|     20|{
    60|       |    if constexpr (std::endian::native == std::endian::big) return internal_bswap_64(host_64bits);
@@ -353,150 +343,59 @@ secp256k1.c:secp256k1_memzero_explicit:
   257|       |#endif
   258|      6|}
 
+_Z11UnserializeI10DataStreamEvRT_Rh:
+  263|     20|template <typename Stream> void Unserialize(Stream& s, uint8_t& a)   { a = ser_readdata8(s); }
 _Z13ser_readdata8I10DataStreamEhRT_:
    79|     20|{
    80|     20|    uint8_t obj;
    81|     20|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
    82|     20|    return obj;
    83|     20|}
+_Z9SerializeI10DataStreamEvRT_h:
+  247|     20|template <typename Stream> void Serialize(Stream& s, uint8_t a)   { ser_writedata8(s, a); }
 _Z14ser_writedata8I10DataStreamEvRT_h:
    55|     20|{
    56|     20|    s.write(std::as_bytes(std::span{&obj, 1}));
    57|     20|}
-_Z9SerializeI10DataStreamcEvRT_RKNSt3__112basic_stringIT0_NS3_11char_traitsIS5_EENS3_9allocatorIS5_EEEE:
-  780|     20|{
-  781|     20|    WriteCompactSize(os, str.size());
-  782|     20|    if (!str.empty())
-  ------------------
-  |  Branch (782:9): [True: 16, False: 4]
-  ------------------
-  783|     16|        os.write(MakeByteSpan(str));
-  784|     20|}
-_Z16WriteCompactSizeI10DataStreamEvRT_m:
-  300|     20|{
-  301|     20|    if (nSize < 253)
-  ------------------
-  |  Branch (301:9): [True: 19, False: 1]
-  ------------------
-  302|     19|    {
-  303|     19|        ser_writedata8(os, nSize);
-  304|     19|    }
-  305|      1|    else if (nSize <= std::numeric_limits<uint16_t>::max())
-  ------------------
-  |  Branch (305:14): [True: 1, False: 0]
-  ------------------
-  306|      1|    {
-  307|      1|        ser_writedata8(os, 253);
-  308|      1|        ser_writedata16(os, nSize);
-  309|      1|    }
-  310|      0|    else if (nSize <= std::numeric_limits<unsigned int>::max())
-  ------------------
-  |  Branch (310:14): [True: 0, False: 0]
-  ------------------
-  311|      0|    {
-  312|      0|        ser_writedata8(os, 254);
-  313|      0|        ser_writedata32(os, nSize);
-  314|      0|    }
-  315|      0|    else
-  316|      0|    {
-  317|      0|        ser_writedata8(os, 255);
-  318|      0|        ser_writedata64(os, nSize);
-  319|      0|    }
-  320|     20|    return;
-  321|     20|}
+sv2_messages.cpp:_ZL5UsingIN4node20Sv2Bytes255FormatterERNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE7WrapperIT_RT0_EOSC_:
+  488|     20|static inline Wrapper<Formatter, T&> Using(T&& t) { return Wrapper<Formatter, T&>(t); }
+_ZN7WrapperIN4node20Sv2Bytes255FormatterERNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2ES9_:
+  472|     20|    explicit Wrapper(T obj) : m_object(obj) {}
+_Z9SerializeI10DataStreamEvRT_m:
+  253|     20|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
 _Z15ser_writedata64I10DataStreamEvRT_m:
    74|     20|{
    75|     20|    obj = htole64_internal(obj);
    76|     20|    s.write(std::as_bytes(std::span{&obj, 1}));
    77|     20|}
-_Z9SerializeI10DataStreamEvRT_m:
-  253|     20|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
-_Z11UnserializeI10DataStreamcEvRT_RNSt3__112basic_stringIT0_NS3_11char_traitsIS5_EENS3_9allocatorIS5_EEEE:
-  788|     20|{
-  789|     20|    unsigned int nSize = ReadCompactSize(is);
-  790|     20|    str.resize(nSize);
-  791|     20|    if (nSize != 0)
-  ------------------
-  |  Branch (791:9): [True: 16, False: 4]
-  ------------------
-  792|     16|        is.read(MakeWritableByteSpan(str));
-  793|     20|}
-_Z15ReadCompactSizeI10DataStreamEmRT_b:
-  331|     20|{
-  332|     20|    uint8_t chSize = ser_readdata8(is);
-  333|     20|    uint64_t nSizeRet = 0;
-  334|     20|    if (chSize < 253)
-  ------------------
-  |  Branch (334:9): [True: 19, False: 1]
-  ------------------
-  335|     19|    {
-  336|     19|        nSizeRet = chSize;
-  337|     19|    }
-  338|      1|    else if (chSize == 253)
-  ------------------
-  |  Branch (338:14): [True: 1, False: 0]
-  ------------------
-  339|      1|    {
-  340|      1|        nSizeRet = ser_readdata16(is);
-  341|      1|        if (nSizeRet < 253)
-  ------------------
-  |  Branch (341:13): [True: 0, False: 1]
-  ------------------
-  342|      0|            throw std::ios_base::failure("non-canonical ReadCompactSize()");
-  343|      1|    }
-  344|      0|    else if (chSize == 254)
-  ------------------
-  |  Branch (344:14): [True: 0, False: 0]
-  ------------------
-  345|      0|    {
-  346|      0|        nSizeRet = ser_readdata32(is);
-  347|      0|        if (nSizeRet < 0x10000u)
-  ------------------
-  |  Branch (347:13): [True: 0, False: 0]
-  ------------------
-  348|      0|            throw std::ios_base::failure("non-canonical ReadCompactSize()");
-  349|      0|    }
-  350|      0|    else
-  351|      0|    {
-  352|      0|        nSizeRet = ser_readdata64(is);
-  353|      0|        if (nSizeRet < 0x100000000ULL)
-  ------------------
-  |  Branch (353:13): [True: 0, False: 0]
-  ------------------
-  354|      0|            throw std::ios_base::failure("non-canonical ReadCompactSize()");
-  355|      0|    }
-  356|     20|    if (range_check && nSizeRet > MAX_SIZE) {
-  ------------------
-  |  Branch (356:9): [True: 20, False: 0]
-  |  Branch (356:24): [True: 0, False: 20]
-  ------------------
-  357|      0|        throw std::ios_base::failure("ReadCompactSize(): size too large");
-  358|      0|    }
-  359|     20|    return nSizeRet;
-  360|     20|}
+_Z9SerializeI10DataStream7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEEQ12SerializableIT0_T_EEvRSF_RKSE_:
+  744|     20|{
+  745|     20|    a.Serialize(os);
+  746|     20|}
+_ZNK7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE9SerializeI10DataStreamEEvRT_:
+  473|     20|    template<typename Stream> void Serialize(Stream &s) const { Formatter().Ser(s, m_object); }
+sv2_messages.cpp:_ZL5UsingIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE7WrapperIT_RT0_EOSD_:
+  488|     20|static inline Wrapper<Formatter, T&> Using(T&& t) { return Wrapper<Formatter, T&>(t); }
+_ZN7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2ESA_:
+  472|     20|    explicit Wrapper(T obj) : m_object(obj) {}
+_Z11UnserializeI10DataStreamR7WrapperIN4node20Sv2Bytes255FormatterERNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEEQ14UnserializableIT0_T_EEvRSF_OSE_:
+  753|     20|{
+  754|     20|    a.Unserialize(is);
+  755|     20|}
+_ZN7WrapperIN4node20Sv2Bytes255FormatterERNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE11UnserializeI10DataStreamEEvRT_:
+  474|     20|    template<typename Stream> void Unserialize(Stream &s) { Formatter().Unser(s, m_object); }
+_Z11UnserializeI10DataStreamEvRT_Rm:
+  269|     20|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 _Z14ser_readdata64I10DataStreamEmRT_:
   103|     20|{
   104|     20|    uint64_t obj;
   105|     20|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
   106|     20|    return le64toh_internal(obj);
   107|     20|}
-_Z11UnserializeI10DataStreamEvRT_Rm:
-  269|     20|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 _Z9SerializeI10DataStreamN4node33Sv2RequestTransactionDataErrorMsgEQ12SerializableIT0_T_EEvRS4_RKS3_:
   744|     20|{
   745|     20|    a.Serialize(os);
   746|     20|}
-_Z15ser_writedata16I10DataStreamEvRT_t:
-   59|      1|{
-   60|      1|    obj = htole16_internal(obj);
-   61|      1|    s.write(std::as_bytes(std::span{&obj, 1}));
-   62|      1|}
-_Z14ser_readdata16I10DataStreamEtRT_:
-   85|      1|{
-   86|      1|    uint16_t obj;
-   87|      1|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
-   88|      1|    return le16toh_internal(obj);
-   89|      1|}
 
 _Z12MakeByteSpanINSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEEDaRKT_:
    85|     16|{
@@ -511,7 +410,12 @@ _Z12MakeByteSpanI7uint256EDaRKT_:
    86|     20|    return std::as_bytes(std::span{v});
    87|     20|}
 
-_ZN10DataStreamlsINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEERS_RKT_:
+_ZN10DataStreamrsIRhEERS_OT_:
+  249|     20|    {
+  250|     20|        ::Unserialize(*this, obj);
+  251|     20|        return (*this);
+  252|     20|    }
+_ZN10DataStreamlsIhEERS_RKT_:
   242|     20|    {
   243|     20|        ::Serialize(*this, obj);
   244|     20|        return (*this);
@@ -521,7 +425,12 @@ _ZN10DataStreamlsImEERS_RKT_:
   243|     20|        ::Serialize(*this, obj);
   244|     20|        return (*this);
   245|     20|    }
-_ZN10DataStreamrsIRNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEERS_OT_:
+_ZN10DataStreamlsI7WrapperIN4node20Sv2Bytes255FormatterERKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEEEERS_RKT_:
+  242|     20|    {
+  243|     20|        ::Serialize(*this, obj);
+  244|     20|        return (*this);
+  245|     20|    }
+_ZN10DataStreamrsI7WrapperIN4node20Sv2Bytes255FormatterERNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEEEERS_OT_:
   249|     20|    {
   250|     20|        ::Unserialize(*this, obj);
   251|     20|        return (*this);
@@ -539,37 +448,37 @@ _ZN10DataStreamlsIN4node33Sv2RequestTransactionDataErrorMsgEEERS_RKT_:
 _ZN10DataStreamC2Ev:
   147|     20|    explicit DataStream() = default;
 _ZN10DataStream5writeENSt3__14spanIKSt4byteLm18446744073709551615EEE:
-  235|     57|    {
+  235|     56|    {
   236|       |        // Write to the end of the buffer
-  237|     57|        vch.insert(vch.end(), src.begin(), src.end());
-  238|     57|    }
+  237|     56|        vch.insert(vch.end(), src.begin(), src.end());
+  238|     56|    }
 _ZN10DataStream4readENSt3__14spanISt4byteLm18446744073709551615EEE:
-  202|     57|    {
-  203|     57|        if (dst.size() == 0) return;
+  202|     56|    {
+  203|     56|        if (dst.size() == 0) return;
   ------------------
-  |  Branch (203:13): [True: 0, False: 57]
+  |  Branch (203:13): [True: 0, False: 56]
   ------------------
   204|       |
   205|       |        // Read from the beginning of the buffer
-  206|     57|        auto next_read_pos{CheckedAdd(m_read_pos, dst.size())};
-  207|     57|        if (!next_read_pos.has_value() || next_read_pos.value() > vch.size()) {
+  206|     56|        auto next_read_pos{CheckedAdd(m_read_pos, dst.size())};
+  207|     56|        if (!next_read_pos.has_value() || next_read_pos.value() > vch.size()) {
   ------------------
-  |  Branch (207:13): [True: 0, False: 57]
-  |  Branch (207:43): [True: 0, False: 57]
+  |  Branch (207:13): [True: 0, False: 56]
+  |  Branch (207:43): [True: 0, False: 56]
   ------------------
   208|      0|            throw std::ios_base::failure("DataStream::read(): end of data");
   209|      0|        }
-  210|     57|        memcpy(dst.data(), &vch[m_read_pos], dst.size());
-  211|     57|        if (next_read_pos.value() == vch.size()) {
+  210|     56|        memcpy(dst.data(), &vch[m_read_pos], dst.size());
+  211|     56|        if (next_read_pos.value() == vch.size()) {
   ------------------
-  |  Branch (211:13): [True: 20, False: 37]
+  |  Branch (211:13): [True: 20, False: 36]
   ------------------
   212|     20|            m_read_pos = 0;
   213|     20|            vch.clear();
   214|     20|            return;
   215|     20|        }
-  216|     37|        m_read_pos = next_read_pos.value();
-  217|     37|    }
+  216|     36|        m_read_pos = next_read_pos.value();
+  217|     36|    }
 
 random.cpp:_ZN16secure_allocatorIN12_GLOBAL__N_18RNGStateEE10deallocateEPS1_m:
    37|      2|    {
@@ -723,12 +632,34 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node33Sv2RequestTransactionDataErrorMsgC2EmONSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE:
-  527|     20|    explicit Sv2RequestTransactionDataErrorMsg(uint64_t template_id, std::string&& error_code) : m_template_id{template_id}, m_error_code{error_code} {};
+  561|     20|    explicit Sv2RequestTransactionDataErrorMsg(uint64_t template_id, std::string&& error_code) : m_template_id{template_id}, m_error_code{error_code} {};
+_ZN4node20Sv2Bytes255Formatter3SerI10DataStreamNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEvRT_RKT0_:
+   47|     20|    {
+   48|     20|        if (v.size() > 255) throw std::ios_base::failure("B0_255 length limit exceeded");
+  ------------------
+  |  Branch (48:13): [True: 0, False: 20]
+  ------------------
+   49|     20|        s << static_cast<uint8_t>(v.size());
+   50|     20|        if (!v.empty()) s.write(MakeByteSpan(v));
+  ------------------
+  |  Branch (50:13): [True: 16, False: 4]
+  ------------------
+   51|     20|    }
+_ZN4node20Sv2Bytes255Formatter5UnserI10DataStreamNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEvRT_RT0_:
+   55|     20|    {
+   56|     20|        uint8_t size;
+   57|     20|        s >> size;
+   58|     20|        v.resize(size);
+   59|     20|        if (size != 0) s.read(MakeWritableByteSpan(v));
+  ------------------
+  |  Branch (59:13): [True: 16, False: 4]
+  ------------------
+   60|     20|    }
 _ZNK4node33Sv2RequestTransactionDataErrorMsg9SerializeI10DataStreamEEvRT_:
-  531|     20|    {
-  532|     20|        s << m_template_id
-  533|     20|          << m_error_code;
-  534|     20|    }
+  565|     20|    {
+  566|     20|        s << m_template_id
+  567|     20|          << Using<Sv2Bytes255Formatter>(m_error_code);
+  568|     20|    }
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -946,34 +877,34 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     20|}
 
 _Z46sv2_request_transaction_data_error_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  347|     20|{
-  348|     20|    const CheckGlobals check_globals{};
-  349|     20|    SeedRandomStateForTest(SeedRand::ZEROS);
-  350|     20|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  351|       |
-  352|     20|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
-  353|     20|    std::string error_code = FuzzedString(provider);
-  354|     20|    std::string error_code_expect = error_code;
-  355|       |
-  356|     20|    Sv2RequestTransactionDataErrorMsg msg(template_id, std::move(error_code));
-  357|       |
-  358|       |    // Serialize
-  359|     20|    DataStream ss{};
-  360|     20|    ss << msg;
-  361|       |
-  362|       |    // Roundtrip: read back serialized fields and verify
-  363|     20|    uint64_t rt_template_id;
-  364|     20|    std::string rt_error;
-  365|     20|    ss >> rt_template_id >> rt_error;
-  366|     20|    assert(rt_template_id == template_id);
+  350|     20|{
+  351|     20|    const CheckGlobals check_globals{};
+  352|     20|    SeedRandomStateForTest(SeedRand::ZEROS);
+  353|     20|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  354|       |
+  355|     20|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
+  356|     20|    std::string error_code = FuzzedString(provider);
+  357|     20|    std::string error_code_expect = error_code;
+  358|       |
+  359|     20|    Sv2RequestTransactionDataErrorMsg msg(template_id, std::move(error_code));
+  360|       |
+  361|       |    // Serialize
+  362|     20|    DataStream ss{};
+  363|     20|    ss << msg;
+  364|       |
+  365|       |    // Roundtrip: read back serialized fields and verify
+  366|     20|    uint64_t rt_template_id;
+  367|     20|    std::string rt_error;
+  368|     20|    ss >> rt_template_id >> Using<node::Sv2Bytes255Formatter>(rt_error);
+  369|     20|    assert(rt_template_id == template_id);
   ------------------
-  |  Branch (366:5): [True: 20, False: 0]
+  |  Branch (369:5): [True: 20, False: 0]
   ------------------
-  367|     20|    assert(rt_error == error_code_expect);
+  370|     20|    assert(rt_error == error_code_expect);
   ------------------
-  |  Branch (367:5): [True: 20, False: 0]
+  |  Branch (370:5): [True: 20, False: 0]
   ------------------
-  368|     20|}
+  371|     20|}
 sv2_messages.cpp:_ZN12_GLOBAL__N_112FuzzedStringER18FuzzedDataProviderm:
    37|     20|{
    38|     20|    size_t len = provider.ConsumeIntegralInRange<size_t>(0, max_len);
@@ -1138,24 +1069,24 @@ _Z22inline_assertion_checkILb1EbEOT0_S1_PKciS3_S3_:
    84|     42|}
 
 _Z10CheckedAddImENSt3__18optionalIT_EES2_S2_:
-   27|     57|{
-   28|     57|    if (AdditionOverflow(i, j)) {
+   27|     56|{
+   28|     56|    if (AdditionOverflow(i, j)) {
   ------------------
-  |  Branch (28:9): [True: 0, False: 57]
+  |  Branch (28:9): [True: 0, False: 56]
   ------------------
    29|      0|        return std::nullopt;
    30|      0|    }
-   31|     57|    return i + j;
-   32|     57|}
+   31|     56|    return i + j;
+   32|     56|}
 _Z16AdditionOverflowImEbT_S0_:
-   16|     57|{
-   17|     57|    static_assert(std::is_integral_v<T>, "Integral required.");
+   16|     56|{
+   17|     56|    static_assert(std::is_integral_v<T>, "Integral required.");
    18|       |    if constexpr (std::numeric_limits<T>::is_signed) {
    19|       |        return (i > 0 && j > std::numeric_limits<T>::max() - i) ||
    20|       |               (i < 0 && j < std::numeric_limits<T>::min() - i);
    21|       |    }
-   22|     57|    return std::numeric_limits<T>::max() - i < j;
-   23|     57|}
+   22|     56|    return std::numeric_limits<T>::max() - i < j;
+   23|     56|}
 
 _Z11SetMockTimeNSt3__16chrono8durationIxNS_5ratioILl1ELl1EEEEE:
    43|     22|{

@@ -343,25 +343,25 @@ secp256k1.c:secp256k1_memzero_explicit:
   257|       |#endif
   258|      6|}
 
+_Z9SerializeI10DataStreamEvRT_m:
+  253|      6|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
 _Z15ser_writedata64I10DataStreamEvRT_m:
    74|      6|{
    75|      6|    obj = htole64_internal(obj);
    76|      6|    s.write(std::as_bytes(std::span{&obj, 1}));
    77|      6|}
-_Z9SerializeI10DataStreamEvRT_m:
-  253|      6|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
 _Z11UnserializeI10DataStreamRN4node28Sv2RequestTransactionDataMsgEQ14UnserializableIT0_T_EEvRS5_OS4_:
   753|      6|{
   754|      6|    a.Unserialize(is);
   755|      6|}
+_Z11UnserializeI10DataStreamEvRT_Rm:
+  269|      6|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 _Z14ser_readdata64I10DataStreamEmRT_:
   103|      6|{
   104|      6|    uint64_t obj;
   105|      6|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
   106|      6|    return le64toh_internal(obj);
   107|      6|}
-_Z11UnserializeI10DataStreamEvRT_Rm:
-  269|      6|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 
 _Z12MakeByteSpanI7uint256EDaRKT_:
    85|      6|{
@@ -570,9 +570,9 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node28Sv2RequestTransactionDataMsg11UnserializeI10DataStreamEEvRT_:
-  439|      6|    {
-  440|      6|        s >> m_template_id;
-  441|      6|    }
+  473|      6|    {
+  474|      6|        s >> m_template_id;
+  475|      6|    }
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -768,23 +768,23 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|      6|}
 
 _Z40sv2_request_transaction_data_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  173|      6|{
-  174|      6|    const CheckGlobals check_globals{};
-  175|      6|    SeedRandomStateForTest(SeedRand::ZEROS);
-  176|      6|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  177|       |
-  178|      6|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
-  179|       |
-  180|      6|    DataStream ss{};
-  181|      6|    ss << template_id;
+  176|      6|{
+  177|      6|    const CheckGlobals check_globals{};
+  178|      6|    SeedRandomStateForTest(SeedRand::ZEROS);
+  179|      6|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  180|       |
+  181|      6|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
   182|       |
-  183|      6|    Sv2RequestTransactionDataMsg msg;
-  184|      6|    ss >> msg;
-  185|       |    assert(msg.m_template_id == template_id);
+  183|      6|    DataStream ss{};
+  184|      6|    ss << template_id;
+  185|       |
+  186|      6|    Sv2RequestTransactionDataMsg msg;
+  187|      6|    ss >> msg;
+  188|       |    assert(msg.m_template_id == template_id);
   ------------------
-  |  Branch (185:5): [True: 6, False: 0]
+  |  Branch (188:5): [True: 6, False: 0]
   ------------------
-  186|      6|}
+  189|      6|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{

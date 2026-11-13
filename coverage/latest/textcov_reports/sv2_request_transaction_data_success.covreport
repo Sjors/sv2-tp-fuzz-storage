@@ -348,21 +348,21 @@ secp256k1.c:secp256k1_memzero_explicit:
   257|       |#endif
   258|      6|}
 
+_Z9SerializeI10DataStreamEvRT_m:
+  253|     23|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
 _Z15ser_writedata64I10DataStreamEvRT_m:
    74|     23|{
    75|     23|    obj = htole64_internal(obj);
    76|     23|    s.write(std::as_bytes(std::span{&obj, 1}));
    77|     23|}
-_Z9SerializeI10DataStreamEvRT_m:
-  253|     23|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
+_Z11UnserializeI10DataStreamEvRT_Rm:
+  269|     23|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 _Z14ser_readdata64I10DataStreamEmRT_:
   103|     23|{
   104|     23|    uint64_t obj;
   105|     23|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
   106|     23|    return le64toh_internal(obj);
   107|     23|}
-_Z11UnserializeI10DataStreamEvRT_Rm:
-  269|     23|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
 _Z9SerializeI10DataStreamN4node35Sv2RequestTransactionDataSuccessMsgEQ12SerializableIT0_T_EEvRS4_RKS3_:
   744|     23|{
   745|     23|    a.Serialize(os);
@@ -591,41 +591,41 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node35Sv2RequestTransactionDataSuccessMsgC2EmONSt3__16vectorIhNS1_9allocatorIhEEEEONS2_INS1_10shared_ptrIK12CTransactionEENS3_ISA_EEEE:
-  473|     23|    explicit Sv2RequestTransactionDataSuccessMsg(uint64_t template_id, std::vector<uint8_t>&& excess_data, std::vector<CTransactionRef>&& transactions_list) : m_template_id{template_id}, m_excess_data{excess_data}, m_transactions_list{transactions_list} {};
+  507|     23|    explicit Sv2RequestTransactionDataSuccessMsg(uint64_t template_id, std::vector<uint8_t>&& excess_data, std::vector<CTransactionRef>&& transactions_list) : m_template_id{template_id}, m_excess_data{excess_data}, m_transactions_list{transactions_list} {};
 _ZNK4node35Sv2RequestTransactionDataSuccessMsg9SerializeI10DataStreamEEvRT_:
-  477|     23|    {
-  478|     23|        s << m_template_id;
-  479|       |
-  480|       |        // excess data is expected to be serialized as a B0_64K type.
-  481|     23|        if (m_excess_data.empty()) {
+  511|     23|    {
+  512|     23|        s << m_template_id;
+  513|       |
+  514|       |        // excess data is expected to be serialized as a B0_64K type.
+  515|     23|        if (m_excess_data.empty()) {
   ------------------
-  |  Branch (481:13): [True: 5, False: 18]
+  |  Branch (515:13): [True: 5, False: 18]
   ------------------
-  482|      5|            s << static_cast<uint16_t>(0);
-  483|     18|        } else {
-  484|     18|            s << static_cast<uint16_t>(m_excess_data.size());
-  485|     18|            s.write(MakeByteSpan(m_excess_data));
-  486|     18|        }
-  487|       |
-  488|       |        // transactions list is expected to be serialized as a SEQ0_64K[B0_16M].
-  489|     23|        s << static_cast<uint16_t>(m_transactions_list.size());
-  490|     23|        for (const auto& tx : m_transactions_list) {
+  516|      5|            s << static_cast<uint16_t>(0);
+  517|     18|        } else {
+  518|     18|            s << static_cast<uint16_t>(m_excess_data.size());
+  519|     18|            s.write(MakeByteSpan(m_excess_data));
+  520|     18|        }
+  521|       |
+  522|       |        // transactions list is expected to be serialized as a SEQ0_64K[B0_16M].
+  523|     23|        s << static_cast<uint16_t>(m_transactions_list.size());
+  524|     23|        for (const auto& tx : m_transactions_list) {
   ------------------
-  |  Branch (490:29): [True: 0, False: 23]
+  |  Branch (524:29): [True: 0, False: 23]
   ------------------
-  491|      0|            DataStream ss_tx{};
-  492|      0|            ss_tx << TX_WITH_WITNESS(*tx);
-  493|      0|            auto tx_size = static_cast<uint32_t>(ss_tx.size());
-  494|       |
-  495|      0|            u24_t tx_byte_len;
-  496|      0|            tx_byte_len[2] = (tx_size >> 16) & 0xff;
-  497|      0|            tx_byte_len[1] = (tx_size >> 8) & 0xff;
-  498|      0|            tx_byte_len[0] = tx_size & 0xff;
-  499|       |
-  500|      0|            s << tx_byte_len;
-  501|      0|            s.write(MakeByteSpan(ss_tx));
-  502|      0|        }
-  503|     23|    };
+  525|      0|            DataStream ss_tx{};
+  526|      0|            ss_tx << TX_WITH_WITNESS(*tx);
+  527|      0|            auto tx_size = static_cast<uint32_t>(ss_tx.size());
+  528|       |
+  529|      0|            u24_t tx_byte_len;
+  530|      0|            tx_byte_len[2] = (tx_size >> 16) & 0xff;
+  531|      0|            tx_byte_len[1] = (tx_size >> 8) & 0xff;
+  532|      0|            tx_byte_len[0] = tx_size & 0xff;
+  533|       |
+  534|      0|            s << tx_byte_len;
+  535|      0|            s.write(MakeByteSpan(ss_tx));
+  536|      0|        }
+  537|     23|    };
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -873,34 +873,34 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     23|}
 
 _Z48sv2_request_transaction_data_success_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  318|     23|{
-  319|     23|    const CheckGlobals check_globals{};
-  320|     23|    SeedRandomStateForTest(SeedRand::ZEROS);
-  321|     23|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  322|       |
-  323|     23|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
-  324|       |
-  325|       |    // Fuzzed excess data
-  326|     23|    size_t excess_len = provider.ConsumeIntegralInRange<size_t>(0, 1000);
-  327|     23|    std::vector<uint8_t> excess_data = provider.ConsumeBytes<uint8_t>(excess_len);
-  328|       |
-  329|       |    // Empty transaction list for simplicity (transaction fuzzing is complex)
-  330|     23|    std::vector<CTransactionRef> txs;
+  321|     23|{
+  322|     23|    const CheckGlobals check_globals{};
+  323|     23|    SeedRandomStateForTest(SeedRand::ZEROS);
+  324|     23|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  325|       |
+  326|     23|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
+  327|       |
+  328|       |    // Fuzzed excess data
+  329|     23|    size_t excess_len = provider.ConsumeIntegralInRange<size_t>(0, 1000);
+  330|     23|    std::vector<uint8_t> excess_data = provider.ConsumeBytes<uint8_t>(excess_len);
   331|       |
-  332|     23|    Sv2RequestTransactionDataSuccessMsg msg(template_id, std::move(excess_data), std::move(txs));
-  333|       |
-  334|       |    // Serialize
-  335|     23|    DataStream ss{};
-  336|     23|    ss << msg;
-  337|       |
-  338|       |    // Roundtrip: read back template_id from serialized stream
-  339|     23|    uint64_t rt_template_id;
-  340|     23|    ss >> rt_template_id;
-  341|       |    assert(rt_template_id == template_id);
+  332|       |    // Empty transaction list for simplicity (transaction fuzzing is complex)
+  333|     23|    std::vector<CTransactionRef> txs;
+  334|       |
+  335|     23|    Sv2RequestTransactionDataSuccessMsg msg(template_id, std::move(excess_data), std::move(txs));
+  336|       |
+  337|       |    // Serialize
+  338|     23|    DataStream ss{};
+  339|     23|    ss << msg;
+  340|       |
+  341|       |    // Roundtrip: read back template_id from serialized stream
+  342|     23|    uint64_t rt_template_id;
+  343|     23|    ss >> rt_template_id;
+  344|       |    assert(rt_template_id == template_id);
   ------------------
-  |  Branch (341:5): [True: 23, False: 0]
+  |  Branch (344:5): [True: 23, False: 0]
   ------------------
-  342|     23|}
+  345|     23|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{

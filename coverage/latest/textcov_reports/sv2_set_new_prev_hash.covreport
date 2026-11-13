@@ -14,15 +14,15 @@ _ZN9base_uintILj256EElSEj:
   ------------------
    22|    168|        if (i + k + 1 < WIDTH && shift != 0)
   ------------------
-  |  Branch (22:13): [True: 50, False: 118]
-  |  Branch (22:34): [True: 32, False: 18]
+  |  Branch (22:13): [True: 48, False: 120]
+  |  Branch (22:34): [True: 37, False: 11]
   ------------------
-   23|     32|            pn[i + k + 1] |= (a.pn[i] >> (32 - shift));
+   23|     37|            pn[i + k + 1] |= (a.pn[i] >> (32 - shift));
    24|    168|        if (i + k < WIDTH)
   ------------------
-  |  Branch (24:13): [True: 65, False: 103]
+  |  Branch (24:13): [True: 64, False: 104]
   ------------------
-   25|     65|            pn[i + k] |= (a.pn[i] << shift);
+   25|     64|            pn[i + k] |= (a.pn[i] << shift);
    26|    168|    }
    27|     21|    return *this;
    28|     21|}
@@ -495,25 +495,25 @@ secp256k1.c:secp256k1_memzero_explicit:
   257|       |#endif
   258|      6|}
 
+_Z9SerializeI10DataStreamEvRT_m:
+  253|     44|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
 _Z15ser_writedata64I10DataStreamEvRT_m:
    74|     44|{
    75|     44|    obj = htole64_internal(obj);
    76|     44|    s.write(std::as_bytes(std::span{&obj, 1}));
    77|     44|}
-_Z9SerializeI10DataStreamEvRT_m:
-  253|     44|template <typename Stream> void Serialize(Stream& s, uint64_t a)  { ser_writedata64(s, a); }
-_Z14ser_readdata64I10DataStreamEmRT_:
-  103|     44|{
-  104|     44|    uint64_t obj;
-  105|     44|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
-  106|     44|    return le64toh_internal(obj);
-  107|     44|}
 _Z9SerializeI10DataStreamN4node20Sv2SetNewPrevHashMsgEQ12SerializableIT0_T_EEvRS4_RKS3_:
   744|     44|{
   745|     44|    a.Serialize(os);
   746|     44|}
 _Z11UnserializeI10DataStreamEvRT_Rm:
   269|     44|template <typename Stream> void Unserialize(Stream& s, uint64_t& a)  { a = ser_readdata64(s); }
+_Z14ser_readdata64I10DataStreamEmRT_:
+  103|     44|{
+  104|     44|    uint64_t obj;
+  105|     44|    s.read(std::as_writable_bytes(std::span{&obj, 1}));
+  106|     44|    return le64toh_internal(obj);
+  107|     44|}
 _Z11UnserializeI10DataStreamR7uint256Q14UnserializableIT0_T_EEvRS4_OS3_:
   753|     88|{
   754|     88|    a.Unserialize(is);
@@ -776,22 +776,22 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node20Sv2SetNewPrevHashMsgC2ERK12CBlockHeaderm:
-   85|     44|node::Sv2SetNewPrevHashMsg::Sv2SetNewPrevHashMsg(const CBlockHeader& header, uint64_t template_id) : m_template_id{template_id}
-   86|     44|{
-   87|     44|    m_prev_hash = header.hashPrevBlock;
-   88|     44|    m_ntime_start = header.nTime;
-   89|     44|    m_nBits = header.nBits;
-   90|     44|    m_target = ArithToUint256(arith_uint256().SetCompact(header.nBits));
-   91|     44|}
+   87|     44|node::Sv2SetNewPrevHashMsg::Sv2SetNewPrevHashMsg(const CBlockHeader& header, uint64_t template_id) : m_template_id{template_id}
+   88|     44|{
+   89|     44|    m_prev_hash = header.hashPrevBlock;
+   90|     44|    m_ntime_start = header.nTime;
+   91|     44|    m_nBits = header.nBits;
+   92|     44|    m_target = ArithToUint256(arith_uint256().SetCompact(header.nBits));
+   93|     44|}
 
 _ZNK4node20Sv2SetNewPrevHashMsg9SerializeI10DataStreamEEvRT_:
-  408|     44|    {
-  409|     44|        s << m_template_id
-  410|     44|          << m_prev_hash
-  411|     44|          << m_ntime_start
-  412|     44|          << m_nBits
-  413|     44|          << m_target;
-  414|     44|    }
+  442|     44|    {
+  443|     44|        s << m_template_id
+  444|     44|          << m_prev_hash
+  445|     44|          << m_ntime_start
+  446|     44|          << m_nBits
+  447|     44|          << m_target;
+  448|     44|    }
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -1151,56 +1151,56 @@ _Z14ConsumeUint256R18FuzzedDataProvider:
    70|     88|}
 
 _Z33sv2_set_new_prev_hash_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  279|     44|{
-  280|     44|    const CheckGlobals check_globals{};
-  281|     44|    SeedRandomStateForTest(SeedRand::ZEROS);
-  282|     44|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  283|       |
-  284|       |    // Create message with fuzzed values
-  285|     44|    CBlockHeader header;
-  286|     44|    header.nVersion = provider.ConsumeIntegral<int32_t>();
-  287|     44|    header.hashPrevBlock = ConsumeUint256(provider);
-  288|     44|    header.hashMerkleRoot = ConsumeUint256(provider);
-  289|     44|    header.nTime = provider.ConsumeIntegral<uint32_t>();
-  290|     44|    header.nBits = provider.ConsumeIntegral<uint32_t>();
-  291|     44|    header.nNonce = provider.ConsumeIntegral<uint32_t>();
-  292|       |
-  293|     44|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
-  294|       |
-  295|     44|    Sv2SetNewPrevHashMsg msg(header, template_id);
-  296|       |
-  297|       |    // Serialize
-  298|     44|    DataStream ss{};
-  299|     44|    ss << msg;
-  300|       |
-  301|       |    // Roundtrip: read back serialized fields and verify
-  302|     44|    uint64_t rt_template_id;
-  303|     44|    uint256 rt_prev_hash;
-  304|     44|    uint32_t rt_ntime_start;
-  305|     44|    uint32_t rt_nbits;
-  306|     44|    uint256 rt_target;
-  307|     44|    ss >> rt_template_id >> rt_prev_hash >> rt_ntime_start >> rt_nbits >> rt_target;
-  308|     44|    assert(rt_template_id == template_id);
-  ------------------
-  |  Branch (308:5): [True: 44, False: 0]
-  ------------------
-  309|     44|    assert(rt_prev_hash == header.hashPrevBlock);
-  ------------------
-  |  Branch (309:5): [True: 44, False: 0]
-  ------------------
-  310|     44|    assert(rt_ntime_start == header.nTime);
-  ------------------
-  |  Branch (310:5): [True: 44, False: 0]
-  ------------------
-  311|     44|    assert(rt_nbits == header.nBits);
+  282|     44|{
+  283|     44|    const CheckGlobals check_globals{};
+  284|     44|    SeedRandomStateForTest(SeedRand::ZEROS);
+  285|     44|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  286|       |
+  287|       |    // Create message with fuzzed values
+  288|     44|    CBlockHeader header;
+  289|     44|    header.nVersion = provider.ConsumeIntegral<int32_t>();
+  290|     44|    header.hashPrevBlock = ConsumeUint256(provider);
+  291|     44|    header.hashMerkleRoot = ConsumeUint256(provider);
+  292|     44|    header.nTime = provider.ConsumeIntegral<uint32_t>();
+  293|     44|    header.nBits = provider.ConsumeIntegral<uint32_t>();
+  294|     44|    header.nNonce = provider.ConsumeIntegral<uint32_t>();
+  295|       |
+  296|     44|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
+  297|       |
+  298|     44|    Sv2SetNewPrevHashMsg msg(header, template_id);
+  299|       |
+  300|       |    // Serialize
+  301|     44|    DataStream ss{};
+  302|     44|    ss << msg;
+  303|       |
+  304|       |    // Roundtrip: read back serialized fields and verify
+  305|     44|    uint64_t rt_template_id;
+  306|     44|    uint256 rt_prev_hash;
+  307|     44|    uint32_t rt_ntime_start;
+  308|     44|    uint32_t rt_nbits;
+  309|     44|    uint256 rt_target;
+  310|     44|    ss >> rt_template_id >> rt_prev_hash >> rt_ntime_start >> rt_nbits >> rt_target;
+  311|     44|    assert(rt_template_id == template_id);
   ------------------
   |  Branch (311:5): [True: 44, False: 0]
   ------------------
-  312|     44|    assert(rt_target == msg.m_target);
+  312|     44|    assert(rt_prev_hash == header.hashPrevBlock);
   ------------------
   |  Branch (312:5): [True: 44, False: 0]
   ------------------
-  313|     44|}
+  313|     44|    assert(rt_ntime_start == header.nTime);
+  ------------------
+  |  Branch (313:5): [True: 44, False: 0]
+  ------------------
+  314|     44|    assert(rt_nbits == header.nBits);
+  ------------------
+  |  Branch (314:5): [True: 44, False: 0]
+  ------------------
+  315|     44|    assert(rt_target == msg.m_target);
+  ------------------
+  |  Branch (315:5): [True: 44, False: 0]
+  ------------------
+  316|     44|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{
