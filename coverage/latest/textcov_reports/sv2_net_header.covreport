@@ -207,15 +207,15 @@ random.cpp:_ZN12_GLOBAL__N_18RNGState17MakeDeterministicERK7uint256:
   403|      5|    }
 
 secp256k1.c:secp256k1_ecmult_gen_context_clear:
-   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ctx) {
-   27|      2|    ctx->built = 0;
-   28|      2|    secp256k1_scalar_clear(&ctx->scalar_offset);
-   29|      2|    secp256k1_ge_clear(&ctx->ge_offset);
-   30|      2|    secp256k1_fe_clear(&ctx->proj_blind);
+   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   27|      2|    ecmult_gen_ctx->built = 0;
+   28|      2|    secp256k1_scalar_clear(&ecmult_gen_ctx->scalar_offset);
+   29|      2|    secp256k1_ge_clear(&ecmult_gen_ctx->ge_offset);
+   30|      2|    secp256k1_fe_clear(&ecmult_gen_ctx->proj_blind);
    31|      2|}
 secp256k1.c:secp256k1_ecmult_gen_context_is_built:
-   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context* ctx) {
-   23|      4|    return ctx->built;
+   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   23|      4|    return ecmult_gen_ctx->built;
    24|      4|}
 
 secp256k1.c:secp256k1_fe_clear:
@@ -224,9 +224,9 @@ secp256k1.c:secp256k1_fe_clear:
    23|      2|}
 
 secp256k1.c:secp256k1_ge_clear:
-  343|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
-  344|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
-  345|      2|}
+  357|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
+  358|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
+  359|      2|}
 
 secp256k1.c:secp256k1_scalar_clear:
    30|      2|SECP256K1_INLINE static void secp256k1_scalar_clear(secp256k1_scalar *r) {
@@ -240,11 +240,11 @@ secp256k1_context_preallocated_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -273,11 +273,11 @@ secp256k1_context_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -306,37 +306,37 @@ secp256k1.c:secp256k1_context_is_proper:
    85|      4|}
 
 secp256k1.c:secp256k1_memclear_explicit:
-  268|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
-  269|       |    /* The current implementation zeroes, but callers must not rely on this */
-  270|      6|    secp256k1_memzero_explicit(ptr, len);
-  271|       |#ifdef VERIFY
-  272|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
-  273|       |#endif
-  274|      6|}
+  270|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
+  271|       |    /* The current implementation zeroes, but callers must not rely on this */
+  272|      6|    secp256k1_memzero_explicit(ptr, len);
+  273|       |#ifdef VERIFY
+  274|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
+  275|       |#endif
+  276|      6|}
 secp256k1.c:secp256k1_memzero_explicit:
-  236|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
-  237|       |#if defined(_MSC_VER)
-  238|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
-  239|       |    SecureZeroMemory(ptr, len);
-  240|       |#elif defined(__GNUC__)
-  241|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
-  242|       |     *
-  243|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
-  244|       |     * in BoringSSL (ISC License):
-  245|       |     *    As best as we can tell, this is sufficient to break any optimisations that
-  246|       |     *    might try to eliminate "superfluous" memsets.
-  247|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
-  248|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
-  249|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
-  250|       |     * Yang et al. (USENIX Security 2017) for more background.
-  251|       |     */
-  252|      6|    memset(ptr, 0, len);
-  253|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-  254|       |#else
-  255|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
-  256|       |    volatile_memset(ptr, 0, len);
-  257|       |#endif
-  258|      6|}
+  238|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
+  239|       |#if defined(_MSC_VER)
+  240|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
+  241|       |    SecureZeroMemory(ptr, len);
+  242|       |#elif defined(__GNUC__)
+  243|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
+  244|       |     *
+  245|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
+  246|       |     * in BoringSSL (ISC License):
+  247|       |     *    As best as we can tell, this is sufficient to break any optimisations that
+  248|       |     *    might try to eliminate "superfluous" memsets.
+  249|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
+  250|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
+  251|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
+  252|       |     * Yang et al. (USENIX Security 2017) for more background.
+  253|       |     */
+  254|      6|    memset(ptr, 0, len);
+  255|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+  256|       |#else
+  257|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
+  258|       |    volatile_memset(ptr, 0, len);
+  259|       |#endif
+  260|      6|}
 
 _Z11UnserializeI10DataStreamRN4node12Sv2NetHeaderEQ14UnserializableIT0_T_EEvRS5_OS4_:
   753|      6|{
@@ -621,44 +621,44 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node12Sv2NetHeaderC2ENS_10Sv2MsgTypeEj:
-  648|      5|    explicit Sv2NetHeader(Sv2MsgType msg_type, uint32_t msg_len) : m_msg_type{msg_type}, m_msg_len{msg_len} {};
+  680|      5|    explicit Sv2NetHeader(Sv2MsgType msg_type, uint32_t msg_len) : m_msg_type{msg_type}, m_msg_len{msg_len} {};
 _ZN4node12Sv2NetHeader11UnserializeI10DataStreamEEvRT_:
-  669|      6|    {
-  670|       |        // Ignore the first 2 bytes (extension type) as the template provider currently doesn't
-  671|       |        // interpret this field.
-  672|      6|        s.ignore(2);
-  673|       |
-  674|      6|        uint8_t msg_type;
-  675|      6|        s >> msg_type;
-  676|      6|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
-  677|       |
-  678|      6|        u24_t msg_len_bytes;
-  679|     24|        for (unsigned int i = 0; i < sizeof(u24_t); ++i) {
+  701|      6|    {
+  702|       |        // Ignore the first 2 bytes (extension type) as the template provider currently doesn't
+  703|       |        // interpret this field.
+  704|      6|        s.ignore(2);
+  705|       |
+  706|      6|        uint8_t msg_type;
+  707|      6|        s >> msg_type;
+  708|      6|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
+  709|       |
+  710|      6|        u24_t msg_len_bytes;
+  711|     24|        for (unsigned int i = 0; i < sizeof(u24_t); ++i) {
   ------------------
-  |  Branch (679:34): [True: 18, False: 6]
+  |  Branch (711:34): [True: 18, False: 6]
   ------------------
-  680|     18|            s >> msg_len_bytes[i];
-  681|     18|        }
-  682|       |
-  683|      6|        m_msg_len = msg_len_bytes[2];
-  684|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[1];
-  685|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[0];
-  686|      6|    }
+  712|     18|            s >> msg_len_bytes[i];
+  713|     18|        }
+  714|       |
+  715|      6|        m_msg_len = msg_len_bytes[2];
+  716|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[1];
+  717|      6|        m_msg_len = m_msg_len << 8 | msg_len_bytes[0];
+  718|      6|    }
 _ZNK4node12Sv2NetHeader9SerializeI10DataStreamEEvRT_:
-  652|      6|    {
-  653|       |        // The template provider currently does not use the extension_type field,
-  654|       |        // but the field is still required for all headers.
-  655|      6|        uint16_t extension_type = 0;
-  656|       |
-  657|      6|        u24_t msg_len;
-  658|      6|        msg_len[2] = (m_msg_len >> 16) & 0xff;
-  659|      6|        msg_len[1] = (m_msg_len >> 8) & 0xff;
-  660|      6|        msg_len[0] = m_msg_len & 0xff;
-  661|       |
-  662|      6|        s << extension_type
-  663|      6|          << static_cast<uint8_t>(m_msg_type)
-  664|      6|          << msg_len;
-  665|      6|    };
+  684|      6|    {
+  685|       |        // The template provider currently does not use the extension_type field,
+  686|       |        // but the field is still required for all headers.
+  687|      6|        uint16_t extension_type = 0;
+  688|       |
+  689|      6|        u24_t msg_len;
+  690|      6|        msg_len[2] = (m_msg_len >> 16) & 0xff;
+  691|      6|        msg_len[1] = (m_msg_len >> 8) & 0xff;
+  692|      6|        msg_len[0] = m_msg_len & 0xff;
+  693|       |
+  694|      6|        s << extension_type
+  695|      6|          << static_cast<uint8_t>(m_msg_type)
+  696|      6|          << msg_len;
+  697|      6|    };
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {

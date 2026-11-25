@@ -207,15 +207,15 @@ random.cpp:_ZN12_GLOBAL__N_18RNGState17MakeDeterministicERK7uint256:
   403|     13|    }
 
 secp256k1.c:secp256k1_ecmult_gen_context_clear:
-   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ctx) {
-   27|      2|    ctx->built = 0;
-   28|      2|    secp256k1_scalar_clear(&ctx->scalar_offset);
-   29|      2|    secp256k1_ge_clear(&ctx->ge_offset);
-   30|      2|    secp256k1_fe_clear(&ctx->proj_blind);
+   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   27|      2|    ecmult_gen_ctx->built = 0;
+   28|      2|    secp256k1_scalar_clear(&ecmult_gen_ctx->scalar_offset);
+   29|      2|    secp256k1_ge_clear(&ecmult_gen_ctx->ge_offset);
+   30|      2|    secp256k1_fe_clear(&ecmult_gen_ctx->proj_blind);
    31|      2|}
 secp256k1.c:secp256k1_ecmult_gen_context_is_built:
-   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context* ctx) {
-   23|      4|    return ctx->built;
+   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   23|      4|    return ecmult_gen_ctx->built;
    24|      4|}
 
 secp256k1.c:secp256k1_fe_clear:
@@ -224,9 +224,9 @@ secp256k1.c:secp256k1_fe_clear:
    23|      2|}
 
 secp256k1.c:secp256k1_ge_clear:
-  343|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
-  344|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
-  345|      2|}
+  357|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
+  358|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
+  359|      2|}
 
 secp256k1.c:secp256k1_scalar_clear:
    30|      2|SECP256K1_INLINE static void secp256k1_scalar_clear(secp256k1_scalar *r) {
@@ -240,11 +240,11 @@ secp256k1_context_preallocated_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -273,11 +273,11 @@ secp256k1_context_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -306,37 +306,37 @@ secp256k1.c:secp256k1_context_is_proper:
    85|      4|}
 
 secp256k1.c:secp256k1_memclear_explicit:
-  268|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
-  269|       |    /* The current implementation zeroes, but callers must not rely on this */
-  270|      6|    secp256k1_memzero_explicit(ptr, len);
-  271|       |#ifdef VERIFY
-  272|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
-  273|       |#endif
-  274|      6|}
+  270|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
+  271|       |    /* The current implementation zeroes, but callers must not rely on this */
+  272|      6|    secp256k1_memzero_explicit(ptr, len);
+  273|       |#ifdef VERIFY
+  274|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
+  275|       |#endif
+  276|      6|}
 secp256k1.c:secp256k1_memzero_explicit:
-  236|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
-  237|       |#if defined(_MSC_VER)
-  238|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
-  239|       |    SecureZeroMemory(ptr, len);
-  240|       |#elif defined(__GNUC__)
-  241|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
-  242|       |     *
-  243|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
-  244|       |     * in BoringSSL (ISC License):
-  245|       |     *    As best as we can tell, this is sufficient to break any optimisations that
-  246|       |     *    might try to eliminate "superfluous" memsets.
-  247|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
-  248|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
-  249|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
-  250|       |     * Yang et al. (USENIX Security 2017) for more background.
-  251|       |     */
-  252|      6|    memset(ptr, 0, len);
-  253|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-  254|       |#else
-  255|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
-  256|       |    volatile_memset(ptr, 0, len);
-  257|       |#endif
-  258|      6|}
+  238|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
+  239|       |#if defined(_MSC_VER)
+  240|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
+  241|       |    SecureZeroMemory(ptr, len);
+  242|       |#elif defined(__GNUC__)
+  243|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
+  244|       |     *
+  245|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
+  246|       |     * in BoringSSL (ISC License):
+  247|       |     *    As best as we can tell, this is sufficient to break any optimisations that
+  248|       |     *    might try to eliminate "superfluous" memsets.
+  249|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
+  250|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
+  251|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
+  252|       |     * Yang et al. (USENIX Security 2017) for more background.
+  253|       |     */
+  254|      6|    memset(ptr, 0, len);
+  255|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+  256|       |#else
+  257|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
+  258|       |    volatile_memset(ptr, 0, len);
+  259|       |#endif
+  260|      6|}
 
 _Z11UnserializeI10DataStreamEvRT_Rh:
   263|     13|template <typename Stream> void Unserialize(Stream& s, uint8_t& a)   { a = ser_readdata8(s); }
@@ -670,28 +670,28 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node26Sv2SetupConnectionErrorMsgC2EjONSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE:
-  273|     13|    explicit Sv2SetupConnectionErrorMsg(uint32_t flags, std::string&& error_code) : m_flags{flags}, m_error_code{std::move(error_code)} {};
+  322|     13|    explicit Sv2SetupConnectionErrorMsg(uint32_t flags, std::string&& error_code) : m_flags{flags}, m_error_code{std::move(error_code)} {};
 _ZN4node9Sv2NetMsgcvNS_12Sv2NetHeaderEEv:
-  752|     13|    {
-  753|     13|        Sv2NetHeader hdr;
-  754|     13|        hdr.m_msg_type = m_msg_type;
-  755|     13|        hdr.m_msg_len = static_cast<uint32_t>(m_msg.size());
-  756|     13|        return hdr;
-  757|     13|    }
+  784|     13|    {
+  785|     13|        Sv2NetHeader hdr;
+  786|     13|        hdr.m_msg_type = m_msg_type;
+  787|     13|        hdr.m_msg_len = static_cast<uint32_t>(m_msg.size());
+  788|     13|        return hdr;
+  789|     13|    }
 _ZN4node9Sv2NetMsg4sizeEv:
-  749|     13|    size_t size() { return m_msg.size(); }
+  781|     13|    size_t size() { return m_msg.size(); }
 _ZN4node9Sv2NetMsgC2INS_26Sv2SetupConnectionErrorMsgEEERKT_:
-  741|     13|    {
-  742|     13|        m_msg_type = msg.m_msg_type;
-  743|       |
-  744|       |        // Serialize the sv2 message.
-  745|     13|        VectorWriter{m_msg, 0, msg};
-  746|     13|    }
+  773|     13|    {
+  774|     13|        m_msg_type = msg.m_msg_type;
+  775|       |
+  776|       |        // Serialize the sv2 message.
+  777|     13|        VectorWriter{m_msg, 0, msg};
+  778|     13|    }
 _ZNK4node26Sv2SetupConnectionErrorMsg9SerializeI12VectorWriterEEvRT_:
-  277|     13|    {
-  278|     13|        s << m_flags
-  279|     13|          << Using<Sv2Bytes255Formatter>(m_error_code);
-  280|     13|    }
+  326|     13|    {
+  327|     13|        s << m_flags
+  328|     13|          << Using<Sv2Bytes255Formatter>(m_error_code);
+  329|     13|    }
 _ZN4node20Sv2Bytes255Formatter3SerI12VectorWriterNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEvRT_RKT0_:
    47|     13|    {
    48|     13|        if (v.size() > 255) throw std::ios_base::failure("B0_255 length limit exceeded");
@@ -705,20 +705,20 @@ _ZN4node20Sv2Bytes255Formatter3SerI12VectorWriterNSt3__112basic_stringIcNS3_11ch
   ------------------
    51|     13|    }
 _ZNK4node9Sv2NetMsg9SerializeI10DataStreamEEvRT_:
-  771|     13|    {
-  772|     13|        s << static_cast<uint8_t>(m_msg_type);
-  773|     13|        s.write(MakeByteSpan(m_msg));
-  774|     13|    }
+  803|     13|    {
+  804|     13|        s << static_cast<uint8_t>(m_msg_type);
+  805|     13|        s.write(MakeByteSpan(m_msg));
+  806|     13|    }
 _ZN4node9Sv2NetMsg11UnserializeI10DataStreamEEvRT_:
-  761|     13|    {
-  762|     13|        uint8_t msg_type;
-  763|     13|        s >> msg_type;
-  764|     13|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
-  765|     13|        m_msg.resize(s.size());
-  766|     13|        s.read(MakeWritableByteSpan(m_msg));
-  767|     13|    }
+  793|     13|    {
+  794|     13|        uint8_t msg_type;
+  795|     13|        s >> msg_type;
+  796|     13|        m_msg_type = static_cast<Sv2MsgType>(msg_type);
+  797|     13|        m_msg.resize(s.size());
+  798|     13|        s.read(MakeWritableByteSpan(m_msg));
+  799|     13|    }
 _ZN4node9Sv2NetMsgC2ENS_10Sv2MsgTypeEOKNSt3__16vectorIhNS2_9allocatorIhEEEE:
-  699|     13|    explicit Sv2NetMsg(const Sv2MsgType msg_type, const std::vector<uint8_t>&& msg) : m_msg_type{msg_type}, m_msg{msg} {};
+  731|     13|    explicit Sv2NetMsg(const Sv2MsgType msg_type, const std::vector<uint8_t>&& msg) : m_msg_type{msg_type}, m_msg{msg} {};
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -981,46 +981,46 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     13|}
 
 _Z23sv2_net_msg_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  375|     13|{
-  376|     13|    const CheckGlobals check_globals{};
-  377|     13|    SeedRandomStateForTest(SeedRand::ZEROS);
-  378|     13|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  379|       |
-  380|       |    // Create a simple message to wrap
-  381|     13|    uint32_t flags = provider.ConsumeIntegral<uint32_t>();
-  382|     13|    std::string error_code = FuzzedString(provider, 50);
-  383|       |
-  384|     13|    Sv2SetupConnectionErrorMsg inner_msg(flags, std::move(error_code));
-  385|     13|    Sv2NetMsg net_msg(inner_msg);
-  386|       |
-  387|       |    // Verify message type
-  388|     13|    assert(net_msg.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
+  389|     13|{
+  390|     13|    const CheckGlobals check_globals{};
+  391|     13|    SeedRandomStateForTest(SeedRand::ZEROS);
+  392|     13|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  393|       |
+  394|       |    // Create a simple message to wrap
+  395|     13|    uint32_t flags = provider.ConsumeIntegral<uint32_t>();
+  396|     13|    std::string error_code = FuzzedString(provider, 50);
+  397|       |
+  398|     13|    Sv2SetupConnectionErrorMsg inner_msg(flags, std::move(error_code));
+  399|     13|    Sv2NetMsg net_msg(inner_msg);
+  400|       |
+  401|       |    // Verify message type
+  402|     13|    assert(net_msg.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
   ------------------
-  |  Branch (388:5): [True: 13, False: 0]
+  |  Branch (402:5): [True: 13, False: 0]
   ------------------
-  389|       |
-  390|       |    // Convert to header
-  391|     13|    Sv2NetHeader hdr = net_msg;
-  392|     13|    assert(hdr.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
+  403|       |
+  404|       |    // Convert to header
+  405|     13|    Sv2NetHeader hdr = net_msg;
+  406|     13|    assert(hdr.m_msg_type == Sv2MsgType::SETUP_CONNECTION_ERROR);
   ------------------
-  |  Branch (392:5): [True: 13, False: 0]
+  |  Branch (406:5): [True: 13, False: 0]
   ------------------
-  393|     13|    assert(hdr.m_msg_len == net_msg.size());
+  407|     13|    assert(hdr.m_msg_len == net_msg.size());
   ------------------
-  |  Branch (393:5): [True: 13, False: 0]
+  |  Branch (407:5): [True: 13, False: 0]
   ------------------
-  394|       |
-  395|       |    // Serialize and deserialize
-  396|     13|    DataStream ss{};
-  397|     13|    ss << net_msg;
-  398|       |
-  399|     13|    Sv2NetMsg net_msg_rt(Sv2MsgType::SETUP_CONNECTION_ERROR, {});
-  400|     13|    ss >> net_msg_rt;
-  401|       |    assert(net_msg_rt.m_msg_type == net_msg.m_msg_type);
+  408|       |
+  409|       |    // Serialize and deserialize
+  410|     13|    DataStream ss{};
+  411|     13|    ss << net_msg;
+  412|       |
+  413|     13|    Sv2NetMsg net_msg_rt(Sv2MsgType::SETUP_CONNECTION_ERROR, {});
+  414|     13|    ss >> net_msg_rt;
+  415|       |    assert(net_msg_rt.m_msg_type == net_msg.m_msg_type);
   ------------------
-  |  Branch (401:5): [True: 13, False: 0]
+  |  Branch (415:5): [True: 13, False: 0]
   ------------------
-  402|     13|}
+  416|     13|}
 sv2_messages.cpp:_ZN12_GLOBAL__N_112FuzzedStringER18FuzzedDataProviderm:
    37|     13|{
    38|     13|    size_t len = provider.ConsumeIntegralInRange<size_t>(0, max_len);

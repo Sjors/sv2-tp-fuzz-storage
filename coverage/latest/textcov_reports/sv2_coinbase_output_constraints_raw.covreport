@@ -217,15 +217,15 @@ random.cpp:_ZN12_GLOBAL__N_18RNGState17MakeDeterministicERK7uint256:
   403|     12|    }
 
 secp256k1.c:secp256k1_ecmult_gen_context_clear:
-   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ctx) {
-   27|      2|    ctx->built = 0;
-   28|      2|    secp256k1_scalar_clear(&ctx->scalar_offset);
-   29|      2|    secp256k1_ge_clear(&ctx->ge_offset);
-   30|      2|    secp256k1_fe_clear(&ctx->proj_blind);
+   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   27|      2|    ecmult_gen_ctx->built = 0;
+   28|      2|    secp256k1_scalar_clear(&ecmult_gen_ctx->scalar_offset);
+   29|      2|    secp256k1_ge_clear(&ecmult_gen_ctx->ge_offset);
+   30|      2|    secp256k1_fe_clear(&ecmult_gen_ctx->proj_blind);
    31|      2|}
 secp256k1.c:secp256k1_ecmult_gen_context_is_built:
-   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context* ctx) {
-   23|      4|    return ctx->built;
+   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   23|      4|    return ecmult_gen_ctx->built;
    24|      4|}
 
 secp256k1.c:secp256k1_fe_clear:
@@ -234,9 +234,9 @@ secp256k1.c:secp256k1_fe_clear:
    23|      2|}
 
 secp256k1.c:secp256k1_ge_clear:
-  343|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
-  344|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
-  345|      2|}
+  357|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
+  358|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
+  359|      2|}
 
 secp256k1.c:secp256k1_scalar_clear:
    30|      2|SECP256K1_INLINE static void secp256k1_scalar_clear(secp256k1_scalar *r) {
@@ -250,11 +250,11 @@ secp256k1_context_preallocated_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -283,11 +283,11 @@ secp256k1_context_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -316,37 +316,37 @@ secp256k1.c:secp256k1_context_is_proper:
    85|      4|}
 
 secp256k1.c:secp256k1_memclear_explicit:
-  268|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
-  269|       |    /* The current implementation zeroes, but callers must not rely on this */
-  270|      6|    secp256k1_memzero_explicit(ptr, len);
-  271|       |#ifdef VERIFY
-  272|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
-  273|       |#endif
-  274|      6|}
+  270|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
+  271|       |    /* The current implementation zeroes, but callers must not rely on this */
+  272|      6|    secp256k1_memzero_explicit(ptr, len);
+  273|       |#ifdef VERIFY
+  274|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
+  275|       |#endif
+  276|      6|}
 secp256k1.c:secp256k1_memzero_explicit:
-  236|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
-  237|       |#if defined(_MSC_VER)
-  238|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
-  239|       |    SecureZeroMemory(ptr, len);
-  240|       |#elif defined(__GNUC__)
-  241|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
-  242|       |     *
-  243|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
-  244|       |     * in BoringSSL (ISC License):
-  245|       |     *    As best as we can tell, this is sufficient to break any optimisations that
-  246|       |     *    might try to eliminate "superfluous" memsets.
-  247|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
-  248|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
-  249|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
-  250|       |     * Yang et al. (USENIX Security 2017) for more background.
-  251|       |     */
-  252|      6|    memset(ptr, 0, len);
-  253|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-  254|       |#else
-  255|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
-  256|       |    volatile_memset(ptr, 0, len);
-  257|       |#endif
-  258|      6|}
+  238|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
+  239|       |#if defined(_MSC_VER)
+  240|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
+  241|       |    SecureZeroMemory(ptr, len);
+  242|       |#elif defined(__GNUC__)
+  243|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
+  244|       |     *
+  245|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
+  246|       |     * in BoringSSL (ISC License):
+  247|       |     *    As best as we can tell, this is sufficient to break any optimisations that
+  248|       |     *    might try to eliminate "superfluous" memsets.
+  249|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
+  250|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
+  251|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
+  252|       |     * Yang et al. (USENIX Security 2017) for more background.
+  253|       |     */
+  254|      6|    memset(ptr, 0, len);
+  255|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+  256|       |#else
+  257|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
+  258|       |    volatile_memset(ptr, 0, len);
+  259|       |#endif
+  260|      6|}
 
 _Z11UnserializeI10DataStreamRN4node31Sv2CoinbaseOutputConstraintsMsgEQ14UnserializableIT0_T_EEvRS5_OS4_:
   753|     21|{
@@ -613,22 +613,22 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node31Sv2CoinbaseOutputConstraintsMsg11UnserializeI10DataStreamEEvRT_:
-  211|     21|    {
-  212|     21|        s >> m_coinbase_output_max_additional_size;
-  213|     21|       try {
-  214|       |            // This field was added to the spec in March 2025.
-  215|       |            // SRI roles before v1.3.0 do not provide it.
-  216|     21|            s >> m_coinbase_output_max_additional_sigops;
-  217|     21|        } catch (...) {
-  218|       |            // Just use the default if it's missing
-  219|      2|            m_coinbase_output_max_additional_sigops = 400;
-  220|      2|        }
-  221|     21|    }
+  260|     21|    {
+  261|     21|        s >> m_coinbase_output_max_additional_size;
+  262|     21|       try {
+  263|       |            // This field was added to the spec in March 2025.
+  264|       |            // SRI roles before v1.3.0 do not provide it.
+  265|     21|            s >> m_coinbase_output_max_additional_sigops;
+  266|     21|        } catch (...) {
+  267|       |            // Just use the default if it's missing
+  268|      2|            m_coinbase_output_max_additional_sigops = 400;
+  269|      2|        }
+  270|     21|    }
 _ZNK4node31Sv2CoinbaseOutputConstraintsMsg9SerializeI10DataStreamEEvRT_:
-  203|      9|    {
-  204|      9|        s << m_coinbase_output_max_additional_size;
-  205|      9|        s << m_coinbase_output_max_additional_sigops;
-  206|      9|    };
+  252|      9|    {
+  253|      9|        s << m_coinbase_output_max_additional_size;
+  254|      9|        s << m_coinbase_output_max_additional_sigops;
+  255|      9|    };
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -771,31 +771,31 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     12|}
 
 _Z47sv2_coinbase_output_constraints_raw_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  485|     12|{
-  486|     12|    const CheckGlobals check_globals{};
-  487|     12|    SeedRandomStateForTest(SeedRand::ZEROS);
-  488|       |
-  489|     12|    DataStream ds{buffer};
-  490|     12|    try {
-  491|     12|        Sv2CoinbaseOutputConstraintsMsg msg;
-  492|     12|        ds >> msg;
-  493|       |
-  494|       |        // If deserialization succeeded, verify roundtrip invariant
-  495|     12|        DataStream ss_rt{};
-  496|     12|        ss_rt << msg;
-  497|     12|        Sv2CoinbaseOutputConstraintsMsg msg_rt;
-  498|     12|        ss_rt >> msg_rt;
-  499|     12|        assert(msg.m_coinbase_output_max_additional_size == msg_rt.m_coinbase_output_max_additional_size);
+  499|     12|{
+  500|     12|    const CheckGlobals check_globals{};
+  501|     12|    SeedRandomStateForTest(SeedRand::ZEROS);
+  502|       |
+  503|     12|    DataStream ds{buffer};
+  504|     12|    try {
+  505|     12|        Sv2CoinbaseOutputConstraintsMsg msg;
+  506|     12|        ds >> msg;
+  507|       |
+  508|       |        // If deserialization succeeded, verify roundtrip invariant
+  509|     12|        DataStream ss_rt{};
+  510|     12|        ss_rt << msg;
+  511|     12|        Sv2CoinbaseOutputConstraintsMsg msg_rt;
+  512|     12|        ss_rt >> msg_rt;
+  513|     12|        assert(msg.m_coinbase_output_max_additional_size == msg_rt.m_coinbase_output_max_additional_size);
   ------------------
-  |  Branch (499:9): [True: 9, False: 3]
+  |  Branch (513:9): [True: 9, False: 3]
   ------------------
-  500|     12|        assert(msg.m_coinbase_output_max_additional_sigops == msg_rt.m_coinbase_output_max_additional_sigops);
+  514|     12|        assert(msg.m_coinbase_output_max_additional_sigops == msg_rt.m_coinbase_output_max_additional_sigops);
   ------------------
-  |  Branch (500:9): [True: 9, False: 0]
+  |  Branch (514:9): [True: 9, False: 0]
   ------------------
-  501|      9|    } catch (const std::ios_base::failure&) {
-  502|      3|    }
-  503|     12|}
+  515|      9|    } catch (const std::ios_base::failure&) {
+  516|      3|    }
+  517|     12|}
 
 _ZN20Sv2BasicTestingSetupD2Ev:
    70|      2|{

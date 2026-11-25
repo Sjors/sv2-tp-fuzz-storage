@@ -212,15 +212,15 @@ random.cpp:_ZN12_GLOBAL__N_18RNGState17MakeDeterministicERK7uint256:
   403|     20|    }
 
 secp256k1.c:secp256k1_ecmult_gen_context_clear:
-   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ctx) {
-   27|      2|    ctx->built = 0;
-   28|      2|    secp256k1_scalar_clear(&ctx->scalar_offset);
-   29|      2|    secp256k1_ge_clear(&ctx->ge_offset);
-   30|      2|    secp256k1_fe_clear(&ctx->proj_blind);
+   26|      2|static void secp256k1_ecmult_gen_context_clear(secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   27|      2|    ecmult_gen_ctx->built = 0;
+   28|      2|    secp256k1_scalar_clear(&ecmult_gen_ctx->scalar_offset);
+   29|      2|    secp256k1_ge_clear(&ecmult_gen_ctx->ge_offset);
+   30|      2|    secp256k1_fe_clear(&ecmult_gen_ctx->proj_blind);
    31|      2|}
 secp256k1.c:secp256k1_ecmult_gen_context_is_built:
-   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context* ctx) {
-   23|      4|    return ctx->built;
+   22|      4|static int secp256k1_ecmult_gen_context_is_built(const secp256k1_ecmult_gen_context *ecmult_gen_ctx) {
+   23|      4|    return ecmult_gen_ctx->built;
    24|      4|}
 
 secp256k1.c:secp256k1_fe_clear:
@@ -229,9 +229,9 @@ secp256k1.c:secp256k1_fe_clear:
    23|      2|}
 
 secp256k1.c:secp256k1_ge_clear:
-  343|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
-  344|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
-  345|      2|}
+  357|      2|static void secp256k1_ge_clear(secp256k1_ge *r) {
+  358|      2|    secp256k1_memclear_explicit(r, sizeof(secp256k1_ge));
+  359|      2|}
 
 secp256k1.c:secp256k1_scalar_clear:
    30|      2|SECP256K1_INLINE static void secp256k1_scalar_clear(secp256k1_scalar *r) {
@@ -245,11 +245,11 @@ secp256k1_context_preallocated_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -278,11 +278,11 @@ secp256k1_context_destroy:
   |  |   52|      2|#define ARG_CHECK_VOID(cond) do { \
   |  |   53|      2|    if (EXPECT(!(cond), 0)) { \
   |  |  ------------------
-  |  |  |  |  146|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
+  |  |  |  |  148|      4|#define EXPECT(x,c) __builtin_expect((x),(c))
   |  |  |  |  ------------------
-  |  |  |  |  |  Branch (146:21): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 0, False: 2]
-  |  |  |  |  |  Branch (146:39): [True: 2, False: 0]
+  |  |  |  |  |  Branch (148:21): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 0, False: 2]
+  |  |  |  |  |  Branch (148:39): [True: 2, False: 0]
   |  |  |  |  ------------------
   |  |  ------------------
   |  |   54|      0|        secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -311,37 +311,37 @@ secp256k1.c:secp256k1_context_is_proper:
    85|      4|}
 
 secp256k1.c:secp256k1_memclear_explicit:
-  268|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
-  269|       |    /* The current implementation zeroes, but callers must not rely on this */
-  270|      6|    secp256k1_memzero_explicit(ptr, len);
-  271|       |#ifdef VERIFY
-  272|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
-  273|       |#endif
-  274|      6|}
+  270|      6|static SECP256K1_INLINE void secp256k1_memclear_explicit(void *ptr, size_t len) {
+  271|       |    /* The current implementation zeroes, but callers must not rely on this */
+  272|      6|    secp256k1_memzero_explicit(ptr, len);
+  273|       |#ifdef VERIFY
+  274|       |    SECP256K1_CHECKMEM_UNDEFINE(ptr, len);
+  275|       |#endif
+  276|      6|}
 secp256k1.c:secp256k1_memzero_explicit:
-  236|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
-  237|       |#if defined(_MSC_VER)
-  238|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
-  239|       |    SecureZeroMemory(ptr, len);
-  240|       |#elif defined(__GNUC__)
-  241|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
-  242|       |     *
-  243|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
-  244|       |     * in BoringSSL (ISC License):
-  245|       |     *    As best as we can tell, this is sufficient to break any optimisations that
-  246|       |     *    might try to eliminate "superfluous" memsets.
-  247|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
-  248|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
-  249|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
-  250|       |     * Yang et al. (USENIX Security 2017) for more background.
-  251|       |     */
-  252|      6|    memset(ptr, 0, len);
-  253|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-  254|       |#else
-  255|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
-  256|       |    volatile_memset(ptr, 0, len);
-  257|       |#endif
-  258|      6|}
+  238|      6|static SECP256K1_INLINE void secp256k1_memzero_explicit(void *ptr, size_t len) {
+  239|       |#if defined(_MSC_VER)
+  240|       |    /* SecureZeroMemory is guaranteed not to be optimized out by MSVC. */
+  241|       |    SecureZeroMemory(ptr, len);
+  242|       |#elif defined(__GNUC__)
+  243|       |    /* We use a memory barrier that scares the compiler away from optimizing out the memset.
+  244|       |     *
+  245|       |     * Quoting Adam Langley <agl@google.com> in commit ad1907fe73334d6c696c8539646c21b11178f20f
+  246|       |     * in BoringSSL (ISC License):
+  247|       |     *    As best as we can tell, this is sufficient to break any optimisations that
+  248|       |     *    might try to eliminate "superfluous" memsets.
+  249|       |     * This method is used in memzero_explicit() the Linux kernel, too. Its advantage is that it
+  250|       |     * is pretty efficient, because the compiler can still implement the memset() efficiently,
+  251|       |     * just not remove it entirely. See "Dead Store Elimination (Still) Considered Harmful" by
+  252|       |     * Yang et al. (USENIX Security 2017) for more background.
+  253|       |     */
+  254|      6|    memset(ptr, 0, len);
+  255|      6|    __asm__ __volatile__("" : : "r"(ptr) : "memory");
+  256|       |#else
+  257|       |    void *(*volatile const volatile_memset)(void *, int, size_t) = memset;
+  258|       |    volatile_memset(ptr, 0, len);
+  259|       |#endif
+  260|      6|}
 
 _Z11UnserializeI10DataStreamEvRT_Rh:
   263|     20|template <typename Stream> void Unserialize(Stream& s, uint8_t& a)   { a = ser_readdata8(s); }
@@ -632,7 +632,7 @@ _ZN19LockedPageAllocatorD2Ev:
    22|      2|    virtual ~LockedPageAllocator() = default;
 
 _ZN4node33Sv2RequestTransactionDataErrorMsgC2EmONSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE:
-  561|     20|    explicit Sv2RequestTransactionDataErrorMsg(uint64_t template_id, std::string&& error_code) : m_template_id{template_id}, m_error_code{error_code} {};
+  591|     20|    explicit Sv2RequestTransactionDataErrorMsg(uint64_t template_id, std::string&& error_code) : m_template_id{template_id}, m_error_code{error_code} {};
 _ZN4node20Sv2Bytes255Formatter3SerI10DataStreamNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEvRT_RKT0_:
    47|     20|    {
    48|     20|        if (v.size() > 255) throw std::ios_base::failure("B0_255 length limit exceeded");
@@ -656,10 +656,10 @@ _ZN4node20Sv2Bytes255Formatter5UnserI10DataStreamNSt3__112basic_stringIcNS3_11ch
   ------------------
    60|     20|    }
 _ZNK4node33Sv2RequestTransactionDataErrorMsg9SerializeI10DataStreamEEvRT_:
-  565|     20|    {
-  566|     20|        s << m_template_id
-  567|     20|          << Using<Sv2Bytes255Formatter>(m_error_code);
-  568|     20|    }
+  595|     20|    {
+  596|     20|        s << m_template_id
+  597|     20|          << Using<Sv2Bytes255Formatter>(m_error_code);
+  598|     20|    }
 
 _ZN14AnnotatedMixinINSt3__115recursive_mutexEED2Ev:
    89|      2|    ~AnnotatedMixin() {
@@ -877,34 +877,34 @@ fuzz.cpp:_ZL14test_one_inputNSt3__14spanIKhLm18446744073709551615EEE:
    97|     20|}
 
 _Z46sv2_request_transaction_data_error_fuzz_targetNSt3__14spanIKhLm18446744073709551615EEE:
-  350|     20|{
-  351|     20|    const CheckGlobals check_globals{};
-  352|     20|    SeedRandomStateForTest(SeedRand::ZEROS);
-  353|     20|    FuzzedDataProvider provider(buffer.data(), buffer.size());
-  354|       |
-  355|     20|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
-  356|     20|    std::string error_code = FuzzedString(provider);
-  357|     20|    std::string error_code_expect = error_code;
-  358|       |
-  359|     20|    Sv2RequestTransactionDataErrorMsg msg(template_id, std::move(error_code));
-  360|       |
-  361|       |    // Serialize
-  362|     20|    DataStream ss{};
-  363|     20|    ss << msg;
-  364|       |
-  365|       |    // Roundtrip: read back serialized fields and verify
-  366|     20|    uint64_t rt_template_id;
-  367|     20|    std::string rt_error;
-  368|     20|    ss >> rt_template_id >> Using<node::Sv2Bytes255Formatter>(rt_error);
-  369|     20|    assert(rt_template_id == template_id);
+  364|     20|{
+  365|     20|    const CheckGlobals check_globals{};
+  366|     20|    SeedRandomStateForTest(SeedRand::ZEROS);
+  367|     20|    FuzzedDataProvider provider(buffer.data(), buffer.size());
+  368|       |
+  369|     20|    uint64_t template_id = provider.ConsumeIntegral<uint64_t>();
+  370|     20|    std::string error_code = FuzzedString(provider);
+  371|     20|    std::string error_code_expect = error_code;
+  372|       |
+  373|     20|    Sv2RequestTransactionDataErrorMsg msg(template_id, std::move(error_code));
+  374|       |
+  375|       |    // Serialize
+  376|     20|    DataStream ss{};
+  377|     20|    ss << msg;
+  378|       |
+  379|       |    // Roundtrip: read back serialized fields and verify
+  380|     20|    uint64_t rt_template_id;
+  381|     20|    std::string rt_error;
+  382|     20|    ss >> rt_template_id >> Using<node::Sv2Bytes255Formatter>(rt_error);
+  383|     20|    assert(rt_template_id == template_id);
   ------------------
-  |  Branch (369:5): [True: 20, False: 0]
+  |  Branch (383:5): [True: 20, False: 0]
   ------------------
-  370|     20|    assert(rt_error == error_code_expect);
+  384|     20|    assert(rt_error == error_code_expect);
   ------------------
-  |  Branch (370:5): [True: 20, False: 0]
+  |  Branch (384:5): [True: 20, False: 0]
   ------------------
-  371|     20|}
+  385|     20|}
 sv2_messages.cpp:_ZN12_GLOBAL__N_112FuzzedStringER18FuzzedDataProviderm:
    37|     20|{
    38|     20|    size_t len = provider.ConsumeIntegralInRange<size_t>(0, max_len);
